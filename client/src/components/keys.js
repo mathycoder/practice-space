@@ -2,7 +2,12 @@ import Vex from 'vexflow'
 
 export const keys = (VF, key) => {
   return keyNotes[key].map(note => {
-    return new VF.StaveNote({clef: "treble", keys: [note], duration: '4'})
+    const accidental = note.split("/")[0][1]
+
+    return !accidental ?
+      new VF.StaveNote({clef: "treble", keys: [note], duration: '4'})
+      : new VF.StaveNote({clef: "treble", keys: [note], duration: '4'}).
+        addAccidental(0, new VF.Accidental(accidental))
   })
 }
 
