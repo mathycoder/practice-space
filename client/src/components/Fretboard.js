@@ -16,6 +16,7 @@ const Fretboard = ({ setCurrentNote }) => {
 // C3 = 24
 // C4 = 36
 
+
   const currentNote = (withOctave = false) => {
     if (!overFret) return null
     const rawStringIndex= STRING_INDICES[overFret.string]
