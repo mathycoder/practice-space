@@ -66,7 +66,7 @@ const Fretboard = ({ setCurrentNote }) => {
   const clickNote = () => {
     const currNote = currentNote(true)
     //synth.triggerAttackRelease(currNote, '8n')
-    samplerRef.current.triggerAttack(currNote);
+    samplerRef.current.triggerAttackRelease(currNote, '4n');
     setCurrentNote(currNote)
   }
 
