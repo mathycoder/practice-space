@@ -1,8 +1,10 @@
 import { createStore, compose, combineReducers } from 'redux'
 import currentNoteReducer from './reducers/currentNoteReducer'
+import settingsReducer from './reducers/settingsReducer'
 
 const rootReducer = combineReducers({
-  currentNote: currentNoteReducer
+  currentNote: currentNoteReducer,
+  settings: settingsReducer
 })
 
 const store = createStore(

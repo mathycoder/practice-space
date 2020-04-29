@@ -1,26 +1,27 @@
 import React from 'react'
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+import { setKey } from '../../actions/settingsActions.js'
+import { connect } from 'react-redux'
 
-const Settings = () => {
+const Settings = ({ currentKey, setKey }) => {
   const renderKeyDropdown = () => {
     const options = [
       'C', 'G', 'D'
     ]
-    const defaultOption = options[0]
+
     return (
       <div style={styles.dropdownWrapper}>
         <div style={styles.dropdownLabel}>Key</div>
         <Dropdown
           options={options}
-          onChange={() => console.log("hi")}
-          value={defaultOption}
+          onChange={(obj) => setKey(obj.value)}
+          value={currentKey}
           placeholder="Select an option"
         />
       </div>
     )
   }
-
 
   return (
     <div style={styles.settingsWrapper}>
@@ -53,4 +54,16 @@ const styles = {
   }
 }
 
-export default Settings
+const mapStateToProps = state => {
+  return {
+    currentKey: state.settings
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setKey: key => dispatch(setKey(key))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)
