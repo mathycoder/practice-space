@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Vex from 'vexflow'
+import Settings from './settings/Settings'
 import { connect } from 'react-redux'
 
 const MusicNotation = ({ currentNote }) => {
@@ -60,12 +61,7 @@ const MusicNotation = ({ currentNote }) => {
   return (
     <>
       <div id="music-canvas" style={styles.canvasStyle}></div>
-      <div
-        style={styles.rightStyle}
-        onClick={() => renderNote()}
-        >
-        <button>Do Things</button>
-      </div>
+      <Settings />
     </>
   )
 }
@@ -74,14 +70,6 @@ const styles = {
   canvasStyle: {
     flex: 1,
     alignSelf: 'stretch',
-  },
-  rightStyle: {
-    flex: 1,
-    display: 'flex',
-    backgroundColor: 'gray',
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 }
 
