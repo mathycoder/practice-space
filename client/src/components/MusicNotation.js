@@ -35,7 +35,7 @@ const MusicNotation = ({ currentNote }) => {
     if (note !== "c/4") {
       const key = note.split(/[0-9]/)[0]
       const octaveIndex = note.search(/[0-9]/)
-      const octave = note[octaveIndex]
+      const octave = parseInt(note[octaveIndex]) + 1
       note = `${key}/${octave}`
       if (key[1]) accidental = true
     }
