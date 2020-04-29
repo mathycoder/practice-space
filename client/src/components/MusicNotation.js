@@ -59,7 +59,7 @@ const MusicNotation = ({ currentNote, currentKey }) => {
   const renderKey = () => {
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
     const stave1 = new VF.Stave(40, 0, 250);
-    stave1.addClef("treble").addTimeSignature("4/4");
+    stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
     const stave2 = new VF.Stave(40 + 250, 0, 220);
@@ -70,12 +70,12 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 200);
+    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150);
     voice.draw(contextRef.current, stave1)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 200);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150);
     voice.draw(contextRef.current, stave2)
   }
 
