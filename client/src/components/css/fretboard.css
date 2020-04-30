@@ -23,22 +23,52 @@
   display: flex;
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .string:before {
   content: '';
   position: absolute;
   width: 100%;
-  height: 1px;
-  background-color: black;
+  height: 3px;
   align-self: center;
+  /* background-color: black; */
+  background: linear-gradient(#eee, #999);
+  box-shadow: 76px 3px 10px #806233;
+  z-index: 1;
+}
+
+.string:nth-child(6):before {
+  height: 5px;
+}
+
+.string:nth-child(5):before {
+  height: 4.5px;
+}
+
+.string:nth-child(4):before {
+  height: 4px;
+}
+
+.string:nth-child(3):before {
+  height: 3.5px;
+}
+
+.string:nth-child(2):before {
+  height: 3px;
+}
+
+.string:nth-child(1):before {
+  height: 2.5px;
 }
 
 .fret {
   display: flex;
   flex: 1;
-  border-right: 1px solid black;
   justify-content: center;
+  /* border-right: 1px solid black; */
+  border-right: 2px solid;
+  border-image: linear-gradient(to left, #777, #bbb, #777) 1 100%;
 }
 
 .fret.base {
