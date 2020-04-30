@@ -7,8 +7,9 @@ import * as Tone from 'tone'
 import { sampler } from '../sampler.js'
 import BigButton from '../elements/BigButton'
 import { keyNotes } from '../keys.js'
+import { setCurrentNote } from '../../actions/currentNoteActions.js'
 
-const Settings = ({ currentKey, setKey }) => {
+const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   const [looping, setLooping] = useState(false)
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -33,6 +34,7 @@ const Settings = ({ currentKey, setKey }) => {
       })
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
+        setCurrentNote(note)
         samplerRef.current.triggerAttackRelease(note, '4n', time)
         counterRef.current++
       }, '4n')
@@ -119,7 +121,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setKey: key => dispatch(setKey(key))
+    setKey: key => dispatch(setKey(key)),
+    setCurrentNote: note => dispatch(setCurrentNote(note))
   }
 }
 
