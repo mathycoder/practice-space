@@ -6,6 +6,7 @@
   max-width: 800px;
   background-color: tan;
   height: 150px;
+  overflow: hidden;
 }
 
 .noselect {
@@ -23,7 +24,7 @@
   display: flex;
   width: 100%;
   position: relative;
-  overflow: hidden;
+
 }
 
 .string:before {
@@ -34,7 +35,7 @@
   align-self: center;
   /* background-color: black; */
   background: linear-gradient(#eee, #999);
-  box-shadow: 76px 3px 10px #806233;
+  box-shadow: 60px 3px 10px #806233;
   z-index: 1;
 }
 
@@ -69,6 +70,16 @@
   /* border-right: 1px solid black; */
   border-right: 2px solid;
   border-image: linear-gradient(to left, #777, #bbb, #777) 1 100%;
+}
+
+.single-fretmark:after {
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background: #806233;
+  transform: translate(0, -50%);
 }
 
 .fret.base {
