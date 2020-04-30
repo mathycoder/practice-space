@@ -58,6 +58,7 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 
   const renderKey = () => {
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
+    
     const stave1 = new VF.Stave(40, 0, 250);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();

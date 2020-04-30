@@ -22,11 +22,15 @@ const Settings = ({ currentKey, setKey }) => {
   useEffect(() => {
     if (currentKey){
       if (scheduleId !== null) {
-        //console.log("clearing ID:", scheduleId)
         transportRef.current.clear(scheduleId)
         counterRef.current = 0
       }
-      const notes = keyNotes[currentKey].map(note => note.replace('/', ''))
+      const notes = keyNotes[currentKey].map(note => {
+        note = note.replace('/', '')
+        const letter = note.split(/[\d]+/)[0]
+        const octave = parseInt(note.slice(-1))
+        return `${letter}${octave-1}`
+      })
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
         samplerRef.current.triggerAttackRelease(note, '4n', time)
@@ -37,7 +41,7 @@ const Settings = ({ currentKey, setKey }) => {
   }, [currentKey])
 
   const playScale = () => looping ? stopLoop() : startLoop()
-  
+
   const startLoop = () => {
     transportRef.current.start()
     setLooping(true)
