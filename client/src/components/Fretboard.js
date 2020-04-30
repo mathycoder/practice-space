@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
-const Fretboard = ({ setCurrentNote }) => {
+const Fretboard = ({ setCurrentNote, currentNote }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null})
   const samplerRef = useRef(null)
   const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -15,7 +15,7 @@ const Fretboard = ({ setCurrentNote }) => {
     samplerRef.current = sampler.toMaster()
   }, [])
 
-  const currentNote = (withOctave = false) => {
+  const calculateCurrentNote = (withOctave = false) => {
     if (!overFret) return null
     const rawStringIndex= STRING_INDICES[overFret.string]
     const fretIndex = (rawStringIndex + overFret.fret) % 12
@@ -23,8 +23,16 @@ const Fretboard = ({ setCurrentNote }) => {
     return `${NOTES[fretIndex]}${withOctave ? octave : ''}`
   }
 
+  const stringAndFretEquals = (string, fret, uppercase = false) => {
+    const rawStringIndex= STRING_INDICES[string]
+    const fretIndex = (rawStringIndex + fret) % 12
+    const octave = Math.floor((rawStringIndex + fret) / 12) + 1
+    return uppercase ? `${NOTES[fretIndex]}${octave}` : `${NOTES[fretIndex].toLowerCase()}${octave}`
+  }
+
+
   const clickNote = () => {
-    const currNote = currentNote(true)
+    const currNote = calculateCurrentNote(true)
     samplerRef.current.triggerAttackRelease(currNote, '4n');
     setCurrentNote(currNote)
   }
@@ -33,8 +41,8 @@ const Fretboard = ({ setCurrentNote }) => {
     <div className="fretboard-wrapper noselect">
       {[0,1,2,3,4,5].map(stringNum => (
         <div className="string">
-          {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(fretNum => (
-            <div
+          {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(fretNum => {
+            return <div
               onMouseEnter={() => setOverFret({string: stringNum, fret: fretNum})}
               onMouseLeave={() => setOverFret({string: null, fret: null})}
               className={`fret ${fretNum === 0 ? 'base' : null}
@@ -42,20 +50,26 @@ const Fretboard = ({ setCurrentNote }) => {
               onClick={() => clickNote()}
             >
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 ? <div className="double-fretmark"></div> : null}
-              {overFret.string === stringNum && overFret.fret === fretNum
+              {(overFret.string === stringNum && overFret.fret === fretNum) || stringAndFretEquals(stringNum, fretNum) === currentNote
                 ? <div className="note">
                     <div className="note-text">
-                      {currentNote()}
+                      {stringAndFretEquals(stringNum, fretNum, true)}
                     </div>
                   </div>
                 : null
               }
             </div>
-          ))}
+          })}
         </div>
       ))}
     </div>
   )
+}
+
+const mapStateToProps = state => {
+  return {
+    currentNote: state.currentNote
+  }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -64,4 +78,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Fretboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Fretboard)
