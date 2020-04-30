@@ -8,8 +8,6 @@ const MusicNotation = ({ currentNote, currentKey }) => {
   const [VF, setVF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const contextRef = useRef(null)
-  const staveRef = useRef(null)
-  const firstRef = useRef(false)
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
@@ -20,7 +18,7 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 
   useEffect(() => {
     if (currentKey) renderKey(currentKey)
-  }, [currentKey])
+  }, [currentKey, currentNote])
 
   const deleteNote = () => {
     contextRef.current.svg.removeChild(contextRef.current.svg.lastChild)
@@ -36,8 +34,8 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     const stave2 = new VF.Stave(40 + 250, 0, 220);
     stave2.setContext(contextRef.current).draw();
 
-    const notes = keys(VF, currentKey).slice(0,4)
-    const notes2 = keys(VF, currentKey).slice(4,8)
+    const notes = keys(VF, currentKey, currentNote).slice(0,4)
+    const notes2 = keys(VF, currentKey, currentNote).slice(4,8)
 
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);

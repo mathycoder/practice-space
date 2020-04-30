@@ -1,13 +1,23 @@
 import Vex from 'vexflow'
 
-export const keys = (VF, key) => {
+export const keys = (VF, key, currentNote) => {
   return keyNotes[key].map(note => {
     const accidental = note.split("/")[0][1]
 
-    return !accidental ?
+    let formatNote
+    if (currentNote) {
+      const octave = parseInt(currentNote.slice(-1)) + 1
+      const letter = currentNote.split(/\d/)[0].toLowerCase()
+      formatNote = `${letter}/${octave}`
+    }
+
+    const myNote = !accidental ?
       new VF.StaveNote({clef: "treble", keys: [note], duration: '4'})
       : new VF.StaveNote({clef: "treble", keys: [note], duration: '4'}).
         addAccidental(0, new VF.Accidental(accidental))
+    if (formatNote === note) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
+
+    return myNote
   })
 }
 
