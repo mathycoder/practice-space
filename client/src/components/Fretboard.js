@@ -15,24 +15,15 @@ const Fretboard = ({ setCurrentNote, currentNote }) => {
     samplerRef.current = sampler.toMaster()
   }, [])
 
-  const calculateCurrentNote = (withOctave = false) => {
-    if (!overFret) return null
-    const rawStringIndex= STRING_INDICES[overFret.string]
-    const fretIndex = (rawStringIndex + overFret.fret) % 12
-    const octave = Math.floor((rawStringIndex + overFret.fret) / 12) + 1
-    return `${NOTES[fretIndex]}${withOctave ? octave : ''}`
-  }
-
-  const stringAndFretEquals = (string, fret, uppercase = false) => {
+  const calculateCurrentNote = (string, fret, uppercase = false) => {
     const rawStringIndex= STRING_INDICES[string]
     const fretIndex = (rawStringIndex + fret) % 12
     const octave = Math.floor((rawStringIndex + fret) / 12) + 1
     return uppercase ? `${NOTES[fretIndex]}${octave}` : `${NOTES[fretIndex].toLowerCase()}${octave}`
   }
 
-
   const clickNote = () => {
-    const currNote = calculateCurrentNote(true)
+    const currNote = calculateCurrentNote(overFret.string, overFret.fret, true)
     samplerRef.current.triggerAttackRelease(currNote, '4n');
     setCurrentNote(currNote)
   }
@@ -50,10 +41,10 @@ const Fretboard = ({ setCurrentNote, currentNote }) => {
               onClick={() => clickNote()}
             >
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 ? <div className="double-fretmark"></div> : null}
-              {(overFret.string === stringNum && overFret.fret === fretNum) || stringAndFretEquals(stringNum, fretNum) === currentNote
+              {(overFret.string === stringNum && overFret.fret === fretNum) || calculateCurrentNote(stringNum, fretNum) === currentNote
                 ? <div className="note">
                     <div className="note-text">
-                      {stringAndFretEquals(stringNum, fretNum, true)}
+                      {calculateCurrentNote(stringNum, fretNum, true)}
                     </div>
                   </div>
                 : null
