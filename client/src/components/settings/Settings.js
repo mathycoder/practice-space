@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 const Settings = ({ currentKey, setKey }) => {
   const renderKeyDropdown = () => {
     const options = [
-      'C', 'G', 'D'
+      'C', 'G', 'D', 'A', 'E'
     ]
 
     return (
