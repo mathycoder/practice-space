@@ -2,9 +2,11 @@ import React from 'react'
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 
-const BigButton = ({ title }) => {
+const BigButton = ({ title, callback }) => {
   return (
-    <AwesomeButton type="primary">{title}</AwesomeButton>
+    <AwesomeButton
+      onPress={callback}
+      type="primary">{title}</AwesomeButton>
   )
 }
 

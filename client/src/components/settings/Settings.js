@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { setKey } from '../../actions/settingsActions.js'
@@ -6,16 +6,48 @@ import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../sampler.js'
 import BigButton from '../elements/BigButton'
+import { keyNotes } from '../keys.js'
 
 const Settings = ({ currentKey, setKey }) => {
+  const [looping, setLooping] = useState(false)
+  const [scheduleId, setScheduleId] = useState(null)
+  const counterRef = useRef(0)
   const samplerRef = useRef(null)
+  const transportRef = useRef(Tone.Transport)
 
   useEffect(() => {
     samplerRef.current = sampler.toMaster()
   }, [])
 
+  useEffect(() => {
+    if (currentKey){
+      if (scheduleId !== null) {
+        //console.log("clearing ID:", scheduleId)
+        transportRef.current.clear(scheduleId)
+        counterRef.current = 0
+      }
+      const notes = keyNotes[currentKey].map(note => note.replace('/', ''))
+      const schedulingId = transportRef.current.scheduleRepeat(time => {
+        let note = notes[counterRef.current % notes.length]
+        samplerRef.current.triggerAttackRelease(note, '4n', time)
+        counterRef.current++
+      }, '4n')
+      setScheduleId(schedulingId)
+    }
+  }, [currentKey])
 
+  const playScale = () => looping ? stopLoop() : startLoop()
+  
+  const startLoop = () => {
+    transportRef.current.start()
+    setLooping(true)
+  }
 
+  const stopLoop = () => {
+    transportRef.current.stop()
+    setLooping(false)
+    counterRef.current = 0
+  }
 
   const renderKeyDropdown = () => {
     const options = [
@@ -27,7 +59,10 @@ const Settings = ({ currentKey, setKey }) => {
         <div style={styles.dropdownLabel}>Key</div>
         <Dropdown
           options={options}
-          onChange={(obj) => setKey(obj.value)}
+          onChange={(obj) => {
+            setKey(obj.value)
+            stopLoop()
+          }}
           value={currentKey}
           placeholder="Select an option"
         />
@@ -39,7 +74,7 @@ const Settings = ({ currentKey, setKey }) => {
     <div style={styles.settingsWrapper}>
       {renderKeyDropdown()}
       <div style={styles.buttonWrapper}>
-        <BigButton title="Start"/>
+        <BigButton title={looping? 'Stop' : 'Start'} callback={() => playScale()}/>
       </div>
     </div>
   )
