@@ -38,9 +38,10 @@ const Fretboard = ({ setCurrentNote }) => {
               onMouseEnter={() => setOverFret({string: stringNum, fret: fretNum})}
               onMouseLeave={() => setOverFret({string: null, fret: null})}
               className={`fret ${fretNum === 0 ? 'base' : null}
-                         ${stringNum === 3 && (fretNum === 3 || fretNum === 5 || fretNum === 7 || fretNum === 9) ? 'single-fretmark' : ''}`}
+                         ${stringNum === 3 && (fretNum === 3 || fretNum === 5 || fretNum === 7 || fretNum === 9 || fretNum === 12) ? 'single-fretmark' : ''}`}
               onClick={() => clickNote()}
             >
+              {(stringNum === 1 || stringNum === 4) && fretNum === 12 ? <div className="double-fretmark"></div> : null}
               {overFret.string === stringNum && overFret.fret === fretNum
                 ? <div className="note">
                     <div className="note-text">

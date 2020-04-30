@@ -82,6 +82,16 @@
   transform: translate(0, -50%);
 }
 
+.double-fretmark:before {
+  content: "";
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  /* border-radius: 50%; */
+  background: #806233;
+  transform: translate(-50%, 30%) rotate(45deg);
+}
+
 .fret.base {
   border-right: 5px solid black;
 }
