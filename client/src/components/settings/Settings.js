@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { setKey } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
+import * as Tone from 'tone'
+import { sampler } from '../sampler.js'
+import BigButton from '../elements/BigButton'
 
 const Settings = ({ currentKey, setKey }) => {
+  const samplerRef = useRef(null)
+
+  useEffect(() => {
+    samplerRef.current = sampler.toMaster()
+  }, [])
+
+
+
+
   const renderKeyDropdown = () => {
     const options = [
       'C', 'G', 'D', 'A', 'E'
@@ -26,6 +38,9 @@ const Settings = ({ currentKey, setKey }) => {
   return (
     <div style={styles.settingsWrapper}>
       {renderKeyDropdown()}
+      <div style={styles.buttonWrapper}>
+        <BigButton title="Start"/>
+      </div>
     </div>
   )
 }
@@ -36,7 +51,7 @@ const styles = {
     display: 'flex',
     backgroundColor: 'gray',
     alignSelf: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'flex-start',
     padding: '20px'
   },
@@ -51,6 +66,9 @@ const styles = {
     marginBottom: '5px',
     alignSelf: 'flex-start',
     marginLeft: '10px'
+  },
+  buttonWrapper: {
+    marginTop: '16px'
   }
 }
 
