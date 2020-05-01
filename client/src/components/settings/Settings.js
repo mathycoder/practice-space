@@ -40,6 +40,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote }) =>
     }
   }, [currentKey])
 
+  useEffect(() => {
+    transportRef.current.bpm.value = currentBPM
+  }, [currentBPM])
+
   const playScale = () => looping ? stopLoop() : startLoop()
 
   const startLoop = () => {

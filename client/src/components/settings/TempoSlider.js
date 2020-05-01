@@ -8,7 +8,7 @@ const TempoSlider = ({ callback, value }) => {
       <div style={styles.sliderLabel}>Tempo</div>
       <Slider
         min={30}
-        max={180}
+        max={240}
         value={value}
         onChange={newValue => callback(newValue)}
       />
