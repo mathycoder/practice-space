@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState} from 'react'
-import Dropdown from 'react-dropdown'
-import 'react-dropdown/style.css'
 import { setKey } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
@@ -8,6 +6,7 @@ import { sampler } from '../sampler.js'
 import BigButton from '../elements/BigButton'
 import { keyNotes } from '../keys.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
+import KeyDropdown from './KeyDropdown'
 
 const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   const [looping, setLooping] = useState(false)
@@ -55,29 +54,9 @@ const Settings = ({ currentKey, setKey, setCurrentNote }) => {
     counterRef.current = 0
   }
 
-  const renderKeyDropdown = () => {
-    //const options = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'Db']
-    const options = ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'G']
-
-    return (
-      <div style={styles.dropdownWrapper}>
-        <div style={styles.dropdownLabel}>Key</div>
-        <Dropdown
-          options={options}
-          onChange={(obj) => {
-            setKey(obj.value)
-            stopLoop()
-          }}
-          value={currentKey}
-          placeholder="Select an option"
-        />
-      </div>
-    )
-  }
-
   return (
     <div style={styles.settingsWrapper}>
-      {renderKeyDropdown()}
+      <KeyDropdown currentKey={currentKey} setKey={setKey} stopLoop={stopLoop} />
       <div style={styles.buttonWrapper}>
         <BigButton title={looping? 'Stop' : 'Start'} callback={() => playScale()}/>
       </div>
@@ -94,18 +73,6 @@ const styles = {
     justifyContent: 'space-around',
     alignItems: 'flex-start',
     padding: '20px'
-  },
-  dropdownWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  dropdownLabel: {
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    alignSelf: 'flex-start',
-    marginLeft: '10px'
   },
   buttonWrapper: {
     marginTop: '16px'
