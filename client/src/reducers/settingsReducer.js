@@ -19,10 +19,29 @@ function keyReducer(state = 'C', action) {
   }
 }
 
-function categoryReducer(state = null, action) {
+function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
+    case 'SET_KEY':
+      return keyCategory[action.key]
 
     default:
       return state;
   }
+}
+
+const keyCategory = {
+  'C': 'sharps',
+  'G': 'sharps',
+  'D': 'sharps',
+  'A': 'sharps',
+  'E': 'sharps',
+  'B': 'sharps',
+  'F#': 'sharps',
+  'C#': 'sharps',
+  'F': 'flats',
+  'Bb': 'flats',
+  'Eb': 'flats',
+  'Ab': 'flats',
+  'Db': 'flats',
+  'Gb': 'flats',
 }
