@@ -13,7 +13,7 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     const div = document.getElementById("music-canvas")
     rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
     contextRef.current = rendererRef.current.getContext()
-    rendererRef.current.resize(600,250)
+    rendererRef.current.resize(500,100)
   }, [])
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(40 + 250, 0, 220);
+    const stave2 = new VF.Stave(40 + 250, 0, 200);
     stave2.setContext(contextRef.current).draw();
 
     const notes = keys(VF, currentKey, currentNote).slice(0,4)

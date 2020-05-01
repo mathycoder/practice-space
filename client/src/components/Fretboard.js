@@ -41,7 +41,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
                          ${stringNum === 3 && (fretNum === 3 || fretNum === 5 || fretNum === 7 || fretNum === 9 || fretNum === 12) ? 'single-fretmark' : ''}`}
               onClick={() => clickNote()}
             >
-              {(stringNum === 1 || stringNum === 4) && fretNum === 12 ? <div className="double-fretmark"></div> : null}
+              {(stringNum === 1 || stringNum === 4) && fretNum === 12 && !(overFret.string === stringNum && overFret.fret === fretNum)? <div className="double-fretmark"></div> : null}
               {(overFret.string === stringNum && overFret.fret === fretNum) || (calculateCurrentNote(stringNum, fretNum) === currentNote)
                 ? <div className="note">
                     <div className="note-text">

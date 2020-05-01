@@ -72,6 +72,7 @@ const styles = {
   settingsWrapper: {
     flex: 1,
     display: 'flex',
+    flexWrap: 'wrap',
     backgroundColor: 'gray',
     alignSelf: 'stretch',
     justifyContent: 'space-around',
