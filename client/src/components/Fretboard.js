@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
-const Fretboard = ({ setCurrentNote, currentNote, currentKey }) => {
+const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null})
   const samplerRef = useRef(null)
-  const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-  const NOTES2 = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+  const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+                                             : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
@@ -61,7 +61,8 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey }) => {
 const mapStateToProps = state => {
   return {
     currentNote: state.currentNote,
-    currentKey: state.settings.key
+    currentKey: state.settings.key,
+    currentCategory: state.settings.category
   }
 }
 
