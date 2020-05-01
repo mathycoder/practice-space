@@ -10,7 +10,7 @@ const TempoSlider = ({ callback, value }) => {
         min={30}
         max={180}
         value={value}
-        onChange={callback}
+        onChange={newValue => callback(newValue)}
       />
       <div style={styles.bpmStyle}>{`${value} bpm`}</div>
     </div>

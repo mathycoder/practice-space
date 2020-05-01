@@ -3,11 +3,10 @@ import { combineReducers } from 'redux'
 const settingsReducer = combineReducers({
   key: keyReducer,
   category: categoryReducer,
+  bpm: bpmReducer
 })
 
 export default settingsReducer
-
-
 
 function keyReducer(state = 'C', action) {
   switch(action.type) {
@@ -23,6 +22,16 @@ function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
       return keyCategory[action.key]
+
+    default:
+      return state;
+  }
+}
+
+function bpmReducer(state = 90, action) {
+  switch(action.type) {
+    case 'SET_BPM':
+      return action.bpm
 
     default:
       return state;
