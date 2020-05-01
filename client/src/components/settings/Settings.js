@@ -56,9 +56,8 @@ const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   }
 
   const renderKeyDropdown = () => {
-    const options = [
-      'C', 'F', 'G', 'D', 'A', 'E'
-    ]
+    //const options = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'Db']
+    const options = ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'G']
 
     return (
       <div style={styles.dropdownWrapper}>

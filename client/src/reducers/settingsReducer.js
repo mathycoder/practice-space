@@ -44,4 +44,5 @@ const keyCategory = {
   'Ab': 'flats',
   'Db': 'flats',
   'Gb': 'flats',
+  'Cb': 'flats'
 }
