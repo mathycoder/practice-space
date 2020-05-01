@@ -24,7 +24,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     width: '150px',
-    marginTop: '10px'
+    marginTop: '10px',
+    marginLeft: '5px',
+    marginRight: '5px'
   },
   sliderLabel: {
     fontWeight: 'bold',

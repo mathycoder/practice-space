@@ -7,13 +7,20 @@ import { keys } from './keys.js'
 const MusicNotation = ({ currentNote, currentKey }) => {
   const [VF, setVF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
+  const rendererRef2 = useRef(null)
   const contextRef = useRef(null)
+  const contextRef2 = useRef(null)
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
     rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
     contextRef.current = rendererRef.current.getContext()
-    rendererRef.current.resize(500,100)
+    rendererRef.current.resize(250,120)
+
+    const div2 = document.getElementById("music-canvas2")
+    rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
+    contextRef2.current = rendererRef2.current.getContext()
+    rendererRef2.current.resize(200,120)
   }, [])
 
   useEffect(() => {
@@ -22,13 +29,14 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 
   const renderKey = () => {
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
+    if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
-    const stave1 = new VF.Stave(40, 0, 250);
+    const stave1 = new VF.Stave(0, 0, 250);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(40 + 250, 0, 200);
-    stave2.setContext(contextRef.current).draw();
+    const stave2 = new VF.Stave(0, 0, 200);
+    stave2.setContext(contextRef2.current).draw();
 
     const notes = keys(VF, currentKey, currentNote).slice(0,4)
     const notes2 = keys(VF, currentKey, currentNote).slice(4,8)
@@ -41,21 +49,42 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
     formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150);
-    voice.draw(contextRef.current, stave2)
+    voice.draw(contextRef2.current, stave2)
   }
 
   return (
-    <>
-      <div id="music-canvas" style={styles.canvasStyle}></div>
+    <div style={styles.musicAndSettingsStyle}>
+      <div style={styles.staffWrapper}>
+        <div id="music-canvas" style={styles.canvasStyle}></div>
+        <div id="music-canvas2" style={styles.canvasStyle2}></div>
+      </div>
       <Settings />
-    </>
+    </div>
   )
 }
 
 const styles = {
-  canvasStyle: {
-    flex: 1,
+  musicAndSettingsStyle: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  staffWrapper: {
+    // backgroundColor: 'red',
     alignSelf: 'stretch',
+    flex: 1,
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '5px'
+  },
+  canvasStyle: {
+    // alignSelf: 'stretch',
+    // backgroundColor: 'blue'
+  },
+  canvasStyle2: {
+    // alignSelf: 'stretch',
+    // backgroundColor: 'red'
   }
 }
 
