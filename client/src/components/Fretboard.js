@@ -5,10 +5,11 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
-const Fretboard = ({ setCurrentNote, currentNote }) => {
+const Fretboard = ({ setCurrentNote, currentNote, currentKey }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null})
   const samplerRef = useRef(null)
   const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+  const NOTES2 = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const Fretboard = ({ setCurrentNote, currentNote }) => {
               onClick={() => clickNote()}
             >
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 ? <div className="double-fretmark"></div> : null}
-              {(overFret.string === stringNum && overFret.fret === fretNum) || calculateCurrentNote(stringNum, fretNum) === currentNote
+              {(overFret.string === stringNum && overFret.fret === fretNum) || (calculateCurrentNote(stringNum, fretNum) === currentNote)
                 ? <div className="note">
                     <div className="note-text">
                       {calculateCurrentNote(stringNum, fretNum, true)}
@@ -59,7 +60,8 @@ const Fretboard = ({ setCurrentNote, currentNote }) => {
 
 const mapStateToProps = state => {
   return {
-    currentNote: state.currentNote
+    currentNote: state.currentNote,
+    currentKey: state.settings.key
   }
 }
 

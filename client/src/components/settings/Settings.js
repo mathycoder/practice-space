@@ -57,7 +57,7 @@ const Settings = ({ currentKey, setKey, setCurrentNote }) => {
 
   const renderKeyDropdown = () => {
     const options = [
-      'C', 'G', 'D', 'A', 'E'
+      'C', 'F', 'G', 'D', 'A', 'E'
     ]
 
     return (
@@ -115,7 +115,7 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    currentKey: state.settings
+    currentKey: state.settings.key
   }
 }
 

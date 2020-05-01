@@ -20,10 +20,6 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     if (currentKey) renderKey(currentKey)
   }, [currentKey, currentNote])
 
-  const deleteNote = () => {
-    contextRef.current.svg.removeChild(contextRef.current.svg.lastChild)
-  }
-
   const renderKey = () => {
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
 
@@ -66,7 +62,7 @@ const styles = {
 const mapStateToProps = state => {
   return {
     currentNote: state.currentNote,
-    currentKey: state.settings
+    currentKey: state.settings.key
   }
 }
 
