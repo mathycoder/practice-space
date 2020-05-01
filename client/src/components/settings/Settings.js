@@ -7,6 +7,8 @@ import BigButton from '../elements/BigButton'
 import { keyNotes } from '../keys.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   const [looping, setLooping] = useState(false)
@@ -15,9 +17,7 @@ const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   const samplerRef = useRef(null)
   const transportRef = useRef(Tone.Transport)
 
-  useEffect(() => {
-    samplerRef.current = sampler.toMaster()
-  }, [])
+  useEffect(() => samplerRef.current = sampler.toMaster(), [])
 
   useEffect(() => {
     if (currentKey){
@@ -57,6 +57,10 @@ const Settings = ({ currentKey, setKey, setCurrentNote }) => {
   return (
     <div style={styles.settingsWrapper}>
       <KeyDropdown currentKey={currentKey} setKey={setKey} stopLoop={stopLoop} />
+      <div style={styles.sliderWrapper}>
+        <div style={styles.sliderLabel}>Tempo</div>
+        <Slider min={0} max={100}/>
+      </div>
       <div style={styles.buttonWrapper}>
         <BigButton title={looping? 'Stop' : 'Start'} callback={() => playScale()}/>
       </div>
@@ -71,11 +75,24 @@ const styles = {
     backgroundColor: 'gray',
     alignSelf: 'stretch',
     justifyContent: 'space-around',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     padding: '20px'
   },
   buttonWrapper: {
     marginTop: '16px'
+  },
+  sliderWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '150px',
+    marginTop: '-10px'
+  },
+  sliderLabel: {
+    fontWeight: 'bold',
+    marginBottom: '12px',
+    alignSelf: 'center',
   }
 }
 

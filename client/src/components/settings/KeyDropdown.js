@@ -1,6 +1,7 @@
 import React from 'react'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import './dropdown.css'
 
 const KeyDropdown = ({ currentKey, setKey, stopLoop}) => {
   //const options = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'Db']
@@ -10,6 +11,7 @@ const KeyDropdown = ({ currentKey, setKey, stopLoop}) => {
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Key</div>
       <Dropdown
+        style={{maxHeight: '100px'}}
         options={options}
         onChange={(obj) => {
           setKey(obj.value)
