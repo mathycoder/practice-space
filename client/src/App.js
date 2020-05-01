@@ -5,12 +5,14 @@ import './App.css'
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <header className="App-header">
       </header>
-      <body style={styles.containerDiv}>
-        <DemoContainer />
-        <MusicNotationContainer />
+      <body style={styles.bodyStyle}>
+        <div style={styles.containerDiv}>
+          <DemoContainer />
+          <MusicNotationContainer />
+        </div>
       </body>
     </div>
   );
@@ -18,6 +20,7 @@ function App() {
 
 const styles = {
   containerDiv: {
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     // height: '95vh',
