@@ -9,7 +9,7 @@ function App() {
       <header className="App-header">
       </header>
       <body style={styles.bodyStyle}>
-        <div style={styles.containerDiv}>
+        <div style={styles.containerDiv} className="noselect">
           <DemoContainer />
           <MusicNotationContainer />
         </div>
