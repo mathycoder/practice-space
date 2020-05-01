@@ -3,7 +3,7 @@
   flex: 1;
   /* padding: 10px; */
   flex-direction: column;
-  max-width: 800px;
+  max-width: 700px;
   background-color: tan;
   height: 150px;
   overflow: hidden;
@@ -111,7 +111,7 @@
   align-items: center;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 700px) {
   .fretboard-wrapper {
     height: 100px;
   }

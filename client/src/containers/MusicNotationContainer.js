@@ -16,7 +16,10 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: '20px'
+    margin: '20px',
+    alignSelf: 'center',
+    minHeight: '200px',
+    maxWidth: '900px'
   }
 }
 

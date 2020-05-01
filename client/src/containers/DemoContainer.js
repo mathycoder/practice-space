@@ -15,7 +15,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: '20px'
+    margin: '20px',
+    marginBottom: '0px',
   }
 }
 

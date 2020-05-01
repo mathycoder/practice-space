@@ -66,12 +66,14 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 const styles = {
   musicAndSettingsStyle: {
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    flex: 1,
+    alignSelf: 'stretch'
   },
   staffWrapper: {
     // backgroundColor: 'red',
     alignSelf: 'stretch',
-    flex: 1,
+    flex: 2,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
