@@ -3,6 +3,7 @@ import Vex from 'vexflow'
 import Settings from './settings/Settings'
 import { connect } from 'react-redux'
 import { keys } from './keys.js'
+import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
 const MusicNotation = ({ currentNote, currentKey }) => {
   const [VF, setVF] = useState(Vex.Flow)
@@ -10,17 +11,31 @@ const MusicNotation = ({ currentNote, currentKey }) => {
   const rendererRef2 = useRef(null)
   const contextRef = useRef(null)
   const contextRef2 = useRef(null)
+  const { height, width } = useWindowDimensions();
+  const factor = useRef((width < 800 ? 7 : 8) / 8)
+
+  // useEffect(() => {
+  //   factor.current = 800 / 800
+  // }, [width])
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
     rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
     contextRef.current = rendererRef.current.getContext()
-    rendererRef.current.resize(250,120)
+    contextRef.current.scale(factor.current, factor.current)
 
-    const div2 = document.getElementById("music-canvas2")
-    rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
-    contextRef2.current = rendererRef2.current.getContext()
-    rendererRef2.current.resize(200,120)
+    if (factor.current === 1){
+      rendererRef.current.resize(455, 120*factor.current)
+    } else {
+      rendererRef.current.resize(350, 120*factor.current)
+    }
+
+
+    // const div2 = document.getElementById("music-canvas2")
+    // rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
+    // contextRef2.current = rendererRef2.current.getContext()
+    // contextRef2.current.scale(factor.current, factor.current)
+    // rendererRef2.current.resize(200*factor.current,120*factor.current)
   }, [])
 
   useEffect(() => {
@@ -29,27 +44,28 @@ const MusicNotation = ({ currentNote, currentKey }) => {
 
   const renderKey = () => {
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
-    if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
+    // if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
-    const stave1 = new VF.Stave(0, 0, 250);
+    const stave1 = new VF.Stave(0, 0, 250*factor.current);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(0, 0, 200);
-    stave2.setContext(contextRef2.current).draw();
+    const stave2 = new VF.Stave(250*factor.current, 0, 200*factor.current);
+    stave2.setContext(contextRef.current).draw();
+  //  stave2.setContext(contextRef2.current).draw();
 
     const notes = keys(VF, currentKey, currentNote).slice(0,4)
     const notes2 = keys(VF, currentKey, currentNote).slice(4,8)
 
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150);
+    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
     voice.draw(contextRef.current, stave1)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150);
-    voice.draw(contextRef2.current, stave2)
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
+    voice.draw(contextRef.current, stave2)
   }
 
   return (
@@ -86,7 +102,7 @@ const styles = {
   },
   canvasStyle2: {
     // alignSelf: 'stretch',
-    // backgroundColor: 'red'
+    backgroundColor: 'red'
   }
 }
 
