@@ -8,11 +8,9 @@ function App() {
     <div>
       <header className="App-header">
       </header>
-      <div style={styles.bodyStyle}>
-        <div style={styles.containerDiv} className="noselect">
-          <DemoContainer />
-          <MusicNotationContainer />
-        </div>
+      <div className="body noselect" style={styles.containerDiv}>
+        <DemoContainer />
+        <MusicNotationContainer />
       </div>
     </div>
   );
@@ -20,12 +18,12 @@ function App() {
 
 const styles = {
   containerDiv: {
-    height: '100%',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     // height: '95vh',
     // maxHeight: '95vh',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     overflowY: 'scroll'
   }
 }

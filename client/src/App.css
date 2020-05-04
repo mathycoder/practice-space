@@ -1,7 +1,16 @@
 @media screen and (min-width: 800px) {
-  body {
+  .body {
     height: 550px;
   }
+}
+
+
+.body {
+  height: 100vh;
+}
+
+html,body {
+  width: 100vw;
 }
 
 .noselect {

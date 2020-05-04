@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './css/fretboard.css'
 import { connect } from 'react-redux'
-import { setCurrentNote } from '../actions/currentNoteActions.js'
+import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
 const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory }) => {

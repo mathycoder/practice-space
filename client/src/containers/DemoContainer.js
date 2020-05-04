@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Fretboard from '../components/Fretboard'
+import Fretboard from '../components/instruments/Fretboard'
 import DemoDropdown from './DemoDropdown'
 
 const DemoContainer = () => {
@@ -18,7 +18,6 @@ const DemoContainer = () => {
 
 const styles = {
   demoWrapper: {
-    flex: 1,
     flexDirection: 'column',
     display: 'flex',
     flexWrap: 'wrap',

@@ -11,7 +11,6 @@ const MusicNotationContainer = () => {
 
 const styles = {
   wrapper: {
-    flex: 1,
     border: '1px solid black',
     display: 'flex',
     justifyContent: 'space-around',
