@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 const settingsReducer = combineReducers({
+  instrument: instrumentReducer,
   key: keyReducer,
   keyNotes: keyNotesReducer,
   category: categoryReducer,
@@ -11,6 +12,17 @@ const settingsReducer = combineReducers({
 })
 
 export default settingsReducer
+
+
+function instrumentReducer(state = 'piano', action) {
+  switch(action.type) {
+    case 'SET_INSTRUMENT':
+      return action.instrument
+
+    default:
+      return state;
+  }
+}
 
 function keyReducer(state = 'C', action) {
   switch(action.type) {

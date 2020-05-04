@@ -13,3 +13,7 @@ export function nextIndex(){
 export function resetIndex(){
   return {type: 'RESET_INDEX'}
 }
+
+export function setInstrument(instrument){
+  return {type: 'SET_INSTRUMENT', instrument: instrument}
+}

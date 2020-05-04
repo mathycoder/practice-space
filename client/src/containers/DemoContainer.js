@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import Fretboard from '../components/instruments/Fretboard'
 import Keyboard from '../components/instruments/Keyboard'
 import DemoDropdown from './DemoDropdown'
+import { connect } from 'react-redux'
+import { setInstrument } from '../actions/settingsActions.js'
 
-const DemoContainer = () => {
-  const [instrument, setInstrument] = useState('piano')
+const DemoContainer = ({instrument, setInstrument}) => {
   return (
     <div style={styles.demoWrapper}>
       <div style={styles.dropdownWrapper}>
@@ -38,4 +39,16 @@ const styles = {
   }
 }
 
-export default DemoContainer
+const mapStateToProps = state => {
+  return {
+    instrument: state.settings.instrument
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setInstrument: instrument => dispatch(setInstrument(instrument))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DemoContainer)
