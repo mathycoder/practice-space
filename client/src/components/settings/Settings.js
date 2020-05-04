@@ -20,7 +20,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
 
   useEffect(() => {
     samplerRef.current = sampler(currentInstrument).toMaster()
-  }, [])
+  }, [currentInstrument])
 
   useEffect(() => {
     counterRef.current = scaleIndex
