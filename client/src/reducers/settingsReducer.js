@@ -8,11 +8,22 @@ const settingsReducer = combineReducers({
   bpm: bpmReducer,
   scale: scaleReducer,
   scaleIndex: scaleIndexReducer,
-  accidentals: accidentalsReducer
+  accidentals: accidentalsReducer,
+  looping: loopingReducer
 })
 
 export default settingsReducer
 
+
+function loopingReducer(state = false, action){
+  switch(action.type) {
+    case 'SET_LOOPING':
+      return action.looping
+
+    default:
+      return state;
+  }
+}
 
 function instrumentReducer(state = 'piano', action) {
   switch(action.type) {

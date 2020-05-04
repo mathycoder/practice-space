@@ -17,3 +17,7 @@ export function resetIndex(){
 export function setInstrument(instrument){
   return {type: 'SET_INSTRUMENT', instrument: instrument}
 }
+
+export function setLooping(looping){
+  return {type: 'SET_LOOPING', looping: looping}
+}

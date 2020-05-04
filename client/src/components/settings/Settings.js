@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex, resetIndex } from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex,
+         resetIndex, setLooping} from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -9,9 +10,9 @@ import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
-                    scaleIndex, nextIndex, resetIndex,
+                    scaleIndex, nextIndex, resetIndex, setLooping, looping,
                     currentInstrument, scale, keyNotes }) => {
-  const [looping, setLooping] = useState(false)
+
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
   const samplerRef = useRef(null)
@@ -110,7 +111,8 @@ const mapStateToProps = state => {
     scaleIndex: state.settings.scaleIndex,
     scale: state.settings.scale,
     keyNotes: state.settings.keyNotes,
-    currentInstrument: state.settings.instrument
+    currentInstrument: state.settings.instrument,
+    looping: state.settings.looping
   }
 }
 
@@ -120,7 +122,8 @@ const mapDispatchToProps = dispatch => {
     setBPM: bpm => dispatch(setBPM(bpm)),
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     nextIndex: () => dispatch(nextIndex()),
-    resetIndex: () => dispatch(resetIndex())
+    resetIndex: () => dispatch(resetIndex()),
+    setLooping: (looping) => dispatch(setLooping(looping))
   }
 }
 
