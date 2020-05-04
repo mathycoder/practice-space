@@ -4,14 +4,14 @@ import 'react-dropdown/style.css'
 
 const DemoDropdown = ({ value, callback}) => {
   const options = ['guitar', 'piano']
-
+  console.log(value)
   return (
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Instrument</div>
       <Dropdown
         style={{maxHeight: '100px'}}
         options={options}
-        onChange={callback}
+        onChange={value => callback(value.value)}
         value={value}
         placeholder="Select an option"
       />

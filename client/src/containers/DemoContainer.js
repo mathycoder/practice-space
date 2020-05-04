@@ -4,7 +4,7 @@ import Keyboard from '../components/instruments/Keyboard'
 import DemoDropdown from './DemoDropdown'
 
 const DemoContainer = () => {
-  const [instrument, setInstrument] = useState('guitar')
+  const [instrument, setInstrument] = useState('piano')
   return (
     <div style={styles.demoWrapper}>
       <div style={styles.dropdownWrapper}>
