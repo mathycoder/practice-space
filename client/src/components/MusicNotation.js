@@ -11,18 +11,17 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
   const contextRef = useRef(null)
   const contextRef2 = useRef(null)
   const { width } = useWindowDimensions();
+  // const [factor, setFactor] = useState(width < 800 ? 0.8 : 1)
 
   // constants
-  let factor = (width < 800 ? 7 : 8) / 8
+  let factor = width < 800 ? 0.8 : 1
   const measureWidth = 160*factor
   const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor
   const trebleKeyWidth = 60*factor
   const canvasWidth = factor*(accidentalWidth + trebleKeyWidth + measureWidth*2) + factor*10
 
-  console.log(measureWidth)
-
   useEffect(() => {
-    factor = (width < 800 ? 7 : 8) / 8
+    factor = width < 800 ? 0.8 : 1
   }, [width])
 
   useEffect(() => {
@@ -63,7 +62,6 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     rendererRef.current.resize(canvasWidth, 120*factor)
     rendererRef2.current.resize(canvasWidth, 120*factor)
 
-
     // create each stave, which functions as a measure
     const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
@@ -90,22 +88,22 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     // draw notes on each stave/measure
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
+    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
     voice.draw(contextRef.current, stave1)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
     voice.draw(contextRef.current, stave2)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes3);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
     voice.draw(contextRef2.current, stave3)
 
     voice = new VF.Voice({num_beats: 2,  beat_value: 4});
     voice.addTickables(notes4);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth/2);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9/2);
     voice.draw(contextRef2.current, stave4)
   }
 
@@ -138,11 +136,11 @@ const styles = {
   },
   canvasStyle: {
     // alignSelf: 'stretch',
-    //backgroundColor: 'blue'
+    // backgroundColor: 'blue'
   },
   canvasStyle2: {
     // alignSelf: 'stretch',
-    //backgroundColor: 'red'
+    // backgroundColor: 'red'
   }
 }
 
