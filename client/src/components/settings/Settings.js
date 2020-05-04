@@ -71,7 +71,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
 
   return (
     <div style={styles.settingsWrapper}>
-      <KeyDropdown currentKey={currentKey} setKey={setKey} stopLoop={stopLoop} />
+      <KeyDropdown
+        currentKey={currentKey}
+        callback={(obj) => {
+          setKey(obj.value)
+          stopLoop()
+        }}
+      />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton title={looping? 'Stop' : 'Start'} callback={() => playScale()}/>
