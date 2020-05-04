@@ -12,7 +12,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
-    samplerRef.current = sampler.toMaster()
+    samplerRef.current = sampler('guitar').toMaster()
   }, [])
 
   const calculateCurrentNote = (string, fret, uppercase = false) => {

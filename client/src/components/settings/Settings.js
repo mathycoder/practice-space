@@ -9,7 +9,8 @@ import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
-                    scaleIndex, nextIndex, resetIndex, scale, keyNotes }) => {
+                    scaleIndex, nextIndex, resetIndex,
+                    currentInstrument, scale, keyNotes }) => {
   const [looping, setLooping] = useState(false)
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -17,7 +18,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
   const transportRef = useRef(Tone.Transport)
 
   useEffect(() => {
-    samplerRef.current = sampler.toMaster()
+    samplerRef.current = sampler(currentInstrument).toMaster()
   }, [])
 
   useEffect(() => {
@@ -108,7 +109,8 @@ const mapStateToProps = state => {
     currentBPM: state.settings.bpm,
     scaleIndex: state.settings.scaleIndex,
     scale: state.settings.scale,
-    keyNotes: state.settings.keyNotes
+    keyNotes: state.settings.keyNotes,
+    currentInstrument: state.settings.instrument
   }
 }
 
