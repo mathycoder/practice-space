@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Fretboard from '../components/instruments/Fretboard'
+import Keyboard from '../components/instruments/Keyboard'
 import DemoDropdown from './DemoDropdown'
 
 const DemoContainer = () => {
@@ -10,7 +11,7 @@ const DemoContainer = () => {
         <DemoDropdown value={instrument} callback={setInstrument}/>
       </div>
       <div style={styles.instrumentWrapper}>
-        <Fretboard />
+        {instrument === 'guitar' ? <Fretboard /> : <Keyboard />}
       </div>
     </div>
   )
