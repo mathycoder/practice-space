@@ -56,7 +56,6 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     const stave4 = new VF.Stave(250*factor.current, 0, 200*factor.current).addTimeSignature("2/4");
     stave4.setContext(contextRef2.current).draw();
 
-
     // grab the notes for each stave from keys()
     const notesArray = keys(VF, currentKey, currentNote)
 
