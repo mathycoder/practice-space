@@ -11,18 +11,13 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
   const contextRef = useRef(null)
   const contextRef2 = useRef(null)
   const { width } = useWindowDimensions();
-  // const [factor, setFactor] = useState(width < 800 ? 0.8 : 1)
 
   // constants
-  let factor = width < 800 ? 0.8 : 1
+  const factor = width < 800 ? 0.8 : 1
   const measureWidth = 160*factor
   const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor
   const trebleKeyWidth = 60*factor
   const canvasWidth = factor*(accidentalWidth + trebleKeyWidth + measureWidth*2) + factor*10
-
-  useEffect(() => {
-    factor = width < 800 ? 0.8 : 1
-  }, [width])
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
@@ -36,10 +31,12 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     contextRef2.current = rendererRef2.current.getContext()
     contextRef2.current.scale(factor, factor)
     rendererRef2.current.resize(canvasWidth, 120*factor)
+     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     if (currentKey) renderKey(currentKey)
+     // eslint-disable-next-line
   }, [currentKey, currentNote])
 
 
@@ -88,6 +85,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     // draw notes on each stave/measure
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
+    // eslint-disable-next-line
     let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
     voice.draw(contextRef.current, stave1)
 

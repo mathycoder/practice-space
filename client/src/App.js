@@ -8,12 +8,12 @@ function App() {
     <div>
       <header className="App-header">
       </header>
-      <body style={styles.bodyStyle}>
+      <div style={styles.bodyStyle}>
         <div style={styles.containerDiv} className="noselect">
           <DemoContainer />
           <MusicNotationContainer />
         </div>
-      </body>
+      </div>
     </div>
   );
 }

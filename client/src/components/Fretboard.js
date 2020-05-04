@@ -31,9 +31,10 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
   return (
     <div className="fretboard-wrapper noselect">
       {[0,1,2,3,4,5].map(stringNum => (
-        <div className="string">
+        <div className="string" key={stringNum}>
           {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(fretNum => {
             return <div
+              key={`${stringNum}${fretNum}`}
               onMouseEnter={() => setOverFret({string: stringNum, fret: fretNum})}
               onMouseLeave={() => setOverFret({string: null, fret: null})}
               className={`fret ${fretNum === 0 ? 'base' : null}

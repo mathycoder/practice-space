@@ -16,7 +16,9 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
   const samplerRef = useRef(null)
   const transportRef = useRef(Tone.Transport)
 
-  useEffect(() => samplerRef.current = sampler.toMaster(), [])
+  useEffect(() => {
+    samplerRef.current = sampler.toMaster()
+  }, [])
 
   useEffect(() => {
     counterRef.current = scaleIndex
@@ -46,6 +48,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
       }, '4n')
       setScheduleId(schedulingId)
     }
+     // eslint-disable-next-line
   }, [currentKey])
 
   useEffect(() => {
