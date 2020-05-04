@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../sampler.js'
 import BigButton from '../elements/BigButton'
-import { keyNotes } from '../keys.js'
+// import { keyNotes } from '../keys.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
-                    scaleIndex, nextIndex, resetIndex }) => {
+                    scaleIndex, nextIndex, resetIndex, scale, keyNotes }) => {
   const [looping, setLooping] = useState(false)
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -30,12 +30,18 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
         //counterRef.current = 0
         resetIndex()
       }
-      const notes = keyNotes[currentKey].map(note => {
+
+      const notes = scale.map(noteInd => {
+        //need to look like a3
+        let note = keyNotes[noteInd]
         note = note.replace('/', '')
         const letter = note.split(/[\d]+/)[0]
         const octave = parseInt(note.slice(-1))
         return `${letter}${octave-1}`
       })
+
+      console.log(counterRef.current % notes.length)
+
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         // counterRef.current
         let note = notes[counterRef.current % notes.length]
@@ -97,7 +103,9 @@ const mapStateToProps = state => {
   return {
     currentKey: state.settings.key,
     currentBPM: state.settings.bpm,
-    scaleIndex: state.settings.scaleIndex
+    scaleIndex: state.settings.scaleIndex,
+    scale: state.settings.scale,
+    keyNotes: state.settings.keyNotes
   }
 }
 

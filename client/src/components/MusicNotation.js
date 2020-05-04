@@ -42,7 +42,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex })
       const currentNote = keyNotes[el]
       const myNote = new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'})
 
-      if (index === scaleIndex) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
+      if (index === (scaleIndex%scale.length)) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
 
       return myNote
     })
