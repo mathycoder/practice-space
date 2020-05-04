@@ -2,9 +2,10 @@ import { combineReducers } from 'redux'
 
 const settingsReducer = combineReducers({
   key: keyReducer,
-  scale: scaleReducer,
+  keyNotes: keyNotesReducer,
   category: categoryReducer,
-  bpm: bpmReducer
+  bpm: bpmReducer,
+  scale: scaleReducer
 })
 
 export default settingsReducer
@@ -39,15 +40,23 @@ function bpmReducer(state = 90, action) {
   }
 }
 
-function scaleReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
+function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
   switch(action.type) {
-    case 'SET_SCALE':
-      return keyNotes[action.key]
+    case 'SET_KEY':
+      return keyNotesObj[action.key]
 
     default:
       return state;
   }
 }
+
+function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
+  switch(action.type) {
+    default:
+      return state;
+  }
+}
+
 
 const keyCategory = {
   'C': 'sharps',
@@ -67,7 +76,7 @@ const keyCategory = {
   'Cb': 'flats'
 }
 
-const keyNotes = {
+const keyNotesObj = {
   'C': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ],
   'F': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4' ],
   'G': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4' ],
