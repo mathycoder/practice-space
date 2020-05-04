@@ -86,7 +86,7 @@ const styles = {
     alignSelf: 'stretch',
     justifyContent: 'space-around',
     alignItems: 'center',
-    padding: '20px'
+    padding: '10px'
   },
   buttonWrapper: {
     marginTop: '16px'

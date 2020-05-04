@@ -11,24 +11,32 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
   const contextRef = useRef(null)
   const contextRef2 = useRef(null)
   const { width } = useWindowDimensions();
-  const factor = useRef((width < 800 ? 7 : 8) / 8)
 
-  // useEffect(() => {
-  //   factor.current = 800 / 800
-  // }, [width])
+  // constants
+  let factor = (width < 800 ? 7 : 8) / 8
+  const measureWidth = 160*factor
+  const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor
+  const trebleKeyWidth = 60*factor
+  const canvasWidth = factor*(accidentalWidth + trebleKeyWidth + measureWidth*2) + factor*10
+
+  console.log(measureWidth)
+
+  useEffect(() => {
+    factor = (width < 800 ? 7 : 8) / 8
+  }, [width])
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
     rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
     contextRef.current = rendererRef.current.getContext()
-    contextRef.current.scale(factor.current, factor.current)
-    rendererRef.current.resize((factor.current === 1 ? 455 : 350), 120*factor.current)
+    contextRef.current.scale(factor, factor)
+    rendererRef.current.resize(canvasWidth, 120*factor)
 
     const div2 = document.getElementById("music-canvas2")
     rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
     contextRef2.current = rendererRef2.current.getContext()
-    contextRef2.current.scale(factor.current, factor.current)
-    rendererRef2.current.resize((factor.current === 1 ? 455 : 350), 120*factor.current)
+    contextRef2.current.scale(factor, factor)
+    rendererRef2.current.resize(canvasWidth, 120*factor)
   }, [])
 
   useEffect(() => {
@@ -52,10 +60,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
     if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
-    // constants
-    const measureWidth = 160*factor.current
-    const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor.current
-    const trebleKeyWidth = 60*factor.current
+    rendererRef.current.resize(canvasWidth, 120*factor)
+    rendererRef2.current.resize(canvasWidth, 120*factor)
+
 
     // create each stave, which functions as a measure
     const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
@@ -127,16 +134,15 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: '5px'
+    alignItems: 'center'
   },
   canvasStyle: {
     // alignSelf: 'stretch',
-    // backgroundColor: 'blue'
+    //backgroundColor: 'blue'
   },
   canvasStyle2: {
     // alignSelf: 'stretch',
-    // backgroundColor: 'red'
+    //backgroundColor: 'red'
   }
 }
 
