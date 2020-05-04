@@ -101,6 +101,15 @@
   align-items: center;
 }
 
+.fret .note.show-note {
+  opacity: 1;
+}
+
+.fret .note.hide-note {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
 @media screen and (max-width: 700px) {
   .fretboard-wrapper {
     height: 100px;
