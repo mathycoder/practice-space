@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './css/fretboard.css'
-import * as Tone from 'tone'
 import { connect } from 'react-redux'
 import { setCurrentNote } from '../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'

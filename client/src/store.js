@@ -1,4 +1,4 @@
-import { createStore, compose, combineReducers } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import currentNoteReducer from './reducers/currentNoteReducer'
 import settingsReducer from './reducers/settingsReducer'
 

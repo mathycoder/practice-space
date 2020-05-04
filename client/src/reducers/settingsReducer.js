@@ -6,7 +6,8 @@ const settingsReducer = combineReducers({
   category: categoryReducer,
   bpm: bpmReducer,
   scale: scaleReducer,
-  scaleIndex: scaleIndexReducer
+  scaleIndex: scaleIndexReducer,
+  accidentals: accidentalsReducer
 })
 
 export default settingsReducer
@@ -71,6 +72,17 @@ function scaleIndexReducer(state=0, action){
   }
 }
 
+function accidentalsReducer(state=0, action){
+  switch(action.type) {
+    case 'SET_KEY':
+      return countAccidentals(action.key)
+
+
+    default:
+      return state;
+  }
+}
+
 const keyCategory = {
   'C': 'sharps',
   'G': 'sharps',
@@ -105,4 +117,13 @@ const keyNotesObj = {
   'C#': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ],
   'Gb': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ],
   'Cb': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ],
+}
+
+const countAccidentals = key => {
+  const notes = keyNotesObj[key]
+  let accidentals = 0
+  notes.forEach(note => {
+    if (note[1] === '#' || note[1] === 'b') accidentals++
+  })
+  return accidentals
 }

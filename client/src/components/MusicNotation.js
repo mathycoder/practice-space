@@ -2,16 +2,15 @@ import React, { useRef, useEffect, useState } from 'react'
 import Vex from 'vexflow'
 import Settings from './settings/Settings'
 import { connect } from 'react-redux'
-// import { keys } from './keys.js'
 import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
-const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex }) => {
-  const [VF, setVF] = useState(Vex.Flow)
+const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, accidentals }) => {
+  const [VF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const rendererRef2 = useRef(null)
   const contextRef = useRef(null)
   const contextRef2 = useRef(null)
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const factor = useRef((width < 800 ? 7 : 8) / 8)
 
   // useEffect(() => {
@@ -54,18 +53,18 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex })
     if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
     // create each stave, which functions as a measure
-    const stave1 = new VF.Stave(0, 0, 250*factor.current);
+    const stave1 = new VF.Stave(0, 0, 220*factor.current + 13*accidentals*factor.current);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(250*factor.current, 0, 200*factor.current);
+    const stave2 = new VF.Stave(220*factor.current + 13*accidentals*factor.current, 0, 160*factor.current);
     stave2.setContext(contextRef.current).draw();
 
-    const stave3 = new VF.Stave(0, 0, 250*factor.current);
+    const stave3 = new VF.Stave(0, 0, 220*factor.current + 13*accidentals*factor.current);
     stave3.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave3.setContext(contextRef2.current).draw();
 
-    const stave4 = new VF.Stave(250*factor.current, 0, 200*factor.current).addTimeSignature("2/4");
+    const stave4 = new VF.Stave(220*factor.current + 13*accidentals*factor.current, 0, 100*factor.current).addTimeSignature("2/4");
     stave4.setContext(contextRef2.current).draw();
 
     // grab the notes for each stave from keys()
@@ -94,7 +93,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex })
 
     voice = new VF.Voice({num_beats: 2,  beat_value: 4});
     voice.addTickables(notes4);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 75*factor.current);
     voice.draw(contextRef2.current, stave4)
   }
 
@@ -142,7 +141,8 @@ const mapStateToProps = state => {
     currentKey: state.settings.key,
     scale: state.settings.scale,
     keyNotes: state.settings.keyNotes,
-    scaleIndex: state.settings.scaleIndex
+    scaleIndex: state.settings.scaleIndex,
+    accidentals: state.settings.accidentals
   }
 }
 
