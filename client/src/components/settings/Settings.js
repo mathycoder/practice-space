@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM } from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex, resetIndex } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../sampler.js'
@@ -9,7 +9,8 @@ import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
 
-const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote }) => {
+const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
+                    scaleIndex, nextIndex, resetIndex }) => {
   const [looping, setLooping] = useState(false)
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -19,10 +20,15 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote }) =>
   useEffect(() => samplerRef.current = sampler.toMaster(), [])
 
   useEffect(() => {
+    counterRef.current = scaleIndex
+  }, [scaleIndex])
+
+  useEffect(() => {
     if (currentKey){
       if (scheduleId !== null) {
         transportRef.current.clear(scheduleId)
-        counterRef.current = 0
+        //counterRef.current = 0
+        resetIndex()
       }
       const notes = keyNotes[currentKey].map(note => {
         note = note.replace('/', '')
@@ -31,10 +37,12 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote }) =>
         return `${letter}${octave-1}`
       })
       const schedulingId = transportRef.current.scheduleRepeat(time => {
+        // counterRef.current
         let note = notes[counterRef.current % notes.length]
         setCurrentNote(note)
         samplerRef.current.triggerAttackRelease(note, '4n', time)
-        counterRef.current++
+        // counterRef.current++
+        nextIndex()
       }, '4n')
       setScheduleId(schedulingId)
     }
@@ -54,7 +62,8 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote }) =>
   const stopLoop = () => {
     transportRef.current.stop()
     setLooping(false)
-    counterRef.current = 0
+    //counterRef.current = 0
+    resetIndex()
   }
 
   return (
@@ -87,7 +96,8 @@ const styles = {
 const mapStateToProps = state => {
   return {
     currentKey: state.settings.key,
-    currentBPM: state.settings.bpm
+    currentBPM: state.settings.bpm,
+    scaleIndex: state.settings.scaleIndex
   }
 }
 
@@ -95,7 +105,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setKey: key => dispatch(setKey(key)),
     setBPM: bpm => dispatch(setBPM(bpm)),
-    setCurrentNote: note => dispatch(setCurrentNote(note))
+    setCurrentNote: note => dispatch(setCurrentNote(note)),
+    nextIndex: () => dispatch(nextIndex()),
+    resetIndex: () => dispatch(resetIndex())
   }
 }
 
