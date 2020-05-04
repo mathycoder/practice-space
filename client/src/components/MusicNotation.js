@@ -2,10 +2,10 @@ import React, { useRef, useEffect, useState } from 'react'
 import Vex from 'vexflow'
 import Settings from './settings/Settings'
 import { connect } from 'react-redux'
-import { keys } from './keys.js'
+// import { keys } from './keys.js'
 import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
-const MusicNotation = ({ currentNote, currentKey }) => {
+const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex }) => {
   const [VF, setVF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const rendererRef2 = useRef(null)
@@ -36,6 +36,18 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     if (currentKey) renderKey(currentKey)
   }, [currentKey, currentNote])
 
+
+  const generateNotes = () => {
+    return scale.map((el, index) => {
+      const currentNote = keyNotes[el]
+      const myNote = new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'})
+
+      if (index === scaleIndex) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
+
+      return myNote
+    })
+  }
+
   const renderKey = () => {
     // erase svg canvases
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
@@ -57,12 +69,12 @@ const MusicNotation = ({ currentNote, currentKey }) => {
     stave4.setContext(contextRef2.current).draw();
 
     // grab the notes for each stave from keys()
-    const notesArray = keys(VF, currentKey, currentNote)
+    const notesArray = generateNotes()
 
     const notes = notesArray.slice(0,4)
     const notes2 = notesArray.slice(4,8)
-    const notes3 = notesArray.reverse().slice(1,5)
-    const notes4 = notesArray.slice(5,7)
+    const notes3 = notesArray.slice(8, 12)
+    const notes4 = notesArray.slice(12, 14)
 
     // draw notes on each stave/measure
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
@@ -127,7 +139,10 @@ const styles = {
 const mapStateToProps = state => {
   return {
     currentNote: state.currentNote,
-    currentKey: state.settings.key
+    currentKey: state.settings.key,
+    scale: state.settings.scale,
+    keyNotes: state.settings.keyNotes,
+    scaleIndex: state.settings.scaleIndex
   }
 }
 

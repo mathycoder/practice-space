@@ -5,7 +5,8 @@ const settingsReducer = combineReducers({
   keyNotes: keyNotesReducer,
   category: categoryReducer,
   bpm: bpmReducer,
-  scale: scaleReducer
+  scale: scaleReducer,
+  scaleIndex: scaleIndexReducer
 })
 
 export default settingsReducer
@@ -57,6 +58,18 @@ function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
   }
 }
 
+function scaleIndexReducer(state=0, action){
+  switch(action.type) {
+    case 'NEXT_INDEX':
+      return state + 1
+
+    case 'RESET_INDEX':
+      return 0
+
+    default:
+      return state;
+  }
+}
 
 const keyCategory = {
   'C': 'sharps',
