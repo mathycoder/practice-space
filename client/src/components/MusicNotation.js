@@ -52,19 +52,24 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
     if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
+    // constants
+    const measureWidth = 160*factor.current
+    const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor.current
+    const trebleKeyWidth = 60*factor.current
+
     // create each stave, which functions as a measure
-    const stave1 = new VF.Stave(0, 0, 220*factor.current + 13*accidentals*factor.current);
+    const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(220*factor.current + 13*accidentals*factor.current, 0, 160*factor.current);
+    const stave2 = new VF.Stave(measureWidth + accidentalWidth + trebleKeyWidth, 0, measureWidth);
     stave2.setContext(contextRef.current).draw();
 
-    const stave3 = new VF.Stave(0, 0, 220*factor.current + 13*accidentals*factor.current);
+    const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
     stave3.addClef("treble").addTimeSignature("4/4").addKeySignature(currentKey);
     stave3.setContext(contextRef2.current).draw();
 
-    const stave4 = new VF.Stave(220*factor.current + 13*accidentals*factor.current, 0, 100*factor.current).addTimeSignature("2/4");
+    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleKeyWidth, 0, (measureWidth/2)*1.2).addTimeSignature("2/4");
     stave4.setContext(contextRef2.current).draw();
 
     // grab the notes for each stave from keys()
@@ -78,22 +83,22 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     // draw notes on each stave/measure
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
+    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef.current, stave1)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef.current, stave2)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes3);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 150*factor.current);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef2.current, stave3)
 
     voice = new VF.Voice({num_beats: 2,  beat_value: 4});
     voice.addTickables(notes4);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], 75*factor.current);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth/2);
     voice.draw(contextRef2.current, stave4)
   }
 
