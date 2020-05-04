@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../sampler.js'
 import BigButton from '../elements/BigButton'
-// import { keyNotes } from '../keys.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
@@ -27,7 +26,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
     if (currentKey){
       if (scheduleId !== null) {
         transportRef.current.clear(scheduleId)
-        //counterRef.current = 0
         resetIndex()
       }
 
@@ -40,14 +38,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
         return `${letter}${octave-1}`
       })
 
-      console.log(counterRef.current % notes.length)
-
       const schedulingId = transportRef.current.scheduleRepeat(time => {
-        // counterRef.current
         let note = notes[counterRef.current % notes.length]
         setCurrentNote(note)
         samplerRef.current.triggerAttackRelease(note, '4n', time)
-        // counterRef.current++
         nextIndex()
       }, '4n')
       setScheduleId(schedulingId)

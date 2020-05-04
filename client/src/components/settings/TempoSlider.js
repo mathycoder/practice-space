@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 const TempoSlider = ({ callback, value }) => {
+  const [localTempo, setLocalTempo] = useState(value)
   return (
     <div style={styles.sliderWrapper}>
       <div style={styles.sliderLabel}>Tempo</div>
       <Slider
         min={30}
         max={240}
-        value={value}
-        onChange={newValue => callback(newValue)}
+        value={localTempo}
+        onChange={newValue => setLocalTempo(newValue)}
+        onAfterChange={newValue => callback(newValue)}
       />
-      <div style={styles.bpmStyle}>{`${value} bpm`}</div>
+    <div style={styles.bpmStyle}>{`${localTempo} bpm`}</div>
     </div>
   )
 }
