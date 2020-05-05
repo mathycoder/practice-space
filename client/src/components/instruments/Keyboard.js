@@ -5,6 +5,7 @@ import useWindowDimensions from '../../hooks/useWindowDimensions.js'
 import { connect } from 'react-redux'
 import { sampler } from './sampler.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
+import './css/keyboard.css'
 
 const Keyboard = ({currentNote, currentKey, currentCategory,
                    setCurrentNote, looping }) => {
@@ -36,14 +37,25 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
     <div>
       <Piano
         noteRange={{ first: MidiNumbers.fromNote('c2'), last: MidiNumbers.fromNote('f4') }}
-        onClick={(e) => console.log(e)}
         playNote={(midiNumber) => playSoloNote(midiNumber)}
         stopNote={(midiNumber) => {
           // Stop playing a given note - see notes below
         }}
         width={componentWidth}
-        activeNotes={currentNote && looping ? [MidiNumbers.fromNote(currentNote)] : null}
         // keyboardShortcuts={keyboardShortcuts}
+        activeNotes={currentNote && looping ? [MidiNumbers.fromNote(currentNote)] : null}
+        renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
+          if (isActive){
+            return (
+              <div className="note">
+                <div className="note-text">
+                  hi
+                </div>
+              </div>
+            )
+          }
+        }}
+
       />
     </div>
   )

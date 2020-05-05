@@ -86,7 +86,7 @@
   border-right: 5px solid black;
 }
 
-.fret .note {
+.note {
   display: flex;
   width: 12px;
   height: 12px;
