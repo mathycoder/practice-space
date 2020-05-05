@@ -121,11 +121,11 @@ const samples = {
   }
 }
 
-export const sampler = (instrument) => {
+export const sampler = (instrument, callback=null) => {
   if (instrument === 'guitar'){
-    return new Tone.Sampler(samples['guitar'], [ null ], [ '/samples/guitar-nylon/'])
+    return new Tone.Sampler(samples['guitar'], callback, [ '/samples/guitar-nylon/'])
   } else if (instrument === 'piano'){
-    return new Tone.Sampler(samples['piano'], [ null ], [ '/samples/piano/'])
+    return new Tone.Sampler(samples['piano'], callback, [ '/samples/piano/'])
   }
 }
 

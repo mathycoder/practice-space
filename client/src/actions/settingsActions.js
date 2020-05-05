@@ -21,3 +21,11 @@ export function setInstrument(instrument){
 export function setLooping(looping){
   return {type: 'SET_LOOPING', looping: looping}
 }
+
+export function isLoading(){
+  return {type: 'IS_LOADING'}
+}
+
+export function doneLoading(){
+  return {type: 'DONE_LOADING'}
+}

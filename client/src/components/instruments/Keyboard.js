@@ -5,10 +5,11 @@ import useWindowDimensions from '../../hooks/useWindowDimensions.js'
 import { connect } from 'react-redux'
 import { sampler } from './sampler.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
+import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 import './css/keyboard.css'
 
 const Keyboard = ({currentNote, currentKey, currentCategory,
-                   setCurrentNote, looping }) => {
+                   setCurrentNote, looping, isLoading, doneLoading, loading }) => {
   const { width } = useWindowDimensions();
   const componentWidth = width > 900 ? 900*0.8 : width*0.8
   const samplerRef = useRef(null)
@@ -16,7 +17,8 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
                                              : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 
   useEffect(() => {
-    samplerRef.current = sampler('piano').toMaster()
+    samplerRef.current = sampler('piano', () => doneLoading()).toMaster()
+    isLoading()
   }, [])
 
   const calculateCurrentNote = (midiNumber, capitalize=false) => {
@@ -41,6 +43,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
         stopNote={(midiNumber) => {
           // Stop playing a given note - see notes below
         }}
+        disabled={loading}
         width={componentWidth}
         activeNotes={currentNote && looping ? [MidiNumbers.fromNote(currentNote)] : null}
         renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
@@ -65,13 +68,16 @@ const mapStateToProps = state => {
     currentNote: state.currentNote,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
-    looping: state.settings.looping
+    looping: state.settings.looping,
+    loading: state.settings.loading
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    setCurrentNote: note => dispatch(setCurrentNote(note))
+    setCurrentNote: note => dispatch(setCurrentNote(note)),
+    isLoading: () => dispatch(isLoading()),
+    doneLoading: () => dispatch(doneLoading()),
   }
 }
 

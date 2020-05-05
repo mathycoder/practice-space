@@ -9,11 +9,25 @@ const settingsReducer = combineReducers({
   scale: scaleReducer,
   scaleIndex: scaleIndexReducer,
   accidentals: accidentalsReducer,
-  looping: loopingReducer
+  looping: loopingReducer,
+  loading: loadingReducer
 })
 
 export default settingsReducer
 
+
+function loadingReducer(state = false, action){
+  switch(action.type) {
+    case 'IS_LOADING':
+      return true
+
+    case 'DONE_LOADING':
+      return false
+
+    default:
+      return state;
+  }
+}
 
 function loopingReducer(state = false, action){
   switch(action.type) {
