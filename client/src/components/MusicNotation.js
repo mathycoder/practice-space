@@ -14,20 +14,20 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   const { width } = useWindowDimensions();
 
   // constants
-  const factor = width < 800 ? 0.8 : 1
-  const measureWidth = 160*factor
+  const factor = width < 800 ? 0.65 : 1
+  const measureWidth = 160
   const accidentalWidth = accidentals ?
-                            (currentCategory === 'sharps' ? 10 + 11*accidentals : 10 + 8*accidentals)*factor
+                            (currentCategory === 'sharps' ? 10 + 11*accidentals : 10 + 8*accidentals)
                             : 0
-  const trebleKeyWidth = 60*factor
-  const canvasWidth = factor*(accidentalWidth + trebleKeyWidth + measureWidth*2) + factor*10
+  const trebleKeyWidth = 60
+  const canvasWidth = (accidentalWidth + trebleKeyWidth + measureWidth*2) + 10
 
   useEffect(() => {
     const div = document.getElementById("music-canvas")
     rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
     contextRef.current = rendererRef.current.getContext()
     contextRef.current.scale(factor, factor)
-    rendererRef.current.resize(canvasWidth, 120*factor)
+    rendererRef.current.resize(canvasWidth*factor, 120*factor)
 
     const div2 = document.getElementById("music-canvas2")
     rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
@@ -59,8 +59,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
     if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
-    rendererRef.current.resize(canvasWidth, 120*factor)
-    rendererRef2.current.resize(canvasWidth, 120*factor)
+    rendererRef.current.resize(canvasWidth*factor, 120*factor)
+    rendererRef2.current.resize(canvasWidth*factor, 120*factor)
 
     // create each stave, which functions as a measure
     const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
