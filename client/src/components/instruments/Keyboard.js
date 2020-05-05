@@ -19,10 +19,10 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
     samplerRef.current = sampler('piano').toMaster()
   }, [])
 
-  const calculateCurrentNote = midiNumber => {
+  const calculateCurrentNote = (midiNumber, capitalize=false) => {
     const letter = NOTES[midiNumber % 12].toLowerCase()
     const octave = Math.floor(midiNumber / 12)
-    return `${letter}${octave}`
+    return capitalize ? `${letter.toUpperCase()}${octave}` : `${letter}${octave}`
   }
 
   const playSoloNote = midiNumber => {
@@ -42,14 +42,13 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
           // Stop playing a given note - see notes below
         }}
         width={componentWidth}
-        // keyboardShortcuts={keyboardShortcuts}
         activeNotes={currentNote && looping ? [MidiNumbers.fromNote(currentNote)] : null}
         renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
           if (isActive){
             return (
               <div className="note">
                 <div className="note-text">
-                  hi
+                  {calculateCurrentNote(midiNumber, true)}
                 </div>
               </div>
             )

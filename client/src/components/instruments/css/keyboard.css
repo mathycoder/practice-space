@@ -5,7 +5,7 @@
   border: 1px solid black;
   border-radius: 100px;
   padding: 5px;
-  font-size: 12px;
+  font-size: 11px;
   z-index: 2;
   background-color: rgb(40, 138, 226);
   color: white;
@@ -26,10 +26,11 @@
     border: 1px solid black;
     padding: 3px;
     font-size: 8px;
+    margin-bottom: 2px;
   }
 
   .ReactPiano__Key--natural .note{
     /* margin-left: 20%; */
-    transform: translate(10%, 0);
+    transform: translate(0%, 0);
   }
 }
