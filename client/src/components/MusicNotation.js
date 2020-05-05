@@ -4,7 +4,8 @@ import Settings from './settings/Settings'
 import { connect } from 'react-redux'
 import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
-const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, accidentals }) => {
+const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
+                         keyNotes, scaleIndex, accidentals }) => {
   const [VF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const rendererRef2 = useRef(null)
@@ -15,7 +16,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
   // constants
   const factor = width < 800 ? 0.8 : 1
   const measureWidth = 160*factor
-  const accidentalWidth = (width > 800 ? 13 : 15)*accidentals*factor
+  const accidentalWidth = accidentals ?
+                            (currentCategory === 'sharps' ? 10 + 11*accidentals : 10 + 8*accidentals)*factor
+                            : 0
   const trebleKeyWidth = 60*factor
   const canvasWidth = factor*(accidentalWidth + trebleKeyWidth + measureWidth*2) + factor*10
 
@@ -86,17 +89,17 @@ const MusicNotation = ({ currentNote, currentKey, scale, keyNotes, scaleIndex, a
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
     // eslint-disable-next-line
-    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
+    let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef.current, stave1)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes2);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef.current, stave2)
 
     voice = new VF.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes3);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef2.current, stave3)
 
     voice = new VF.Voice({num_beats: 2,  beat_value: 4});
@@ -146,6 +149,7 @@ const mapStateToProps = state => {
   return {
     currentNote: state.currentNote,
     currentKey: state.settings.key,
+    currentCategory: state.settings.category,
     scale: state.settings.scale,
     keyNotes: state.settings.keyNotes,
     scaleIndex: state.settings.scaleIndex,
