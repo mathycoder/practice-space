@@ -5,11 +5,10 @@ import useWindowDimensions from '../../hooks/useWindowDimensions.js'
 import { connect } from 'react-redux'
 import { sampler } from './sampler.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
-import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 import './css/keyboard.css'
 
 const Keyboard = ({currentNote, currentKey, currentCategory,
-                   setCurrentNote, looping, isLoading, doneLoading, loading }) => {
+                   setCurrentNote, looping, loading }) => {
   const { width } = useWindowDimensions();
   const componentWidth = width > 900 ? 900*0.8 : width*0.8
   const samplerRef = useRef(null)
@@ -17,8 +16,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
                                              : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 
   useEffect(() => {
-    samplerRef.current = sampler('piano', () => doneLoading()).toMaster()
-    isLoading()
+    samplerRef.current = sampler('piano').toMaster()
   }, [])
 
   const calculateCurrentNote = (midiNumber, capitalize=false) => {
@@ -75,9 +73,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setCurrentNote: note => dispatch(setCurrentNote(note)),
-    isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading()),
+    setCurrentNote: note => dispatch(setCurrentNote(note))
   }
 }
 

@@ -8,10 +8,11 @@ import BigButton from '../elements/BigButton'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
+import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping,
-                    currentInstrument, scale, keyNotes }) => {
+                    currentInstrument, scale, keyNotes, loading, isLoading, doneLoading }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -19,7 +20,8 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
   const transportRef = useRef(Tone.Transport)
 
   useEffect(() => {
-    samplerRef.current = sampler(currentInstrument).toMaster()
+    samplerRef.current = sampler(currentInstrument, () => doneLoading()).toMaster()
+    isLoading()
   }, [currentInstrument])
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
       />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
-        <BigButton title={looping? 'Stop' : 'Start'} callback={() => playScale()}/>
+        <BigButton title={looping? 'Stop' : 'Start'} disabled={loading} callback={() => playScale()}/>
       </div>
     </div>
   )
@@ -112,7 +114,8 @@ const mapStateToProps = state => {
     scale: state.settings.scale,
     keyNotes: state.settings.keyNotes,
     currentInstrument: state.settings.instrument,
-    looping: state.settings.looping
+    looping: state.settings.looping,
+    loading: state.settings.loading
   }
 }
 
@@ -123,7 +126,9 @@ const mapDispatchToProps = dispatch => {
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     nextIndex: () => dispatch(nextIndex()),
     resetIndex: () => dispatch(resetIndex()),
-    setLooping: (looping) => dispatch(setLooping(looping))
+    setLooping: (looping) => dispatch(setLooping(looping)),
+    isLoading: () => dispatch(isLoading()),
+    doneLoading: () => dispatch(doneLoading())
   }
 }
 
