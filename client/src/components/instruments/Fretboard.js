@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
-const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory, nextNote, tempo }) => {
+const Fretboard = ({ setCurrentNote, currentNote, currentKey,
+                     currentCategory, nextNote, tempo, looping }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null})
   const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -33,6 +34,14 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory, n
     transition: `opacity ${300/tempo}s`
   }
 
+  const displayNoteStyle = {
+    opacity: 1
+  }
+
+  const hideNoteStyle = {
+    opacity: 0
+  }
+
   return (
     <div className="fretboard-wrapper noselect">
       {[0,1,2,3,4,5].map(stringNum => (
@@ -49,9 +58,12 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory, n
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 && !(overFret.string === stringNum && overFret.fret === fretNum)? <div className="double-fretmark"></div> : null}
               {
                 <div
-                  style={calculateCurrentNote(stringNum, fretNum) === nextNote ? fadeInStyle : null}
-                  className={`note ${(overFret.string === stringNum && overFret.fret === fretNum)
-                                        || (calculateCurrentNote(stringNum, fretNum) === currentNote) ? 'display-note' : 'hide-note'}`}>
+                  className="note"
+                  style={!looping ?
+                        (overFret.string === stringNum && overFret.fret === fretNum ? displayNoteStyle : hideNoteStyle)
+                         : calculateCurrentNote(stringNum, fretNum) === nextNote ? fadeInStyle
+                         : calculateCurrentNote(stringNum, fretNum) === currentNote ? displayNoteStyle : hideNoteStyle}
+                  >
                   <div className="note-text">
                     {calculateCurrentNote(stringNum, fretNum, true)}
                   </div>
@@ -71,7 +83,8 @@ const mapStateToProps = state => {
     nextNote: state.currentNote.next,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
-    tempo: state.settings.bpm
+    tempo: state.settings.bpm,
+    looping: state.settings.looping
   }
 }
 

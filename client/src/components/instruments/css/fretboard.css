@@ -5,7 +5,7 @@
   flex-direction: column;
   max-width: 700px;
   background-color: tan;
-  height: 150px;
+  height: 180px;
   overflow: hidden;
 }
 
@@ -117,7 +117,7 @@
 
 @media screen and (max-width: 700px) {
   .fretboard-wrapper {
-    height: 100px;
+    height: 110px;
   }
 
   .string:nth-child(6):before {
