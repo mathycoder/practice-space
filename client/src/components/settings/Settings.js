@@ -5,12 +5,12 @@ import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
 import BigButton from '../elements/BigButton'
-import { setCurrentNote } from '../../actions/currentNoteActions.js'
+import { setCurrentNote, setNextNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import TempoSlider from './TempoSlider'
 import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
-const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
+const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading }) => {
 
@@ -46,7 +46,9 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote,
 
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
+        let nextNote = notes[(counterRef.current + 1) % notes.length]
         setCurrentNote(note)
+        setNextNote(nextNote)
         samplerRef.current.triggerAttackRelease(note, '4n', time)
         nextIndex()
       }, '4n')
@@ -124,6 +126,7 @@ const mapDispatchToProps = dispatch => {
     setKey: key => dispatch(setKey(key)),
     setBPM: bpm => dispatch(setBPM(bpm)),
     setCurrentNote: note => dispatch(setCurrentNote(note)),
+    setNextNote: note => dispatch(setNextNote(note)),
     nextIndex: () => dispatch(nextIndex()),
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),

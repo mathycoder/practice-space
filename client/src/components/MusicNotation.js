@@ -147,7 +147,7 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    currentNote: state.currentNote,
+    currentNote: state.currentNote.current,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
     scale: state.settings.scale,

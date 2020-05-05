@@ -63,7 +63,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
 
 const mapStateToProps = state => {
   return {
-    currentNote: state.currentNote,
+    currentNote: state.currentNote.current,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
     looping: state.settings.looping,

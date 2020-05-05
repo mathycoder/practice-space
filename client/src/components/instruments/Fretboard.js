@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
 
-const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory }) => {
+const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory, nextNote, tempo }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null})
   const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -28,6 +28,11 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
     setCurrentNote(currNote)
   }
 
+  const fadeInStyle = {
+    opacity: 1,
+    transition: `opacity ${300/tempo}s`
+  }
+
   return (
     <div className="fretboard-wrapper noselect">
       {[0,1,2,3,4,5].map(stringNum => (
@@ -43,7 +48,10 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
             >
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 && !(overFret.string === stringNum && overFret.fret === fretNum)? <div className="double-fretmark"></div> : null}
               {
-                <div className={`note ${(overFret.string === stringNum && overFret.fret === fretNum) || (calculateCurrentNote(stringNum, fretNum) === currentNote) ? 'show-note' : 'hide-note'}`}>
+                <div
+                  style={calculateCurrentNote(stringNum, fretNum) === nextNote ? fadeInStyle : null}
+                  className={`note ${(overFret.string === stringNum && overFret.fret === fretNum)
+                                        || (calculateCurrentNote(stringNum, fretNum) === currentNote) ? 'display-note' : 'hide-note'}`}>
                   <div className="note-text">
                     {calculateCurrentNote(stringNum, fretNum, true)}
                   </div>
@@ -59,9 +67,11 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, currentCategory })
 
 const mapStateToProps = state => {
   return {
-    currentNote: state.currentNote,
+    currentNote: state.currentNote.current,
+    nextNote: state.currentNote.next,
     currentKey: state.settings.key,
-    currentCategory: state.settings.category
+    currentCategory: state.settings.category,
+    tempo: state.settings.bpm
   }
 }
 
