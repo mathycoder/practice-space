@@ -46,14 +46,15 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 && !(overFret.string === stringNum && overFret.fret === fretNum)? <div className="double-fretmark"></div> : null}
               { calculateCurrentNote(stringNum, fretNum) === nextNote ?
                 <Animated
+                  className="note fadein"
                   style={{zIndex: 2}}
                   animationIn="fadeIn"
                   animationOut="fadeOut"
                   animationInDuration={200000/tempo}
                   isVisible={true}>
-                  <div className="note fadein">
+
                     <div>{calculateCurrentNote(stringNum, fretNum, true)}</div>
-                  </div>
+
                 </Animated>
                 :
                 <div
