@@ -28,6 +28,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
     counterRef.current = scaleIndex
   }, [scaleIndex])
 
+  // useEffect(() => {
+  //   document.addEventListener("keydown", () => )
+  // }, [])
+
   useEffect(() => {
     if (currentKey){
       if (scheduleId !== null) {

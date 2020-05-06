@@ -6,7 +6,7 @@
   max-width: 700px;
   background-color: tan;
   height: 120px;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .string {

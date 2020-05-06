@@ -1,17 +1,21 @@
 import React from 'react'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import { setLooping } from '../actions/settingsActions.js'
+import { connect } from 'react-redux'
 
-const DemoDropdown = ({ value, callback}) => {
+const DemoDropdown = ({ value, callback, looping }) => {
   const options = ['guitar', 'piano']
-  console.log(value)
   return (
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Instrument</div>
       <Dropdown
+        disabled={looping}
         style={{maxHeight: '100px'}}
         options={options}
-        onChange={value => callback(value.value)}
+        onChange={value => {
+          callback(value.value)
+        }}
         value={value}
         placeholder="Select an option"
       />
@@ -34,4 +38,10 @@ const styles = {
   }
 }
 
-export default DemoDropdown
+const mapStateToProps = state => {
+  return {
+    looping: state.settings.looping
+  }
+}
+
+export default connect(mapStateToProps, null)(DemoDropdown)
