@@ -7,7 +7,7 @@ import {Animated} from "react-animated-css";
 
 const Fretboard = ({ setCurrentNote, currentNote, currentKey,
                      currentCategory, nextNote, tempo, looping }) => {
-  const [overFret, setOverFret] = useState({string: null, fret: null})
+  const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
   const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
                                              : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
@@ -37,8 +37,12 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
           {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(fretNum => {
             return <div
               key={`${stringNum}${fretNum}`}
-              onMouseEnter={() => setOverFret({string: stringNum, fret: fretNum})}
-              onMouseLeave={() => setOverFret({string: null, fret: null})}
+              onMouseEnter={() => setOverFret(prev => {
+                return {string: stringNum, fret: fretNum, prevString: prev.prevString, prevFret: prev.prevFret}
+              })}
+              onMouseLeave={() => setOverFret(prev => {
+                return {string: null, fret: null, prevString: prev.string, prevFret: prev.fret}
+              })}
               className={`fret ${fretNum === 0 ? 'base' : null}
                          ${stringNum === 3 && (fretNum === 3 || fretNum === 5 || fretNum === 7 || fretNum === 9 || fretNum === 12) ? 'single-fretmark' : ''}`}
               onClick={() => clickNote()}
@@ -57,7 +61,8 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
                 :
                 <div
                   className={`note ${!looping ?
-                        (overFret.string === stringNum && overFret.fret === fretNum ? 'display-note' : 'hide-note')
+                        (overFret.string === stringNum && overFret.fret === fretNum ? 'display-note'
+                        : overFret.prevString === stringNum && overFret.prevFret === fretNum ? 'hide-note-nofade' : 'hide-note')
                          : calculateCurrentNote(stringNum, fretNum) === currentNote ? 'display-note' : 'hide-note'}`}
                   >
                   <div className="note-text">

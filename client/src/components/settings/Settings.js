@@ -101,7 +101,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
-        <BigButton title={looping? 'Stop' : 'Start'} disabled={loading} callback={() => playScale()}/>
+        <BigButton
+          title={looping? 'Stop' : 'Start'}
+          disabled={loading}
+          callback={() => playScale()}/>
       </div>
     </div>
   )
