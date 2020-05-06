@@ -3,6 +3,7 @@ import './css/fretboard.css'
 import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import { sampler } from './sampler.js'
+import {Animated} from "react-animated-css";
 
 const Fretboard = ({ setCurrentNote, currentNote, currentKey,
                      currentCategory, nextNote, tempo, looping }) => {
@@ -39,7 +40,8 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
   }
 
   const hideNoteStyle = {
-    opacity: 0
+    opacity: 0,
+    transition: `opacity 0.01s`
   }
 
   return (
@@ -56,7 +58,18 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
               onClick={() => clickNote()}
             >
               {(stringNum === 1 || stringNum === 4) && fretNum === 12 && !(overFret.string === stringNum && overFret.fret === fretNum)? <div className="double-fretmark"></div> : null}
-              {
+              { calculateCurrentNote(stringNum, fretNum) === nextNote ?
+                <Animated
+                  style={{zIndex: 2}}
+                  animationIn="fadeIn"
+                  animationOut="fadeOut"
+                  animationInDuration={200000/tempo}
+                  isVisible={true}>
+                  <div className="note">
+                    <div>{calculateCurrentNote(stringNum, fretNum, true)}</div>
+                  </div>
+                </Animated>
+                :
                 <div
                   className="note"
                   style={!looping ?
