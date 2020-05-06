@@ -30,20 +30,6 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
     setCurrentNote(currNote)
   }
 
-  const fadeInStyle = {
-    opacity: 1,
-    transition: `opacity ${300/tempo}s`
-  }
-
-  const displayNoteStyle = {
-    opacity: 1
-  }
-
-  const hideNoteStyle = {
-    opacity: 0,
-    transition: `opacity 0.01s`
-  }
-
   return (
     <div className="fretboard-wrapper noselect">
       {[0,1,2,3,4,5].map(stringNum => (
@@ -65,17 +51,15 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
                   animationOut="fadeOut"
                   animationInDuration={200000/tempo}
                   isVisible={true}>
-                  <div className="note">
+                  <div className="note fadein">
                     <div>{calculateCurrentNote(stringNum, fretNum, true)}</div>
                   </div>
                 </Animated>
                 :
                 <div
-                  className="note"
-                  style={!looping ?
-                        (overFret.string === stringNum && overFret.fret === fretNum ? displayNoteStyle : hideNoteStyle)
-                         : calculateCurrentNote(stringNum, fretNum) === nextNote ? fadeInStyle
-                         : calculateCurrentNote(stringNum, fretNum) === currentNote ? displayNoteStyle : hideNoteStyle}
+                  className={`note ${!looping ?
+                        (overFret.string === stringNum && overFret.fret === fretNum ? 'display-note' : 'hide-note')
+                         : calculateCurrentNote(stringNum, fretNum) === currentNote ? 'display-note' : 'hide-note'}`}
                   >
                   <div className="note-text">
                     {calculateCurrentNote(stringNum, fretNum, true)}

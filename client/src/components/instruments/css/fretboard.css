@@ -101,14 +101,12 @@
   align-items: center;
 }
 
-.fret .note.fadein-note {
-  /* opacity: 1; */
-  /* transition: opacity attr(data-tempo s); */
+.fret .note.fadein {
+  background-color: rgba(125, 125, 125, 0.5);
 }
 
 .fret .note.display-note {
   opacity: 1;
-  /* transition: opacity 0.01s; */
 }
 
 .fret .note.hide-note {
