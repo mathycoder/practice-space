@@ -39,7 +39,7 @@ function loopingReducer(state = false, action){
   }
 }
 
-function instrumentReducer(state = 'piano', action) {
+function instrumentReducer(state = 'guitar', action) {
   switch(action.type) {
     case 'SET_INSTRUMENT':
       return action.instrument

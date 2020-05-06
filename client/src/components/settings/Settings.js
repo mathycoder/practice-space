@@ -17,7 +17,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
   const samplerRef = useRef(null)
+  const loopingRef = useRef(looping)
   const transportRef = useRef(Tone.Transport)
+
+
+  useEffect(() => {
+    loopingRef.current = looping
+  }, [looping])
 
   useEffect(() => {
     samplerRef.current = sampler(currentInstrument, () => doneLoading()).toMaster()
@@ -28,9 +34,15 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
     counterRef.current = scaleIndex
   }, [scaleIndex])
 
-  // useEffect(() => {
-  //   document.addEventListener("keydown", () => )
-  // }, [])
+
+  const toggleLooping = (e) => {
+    if (e.code === 'Space') loopingRef.current ? stopLoop() : startLoop()
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", toggleLooping)
+    return () => {document.removeEventListener("keydown", toggleLooping)}
+  }, [])
 
   useEffect(() => {
     if (currentKey){
@@ -75,7 +87,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
   const stopLoop = () => {
     transportRef.current.stop()
     setLooping(false)
-    //counterRef.current = 0
     resetIndex()
   }
 
