@@ -3,7 +3,6 @@ import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import useWindowDimensions from '../../hooks/useWindowDimensions.js'
 import { connect } from 'react-redux'
-// import { sampler } from './sampler.js'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import './css/keyboard.css'
 
@@ -11,12 +10,10 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
                    setCurrentNote, looping, loading, pianoSamplerRef }) => {
   const { width } = useWindowDimensions();
   const componentWidth = width > 900 ? 900*0.8 : width*0.8
-  // const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
                                              : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 
   useEffect(() => {
-    //samplerRef.current = sampler('piano').toMaster()
     pianoSamplerRef.current.toMaster()
   }, [])
 
@@ -29,7 +26,6 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
   const playSoloNote = midiNumber => {
     if (!looping){
       const currNote = calculateCurrentNote(midiNumber)
-      //samplerRef.current.triggerAttackRelease(currNote, '4n');
       pianoSamplerRef.current.triggerAttackRelease(currNote, '4n');
       setCurrentNote(currNote)
     }
