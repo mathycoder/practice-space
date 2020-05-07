@@ -35,7 +35,8 @@ const styles = {
   instrumentWrapper: {
     alignSelf: 'stretch',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    // backgroundColor: 'red',
   }
 }
 

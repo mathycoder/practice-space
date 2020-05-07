@@ -2,7 +2,7 @@ import React from 'react'
 import MusicNotation from '../components/MusicNotation'
 import Settings from '../components/settings/Settings'
 
-const MusicNotationContainer = () => {
+const MusicAndSettingsContainer = () => {
   return (
     <div style={styles.wrapper}>
       <MusicNotation />
@@ -25,4 +25,4 @@ const styles = {
   }
 }
 
-export default MusicNotationContainer
+export default MusicAndSettingsContainer

@@ -1,6 +1,6 @@
 import React from 'react'
 import DemoContainer from './containers/DemoContainer'
-import MusicNotationContainer from './containers/MusicNotationContainer'
+import MusicAndSettingsContainer from './containers/MusicAndSettingsContainer'
 import './App.css'
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       </header>
       <div className="body noselect" style={styles.containerDiv}>
         <DemoContainer />
-        <MusicNotationContainer />
+        <MusicAndSettingsContainer />
       </div>
     </div>
   );
