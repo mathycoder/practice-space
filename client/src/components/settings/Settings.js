@@ -112,7 +112,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
 
 const styles = {
   settingsWrapper: {
-    flex: 1,
+    flex: 2,
     display: 'flex',
     flexWrap: 'wrap',
     backgroundColor: 'gray',

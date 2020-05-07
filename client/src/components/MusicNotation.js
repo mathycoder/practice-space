@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Vex from 'vexflow'
-import Settings from './settings/Settings'
 import { connect } from 'react-redux'
 import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
@@ -109,27 +108,18 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }
 
   return (
-    <div style={styles.musicAndSettingsStyle}>
-      <div style={styles.staffWrapper}>
-        <div id="music-canvas" style={styles.canvasStyle}></div>
-        <div id="music-canvas2" style={styles.canvasStyle2}></div>
-      </div>
-      <Settings />
+    <div style={styles.staffWrapper}>
+      <div id="music-canvas" style={styles.canvasStyle}></div>
+      <div id="music-canvas2" style={styles.canvasStyle2}></div>
     </div>
   )
 }
 
 const styles = {
-  musicAndSettingsStyle: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignSelf: 'stretch'
-  },
   staffWrapper: {
     // backgroundColor: 'red',
     alignSelf: 'stretch',
-    flex: 2,
+    flex: 3,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
