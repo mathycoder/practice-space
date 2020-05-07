@@ -21,9 +21,9 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
   }, [])
 
   const calculateCurrentNote = (midiNumber, capitalize=false) => {
-    const letter = NOTES[midiNumber % 12].toLowerCase()
+    const letter = capitalize ? NOTES[midiNumber % 12] : NOTES[midiNumber % 12].toLowerCase()
     const octave = Math.floor(midiNumber / 12)
-    return capitalize ? `${letter.toUpperCase()}${octave}` : `${letter}${octave}`
+    return `${letter}${octave}`
   }
 
   const playSoloNote = midiNumber => {

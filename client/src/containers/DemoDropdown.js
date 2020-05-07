@@ -10,7 +10,6 @@ const DemoDropdown = ({ value, callback, looping }) => {
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Instrument</div>
       <Dropdown
-        
         style={{maxHeight: '100px'}}
         options={options}
         onChange={value => {
