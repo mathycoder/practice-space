@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Fretboard from '../components/instruments/Fretboard'
 import Keyboard from '../components/instruments/Keyboard'
+import Voice from '../components/instruments/Voice'
 import DemoDropdown from './DemoDropdown'
 import { connect } from 'react-redux'
 import { setInstrument } from '../actions/settingsActions.js'
@@ -13,8 +14,11 @@ const DemoContainer = ({instrument, setInstrument, guitarSamplerRef, pianoSample
       </div>
       <div style={styles.instrumentWrapper}>
         {instrument === 'guitar'
-            ? <Fretboard guitarSamplerRef={guitarSamplerRef} /> :
-             <Keyboard pianoSamplerRef={pianoSamplerRef} />}
+            ? <Fretboard guitarSamplerRef={guitarSamplerRef} />
+            : instrument === 'piano'
+              ? <Keyboard pianoSamplerRef={pianoSamplerRef} />
+              : <Voice pianoSamplerRef={pianoSamplerRef} />
+        }
       </div>
     </div>
   )

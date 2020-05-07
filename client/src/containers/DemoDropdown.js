@@ -5,7 +5,7 @@ import { setLooping } from '../actions/settingsActions.js'
 import { connect } from 'react-redux'
 
 const DemoDropdown = ({ value, callback, looping }) => {
-  const options = ['guitar', 'piano']
+  const options = ['guitar', 'piano', 'voice']
   return (
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Instrument</div>
