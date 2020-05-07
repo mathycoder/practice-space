@@ -12,7 +12,8 @@ import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping,
-                    currentInstrument, scale, keyNotes, loading, isLoading, doneLoading }) => {
+                    currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
+                    guitarSamplerRef, pianoSamplerRef}) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -20,15 +21,21 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
   const loopingRef = useRef(looping)
   const transportRef = useRef(Tone.Transport)
 
+  useEffect(() => {
+    currentInstrument === 'guitar'
+      ? samplerRef.current = guitarSamplerRef.current.toMaster()
+      : samplerRef.current = pianoSamplerRef.current.toMaster()
+  }, [currentInstrument])
+
 
   useEffect(() => {
     loopingRef.current = looping
   }, [looping])
 
-  useEffect(() => {
-    samplerRef.current = sampler(currentInstrument, () => doneLoading()).toMaster()
-    isLoading()
-  }, [currentInstrument])
+  // useEffect(() => {
+  //   samplerRef.current = sampler(currentInstrument, () => doneLoading()).toMaster()
+  //   isLoading()
+  // }, [currentInstrument])
 
   useEffect(() => {
     counterRef.current = scaleIndex

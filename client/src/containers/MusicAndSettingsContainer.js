@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import MusicNotation from '../components/MusicNotation'
 import Settings from '../components/settings/Settings'
+import { connect } from 'react-redux'
 
-const MusicAndSettingsContainer = () => {
+const MusicAndSettingsContainer = ({guitarSamplerRef, pianoSamplerRef, instrument}) => {
+
   return (
     <div style={styles.wrapper}>
       <MusicNotation />
-      <Settings />
+      <Settings guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
     </div>
   )
 }
@@ -25,4 +27,10 @@ const styles = {
   }
 }
 
-export default MusicAndSettingsContainer
+const mapStateToProps = state => {
+  return {
+    instrument: state.settings.instrument
+  }
+}
+
+export default connect(mapStateToProps, null)(MusicAndSettingsContainer)

@@ -2,19 +2,20 @@ import React, { useState, useEffect, useRef } from 'react'
 import './css/fretboard.css'
 import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
-import { sampler } from './sampler.js'
+// import { sampler } from './sampler.js'
 import {Animated} from "react-animated-css";
 
-const Fretboard = ({ setCurrentNote, currentNote, currentKey,
+const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
                      currentCategory, nextNote, tempo, looping }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
-  const samplerRef = useRef(null)
+  //const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
                                              : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
-    samplerRef.current = sampler('guitar').toMaster()
+    //samplerRef.current = sampler('guitar').toMaster()
+    guitarSamplerRef.current.toMaster()
   }, [])
 
   const calculateCurrentNote = (string, fret, uppercase = false) => {
@@ -26,7 +27,8 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey,
 
   const clickNote = () => {
     const currNote = calculateCurrentNote(overFret.string, overFret.fret, true)
-    samplerRef.current.triggerAttackRelease(currNote, '4n');
+    // samplerRef.current.triggerAttackRelease(currNote, '4n');
+    guitarSamplerRef.current.triggerAttackRelease(currNote, '4n');
     setCurrentNote(currNote)
   }
 

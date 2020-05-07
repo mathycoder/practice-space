@@ -5,14 +5,16 @@ import DemoDropdown from './DemoDropdown'
 import { connect } from 'react-redux'
 import { setInstrument } from '../actions/settingsActions.js'
 
-const DemoContainer = ({instrument, setInstrument}) => {
+const DemoContainer = ({instrument, setInstrument, guitarSamplerRef, pianoSamplerRef}) => {
   return (
     <div style={styles.demoWrapper}>
       <div style={styles.dropdownWrapper}>
         <DemoDropdown value={instrument} callback={setInstrument}/>
       </div>
       <div style={styles.instrumentWrapper}>
-        {instrument === 'guitar' ? <Fretboard /> : <Keyboard />}
+        {instrument === 'guitar'
+            ? <Fretboard guitarSamplerRef={guitarSamplerRef} /> :
+             <Keyboard pianoSamplerRef={pianoSamplerRef} />}
       </div>
     </div>
   )
