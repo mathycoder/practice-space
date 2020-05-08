@@ -57,8 +57,11 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         //need to look like a3
         let note = keyNotes[noteInd]
         note = note.replace('/', '')
-        const letter = note.split(/[\d]+/)[0]
+        let letter = note.split(/[\d]+/)[0]
         const octave = parseInt(note.slice(-1))
+        if (scaleType === 'harm. minor' && noteInd === 6) {
+          letter = letter.length === 1 ? letter[0] + '#' : letter[0]
+        }
         return `${letter}${octave-1}`
       })
 
