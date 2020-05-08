@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import './css/voice.css'
 
 const Voice = ({currentNote, currentKey, keyNote, scale, scaleIndex}) => {
 
@@ -24,36 +25,14 @@ const Voice = ({currentNote, currentKey, keyNote, scale, scaleIndex}) => {
   }
 
   return (
-    <div style={styles.wrapperStyle}>
-      <div>
-        <span style={styles.noteStyle}>{name()}</span>
-      </div>
-      <div style={styles.scaleToneStyle}>
+    <div className="voice-wrapper">
+      <div className="note-name">{name()}</div>
+      <div className="scale-tone">
         {calculateScaleTone()}
       </div>
     </div>
   )
 }
-
-const styles = {
-  wrapperStyle: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  noteStyle: {
-    fontSize: "60px"
-  },
-  octaveStyle: {
-    fontSize: "20px"
-  },
-  scaleToneStyle: {
-    fontSize: "40px",
-    fontWeight: 'bold'
-  }
-}
-
 
 const mapStateToProps = state => {
   return {

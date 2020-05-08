@@ -1,0 +1,30 @@
+.voice-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.voice-wrapper .note-name {
+  font-size: 60px;
+}
+
+.voice-wrapper .scale-tone {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+  .voice-wrapper {
+    flex: 1;
+    flex-direction: row;
+  }
+
+  .voice-wrapper .note-name {
+    margin: 0 20px;
+  }
+
+  .voice-wrapper .scale-tone {
+    margin: 0 20px;
+  }
+}
