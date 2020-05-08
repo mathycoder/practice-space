@@ -8,7 +8,6 @@ const KeyDropdown = ({ currentKey, scaleType, callback}) => {
     ? ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'G']
     : ['Ab', 'A', 'Bb', 'B', 'C', 'D', 'Eb', 'E', 'F', 'G']
 
-
   return (
     <div style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Key</div>

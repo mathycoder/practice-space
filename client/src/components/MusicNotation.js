@@ -58,7 +58,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
     if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
 
-    const keySignature = `${currentKey}${scaleType === 'nat. minor' ? 'm' :''}`
+    const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
 
     rendererRef.current.resize(canvasWidth*factor, 120*factor)
     rendererRef2.current.resize(canvasWidth*factor, 120*factor)

@@ -53,7 +53,7 @@ function instrumentReducer(state = 'Note Names', action) {
 function keyReducer(state = 'C', action) {
   switch(action.type) {
     case 'SET_KEY':
-      if (!keyNotesObj[action.key][action.scaleType]) return state
+      //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.key
 
     default:
@@ -64,7 +64,7 @@ function keyReducer(state = 'C', action) {
 function scaleTypeReducer(state = 'major', action){
   switch(action.type) {
     case 'SET_KEY':
-      if (!keyNotesObj[action.key][action.scaleType]) return state
+      //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.scaleType
 
     default:
@@ -75,10 +75,11 @@ function scaleTypeReducer(state = 'major', action){
 function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
-    // ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5' ]
-      if (!keyNotesObj[action.key][action.scaleType]) return state
+//      if (!keyNotesObj[action.key][action.scaleType]) return state
 
-      const notes = keyNotesObj[action.key][action.scaleType]
+      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+
+      const notes = keyNotesObj[action.key][scaleTypeKey]
       const sharps = notes.filter(note => note[1] === '#')
       const flats = notes.filter(note => note[1] === 'b')
       return sharps.length > 0 ? 'sharps' : (flats.length > 0 ? 'flats' : 'sharps')
@@ -92,8 +93,10 @@ function categoryReducer(state = 'sharps', action) {
 function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
   switch(action.type) {
     case 'SET_KEY':
-      if (!keyNotesObj[action.key][action.scaleType]) return state
-      return keyNotesObj[action.key][action.scaleType]
+    //  if (!keyNotesObj[action.key][action.scaleType]) return state
+
+      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+      return keyNotesObj[action.key][scaleTypeKey]
 
     default:
       return state;
@@ -103,8 +106,9 @@ function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4',
 function accidentalsReducer(state=0, action){
   switch(action.type) {
     case 'SET_KEY':
-      if (!keyNotesObj[action.key][action.scaleType]) return state
-      return countAccidentals(action.key, action.scaleType)
+  //    if (!keyNotesObj[action.key][action.scaleType]) return state
+      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+      return countAccidentals(action.key, scaleTypeKey)
 
     default:
       return state;

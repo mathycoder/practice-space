@@ -5,7 +5,7 @@ import './dropdown.css'
 
 const ScaleTypeDropdown = ({ currentKey, scaleType, callback}) => {
   const keysWithNatMin = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'F#', 'C#']
-  const options = keysWithNatMin.includes(currentKey) ? ['major', 'nat. minor'] : ['major']
+  const options = keysWithNatMin.includes(currentKey) ? ['major', 'nat. minor', 'harm. minor'] : ['major']
 
   return (
     <div className="scale-dropdown" style={styles.dropdownWrapper}>
