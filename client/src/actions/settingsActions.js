@@ -1,5 +1,5 @@
-export function setKey(key){
-  return {type: 'SET_KEY', key: key}
+export function setKey(key, scaleType){
+  return {type: 'SET_KEY', key: key, scaleType: scaleType}
 }
 
 export function setBPM(bpm){
@@ -30,10 +30,10 @@ export function doneLoading(){
   return {type: 'DONE_LOADING'}
 }
 
-export function setScaleType(scaleType){
-  return {type: 'SET_SCALE_TYPE', scaleType: scaleType}
-}
-
-export function resetScaleType(){
-  return {type: 'RESET_SCALE_TYPE'}
-}
+// export function setScaleType(scaleType){
+//   return {type: 'SET_SCALE_TYPE', scaleType: scaleType}
+// }
+//
+// export function resetScaleType(){
+//   return {type: 'RESET_SCALE_TYPE'}
+// }

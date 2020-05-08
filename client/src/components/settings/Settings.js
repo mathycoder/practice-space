@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex, setScaleType, resetScaleType,
-         resetIndex, setLooping} from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex, resetIndex, setLooping} from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -12,9 +11,9 @@ import TempoSlider from './TempoSlider'
 import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
-                    scaleIndex, nextIndex, resetIndex, setLooping, looping,
+                    scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef, setScaleType, scaleType}) => {
+                    guitarSamplerRef, pianoSamplerRef }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -98,14 +97,15 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       <KeyDropdown
         currentKey={currentKey}
         callback={(obj) => {
-          setKey(obj.value)
+          setKey(obj.value, scaleType)
           stopLoop()
         }}
       />
       <ScaleTypeDropdown
         scaleType={scaleType}
         callback={(obj) => {
-          setScaleType(obj.value)
+          //setScaleType(obj.value)
+          setKey(currentKey, obj.value)
           stopLoop()
         }}
       />
@@ -152,7 +152,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setKey: key => dispatch(setKey(key)),
+    setKey: (key, scaleType) => dispatch(setKey(key, scaleType)),
     setBPM: bpm => dispatch(setBPM(bpm)),
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     setNextNote: note => dispatch(setNextNote(note)),
@@ -160,8 +160,7 @@ const mapDispatchToProps = dispatch => {
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading()),
-    setScaleType: scaleType => dispatch(setScaleType(scaleType))
+    doneLoading: () => dispatch(doneLoading())
   }
 }
 

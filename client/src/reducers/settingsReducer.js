@@ -19,11 +19,8 @@ export default settingsReducer
 
 function scaleTypeReducer(state = 'major', action){
   switch(action.type) {
-    case 'SET_SCALE_TYPE':
+    case 'SET_KEY':
       return action.scaleType
-
-    case 'RESET_SCALE_TYPE':
-      return 'major'
 
     default:
       return state;
