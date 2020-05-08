@@ -3,9 +3,11 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import './dropdown.css'
 
-const KeyDropdown = ({ currentKey, callback}) => {
-  //const options = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'Db']
-  const options = ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'G']
+const KeyDropdown = ({ currentKey, scaleType, callback}) => {
+  const options = scaleType === 'major'
+    ? ['Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'G']
+    : ['Ab', 'A', 'Bb', 'B', 'C', 'D', 'Eb', 'E', 'F', 'G']
+
 
   return (
     <div style={styles.dropdownWrapper}>

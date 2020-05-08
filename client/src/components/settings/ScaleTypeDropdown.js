@@ -3,8 +3,9 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import './dropdown.css'
 
-const ScaleTypeDropdown = ({ scaleType, callback}) => {
-  const options = ['major', 'nat. minor']
+const ScaleTypeDropdown = ({ currentKey, scaleType, callback}) => {
+  const keysWithNatMin = ['C', 'F', 'G', 'D', 'A', 'E', 'B', 'Bb', 'Eb', 'Ab', 'F#', 'C#']
+  const options = keysWithNatMin.includes(currentKey) ? ['major', 'nat. minor'] : ['major']
 
   return (
     <div className="scale-dropdown" style={styles.dropdownWrapper}>
