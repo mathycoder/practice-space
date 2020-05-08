@@ -17,16 +17,6 @@ const settingsReducer = combineReducers({
 export default settingsReducer
 
 
-function scaleTypeReducer(state = 'major', action){
-  switch(action.type) {
-    case 'SET_KEY':
-      return action.scaleType
-
-    default:
-      return state;
-  }
-}
-
 function loadingReducer(state = false, action){
   switch(action.type) {
     case 'IS_LOADING':
@@ -70,10 +60,35 @@ function keyReducer(state = 'C', action) {
   }
 }
 
+function scaleTypeReducer(state = 'major', action){
+  switch(action.type) {
+    case 'SET_KEY':
+      return action.scaleType
+
+    default:
+      return state;
+  }
+}
+
 function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
-      return keyCategory[action.key]
+    // ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5' ]
+      const notes = keyNotesObj[action.key][action.scaleType]
+      const sharps = notes.filter(note => note[1] === '#')
+      const flats = notes.filter(note => note[1] === 'b')
+      return sharps.length > 0 ? 'sharps' : (flats.length > 0 ? 'flats' : 'sharps')
+
+    default:
+      return state;
+  }
+}
+
+
+function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
+  switch(action.type) {
+    case 'SET_KEY':
+      return keyNotesObj[action.key][action.scaleType]
 
     default:
       return state;
@@ -84,16 +99,6 @@ function bpmReducer(state = 90, action) {
   switch(action.type) {
     case 'SET_BPM':
       return action.bpm
-
-    default:
-      return state;
-  }
-}
-
-function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
-  switch(action.type) {
-    case 'SET_KEY':
-      return keyNotesObj[action.key]
 
     default:
       return state;
@@ -123,7 +128,7 @@ function scaleIndexReducer(state=0, action){
 function accidentalsReducer(state=0, action){
   switch(action.type) {
     case 'SET_KEY':
-      return countAccidentals(action.key)
+      return countAccidentals(action.key, action.scaleType)
 
 
     default:
@@ -150,25 +155,56 @@ const keyCategory = {
 }
 
 const keyNotesObj = {
-  'C': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ],
-  'F': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4' ],
-  'G': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4' ],
-  'D': ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5' ],
-  'A': ['a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g#/4', 'a/4' ],
-  'E': ['e/3', 'f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd#/4', 'e/4' ],
-  'B': ['b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a#/4', 'b/4' ],
-  'Bb': ['bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'a/4', 'bb/4' ],
-  'Eb': ['eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5', 'd/5', 'eb/5' ],
-  'Ab': ['ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'g/4', 'ab/4' ],
-  'Db': ['db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'c/5', 'db/5' ],
-  'F#': ['f#/3', 'g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4'],
-  'C#': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ],
-  'Gb': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ],
-  'Cb': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ],
+  'C': {
+    'major': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ],
+    'nat. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5' ]
+  },
+  'F': {
+    'major': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4' ]
+  },
+  'G': {
+    'major': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4' ]
+  },
+  'D': {
+    'major': ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5' ]
+  },
+  'A': {
+    'major': ['a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g#/4', 'a/4' ]
+  },
+  'E': {
+    'major': ['e/3', 'f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd#/4', 'e/4' ]
+  },
+  'B': {
+    'major': ['b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a#/4', 'b/4' ]
+  },
+  'Bb': {
+    'major': ['bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'a/4', 'bb/4' ]
+  },
+  'Eb': {
+    'major': ['eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5', 'd/5', 'eb/5' ]
+  },
+  'Ab': {
+    'major': ['ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'g/4', 'ab/4' ]
+  },
+  'Db': {
+    'major': ['db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'c/5', 'db/5' ]
+  },
+  'F#': {
+    'major': ['f#/3', 'g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4']
+  },
+  'C#': {
+    'major': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ]
+  },
+  'Gb': {
+    'major': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ]
+  },
+  'Cb': {
+    'major': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ]
+  },
 }
 
-const countAccidentals = key => {
-  const notes = keyNotesObj[key]
+const countAccidentals = (key, scaleType) => {
+  const notes = keyNotesObj[key][scaleType]
   let accidentals = 0
   notes.forEach(note => {
     if (note[1] === '#' || note[1] === 'b') accidentals++
