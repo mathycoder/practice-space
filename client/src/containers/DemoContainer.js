@@ -13,9 +13,9 @@ const DemoContainer = ({instrument, setInstrument, guitarSamplerRef, pianoSample
         <DemoDropdown value={instrument} callback={setInstrument}/>
       </div>
       <div style={styles.instrumentWrapper}>
-        {instrument === 'guitar'
+        {instrument === 'Guitar'
             ? <Fretboard guitarSamplerRef={guitarSamplerRef} />
-            : instrument === 'piano'
+            : instrument === 'Piano'
               ? <Keyboard pianoSamplerRef={pianoSamplerRef} />
               : <Voice pianoSamplerRef={pianoSamplerRef} />
         }

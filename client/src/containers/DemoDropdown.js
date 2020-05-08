@@ -3,11 +3,12 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import { setLooping } from '../actions/settingsActions.js'
 import { connect } from 'react-redux'
+import './dropdown.css'
 
 const DemoDropdown = ({ value, callback, looping }) => {
-  const options = ['guitar', 'piano', 'voice']
+  const options = ['Note Names', 'Piano', 'Guitar']
   return (
-    <div style={styles.dropdownWrapper}>
+    <div className="demo-dropdown" style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Instrument</div>
       <Dropdown
         style={{maxHeight: '100px'}}

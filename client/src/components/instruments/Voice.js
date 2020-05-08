@@ -12,11 +12,11 @@ const Voice = ({currentNote, currentKey, keyNote, scale, scaleIndex}) => {
     return `${note.slice(0,1).toUpperCase()}${note.slice(1)}`
   }
 
-  const octave = () => {
-    return scaleIndex === 0
-      ? parseInt(keyNote[scale[0]].slice(-1)) - 1
-      : parseInt(keyNote[scale[(scaleIndex - 1)%scale.length]].slice(-1)) - 1
-  }
+  // const octave = () => {
+  //   return scaleIndex === 0
+  //     ? parseInt(keyNote[scale[0]].slice(-1)) - 1
+  //     : parseInt(keyNote[scale[(scaleIndex - 1)%scale.length]].slice(-1)) - 1
+  // }
 
   const calculateScaleTone = () => {
     if (scaleIndex === 0) return 1
@@ -27,7 +27,6 @@ const Voice = ({currentNote, currentKey, keyNote, scale, scaleIndex}) => {
     <div style={styles.wrapperStyle}>
       <div>
         <span style={styles.noteStyle}>{name()}</span>
-        <span style={styles.octaveStyle}>{octave()}</span>
       </div>
       <div style={styles.scaleToneStyle}>
         {calculateScaleTone()}
