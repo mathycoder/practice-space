@@ -13,7 +13,7 @@ const ScaleTypeDropdown = ({ scaleType, callback}) => {
         style={{maxHeight: '100px'}}
         options={options}
         onChange={callback}
-        value={scaleType}
+          value={scaleType}
         placeholder="Select an option"
       />
     </div>
