@@ -4,10 +4,10 @@ import 'react-dropdown/style.css'
 import './dropdown.css'
 
 const ScaleTypeDropdown = ({ scaleType, callback}) => {
-  const options = ['major', 'minor']
+  const options = ['major', 'nat. minor']
 
   return (
-    <div style={styles.dropdownWrapper}>
+    <div className="scale-dropdown" style={styles.dropdownWrapper}>
       <div style={styles.dropdownLabel}>Type</div>
       <Dropdown
         style={{maxHeight: '100px'}}
