@@ -44,8 +44,19 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
   const generateNotes = () => {
     return scale.map((el, index) => {
-      const currentNote = keyNotes[el]
-      const myNote = new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'})
+      let currentNote = keyNotes[el]
+      let accidental = null
+
+      if (index === 6 && scaleType === 'harm. minor'){
+        const letter = currentNote.split("/")[0]
+        accidental = letter.length === 1 ? '#' : 'n'
+      }
+
+      const myNote = !accidental
+        ? new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'})
+        : new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'}).
+            addAccidental(0, new VF.Accidental(accidental))
+
 
       if (index === (scaleIndex%scale.length)) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
 
