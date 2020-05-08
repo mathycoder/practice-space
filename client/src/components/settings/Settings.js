@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex,
+import { setKey, setBPM, nextIndex, setScaleType, resetScaleType,
          resetIndex, setLooping} from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
@@ -7,13 +7,14 @@ import { sampler } from '../instruments/sampler.js'
 import BigButton from '../elements/BigButton'
 import { setCurrentNote, setNextNote } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
+import ScaleTypeDropdown from './ScaleTypeDropdown'
 import TempoSlider from './TempoSlider'
 import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef}) => {
+                    guitarSamplerRef, pianoSamplerRef, setScaleType, scaleType}) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -31,11 +32,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
   useEffect(() => {
     loopingRef.current = looping
   }, [looping])
-
-  // useEffect(() => {
-  //   samplerRef.current = sampler(currentInstrument, () => doneLoading()).toMaster()
-  //   isLoading()
-  // }, [currentInstrument])
 
   useEffect(() => {
     counterRef.current = scaleIndex
@@ -106,6 +102,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
+      <ScaleTypeDropdown
+        scaleType={scaleType}
+        callback={(obj) => {
+          setScaleType(obj.value)
+          stopLoop()
+        }}
+      />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton
@@ -142,7 +145,8 @@ const mapStateToProps = state => {
     keyNotes: state.settings.keyNotes,
     currentInstrument: state.settings.instrument,
     looping: state.settings.looping,
-    loading: state.settings.loading
+    loading: state.settings.loading,
+    scaleType: state.settings.scaleType
   }
 }
 
@@ -156,7 +160,8 @@ const mapDispatchToProps = dispatch => {
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading())
+    doneLoading: () => dispatch(doneLoading()),
+    setScaleType: scaleType => dispatch(setScaleType(scaleType))
   }
 }
 

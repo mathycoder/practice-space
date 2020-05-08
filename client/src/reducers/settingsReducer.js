@@ -8,6 +8,7 @@ const settingsReducer = combineReducers({
   bpm: bpmReducer,
   scale: scaleReducer,
   scaleIndex: scaleIndexReducer,
+  scaleType: scaleTypeReducer,
   accidentals: accidentalsReducer,
   looping: loopingReducer,
   loading: loadingReducer
@@ -15,6 +16,19 @@ const settingsReducer = combineReducers({
 
 export default settingsReducer
 
+
+function scaleTypeReducer(state = 'major', action){
+  switch(action.type) {
+    case 'SET_SCALE_TYPE':
+      return action.scaleType
+
+    case 'RESET_SCALE_TYPE':
+      return 'major'
+
+    default:
+      return state;
+  }
+}
 
 function loadingReducer(state = false, action){
   switch(action.type) {
