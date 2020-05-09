@@ -49,7 +49,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       let currentNote = keyNotes[el]
       let accidental = null
 
-      if (index === 6 && scaleType === 'harm. minor'){
+      if (el === 6 && scaleType === 'harm. minor'){
         const letter = currentNote.split("/")[0]
         accidental = letter.length === 1 ? '#' : 'n'
       }
