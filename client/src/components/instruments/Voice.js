@@ -11,7 +11,7 @@ const Voice = ({currentNote, currentKey, keyNote, scale, scaleIndex}) => {
   }
 
   const calculateScaleTone = () => {
-    if (scaleIndex === 0) return 1
+    if (scaleIndex%8 === 0) return 1
     return scale[(scaleIndex - 1)%scale.length] + 1
   }
 
