@@ -22,7 +22,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
   const transportRef = useRef(Tone.Transport)
 
   useEffect(() => {
-    currentInstrument === 'guitar'
+    currentInstrument === 'Guitar'
       ? samplerRef.current = guitarSamplerRef.current.toMaster()
       : samplerRef.current = pianoSamplerRef.current.toMaster()
   }, [currentInstrument])
