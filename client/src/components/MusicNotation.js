@@ -19,6 +19,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
                             (currentCategory === 'sharps' ? 10 + 11*accidentals : 10 + 8*accidentals)
                             : 0
   const trebleKeyWidth = 60
+  const trebleWidth = 30
+  const timeSignatureWidth = 30
   const canvasWidth = (accidentalWidth + trebleKeyWidth + measureWidth*2) + 10
 
   useEffect(() => {
@@ -75,18 +77,18 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     rendererRef2.current.resize(canvasWidth*factor, 120*factor)
 
     // create each stave, which functions as a measure
-    const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
+    const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
     stave1.setContext(contextRef.current).draw();
 
-    const stave2 = new VF.Stave(measureWidth + accidentalWidth + trebleKeyWidth, 0, measureWidth);
+    const stave2 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth, 0, measureWidth);
     stave2.setContext(contextRef.current).draw();
 
-    const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleKeyWidth);
-    stave3.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
+    const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth);
+    stave3.addClef("treble").addKeySignature(keySignature);
     stave3.setContext(contextRef2.current).draw();
 
-    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleKeyWidth, 0, (measureWidth/2)*1.2).addTimeSignature("2/4");
+    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, (measureWidth/2)*1.2).addTimeSignature("2/4");
     stave4.setContext(contextRef2.current).draw();
 
     // grab the notes for each stave from keys()
