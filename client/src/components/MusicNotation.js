@@ -88,7 +88,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     stave3.addClef("treble").addKeySignature(keySignature);
     stave3.setContext(contextRef2.current).draw();
 
-    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, (measureWidth/2)*1.2).addTimeSignature("2/4");
+    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, (measureWidth/2)*1.3).addTimeSignature("2/4");
+    stave4.setEndBarType(VF.Barline.type.REPEAT_END)
     stave4.setContext(contextRef2.current).draw();
 
     // grab the notes for each stave from keys()
