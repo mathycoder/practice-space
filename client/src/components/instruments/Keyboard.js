@@ -33,7 +33,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
 
   const midiFriendlyNote = currNote => {
     const letter = currNote.split(/\d/)[0]
-    const octave = currNote.slice(-1)
+    const octave = parseInt(currNote.slice(-1))
     if (letter === 'cb') return `b${octave-1}`
     if (letter === 'fb') return `e${octave}`
     if (letter === 'e#') return `f${octave}`
