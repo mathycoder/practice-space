@@ -31,6 +31,16 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
     }
   }
 
+  const midiFriendlyNote = currNote => {
+    const letter = currNote.split(/\d/)[0]
+    const octave = currNote.slice(-1)
+    if (letter === 'cb') return `b${octave-1}`
+    if (letter === 'fb') return `e${octave}`
+    if (letter === 'e#') return `f${octave}`
+    if (letter === 'b#') return `c${octave+1}`
+    return currNote
+  }
+
   return (
     <div>
       <Piano
@@ -41,7 +51,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory,
         }}
         disabled={loading}
         width={componentWidth}
-        activeNotes={currentNote && looping ? [MidiNumbers.fromNote(currentNote)] : null}
+        activeNotes={currentNote && looping ? [MidiNumbers.fromNote(midiFriendlyNote(currentNote))] : null}
         renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
           if (isActive){
             return (
