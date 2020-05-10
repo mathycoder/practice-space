@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
 import BigButton from '../elements/BigButton'
-import { setCurrentNote, setNextNote } from '../../actions/currentNoteActions.js'
+import { setCurrentNote, setNextNote, setScaleTone } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import ScaleTypeDropdown from './ScaleTypeDropdown'
 import TempoSlider from './TempoSlider'
@@ -13,7 +13,7 @@ import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef }) => {
+                    guitarSamplerRef, pianoSamplerRef, setScaleTone }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -68,8 +68,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
         let nextNote = notes[(counterRef.current + 1) % notes.length]
+        let tone = ((scale[counterRef.current % notes.length])%7 + 1)
         setCurrentNote(note)
         setNextNote(nextNote)
+        setScaleTone(tone)
         samplerRef.current.triggerAttackRelease(note, '4n', time)
         nextIndex()
       }, '4n')
@@ -161,6 +163,7 @@ const mapDispatchToProps = dispatch => {
     setBPM: bpm => dispatch(setBPM(bpm)),
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     setNextNote: note => dispatch(setNextNote(note)),
+    setScaleTone: tone => dispatch(setScaleTone(tone)),
     nextIndex: () => dispatch(nextIndex()),
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),

@@ -5,3 +5,7 @@ export function setCurrentNote(note){
 export function setNextNote(note){
   return {type: 'SET_NEXT_NOTE', note: note}
 }
+
+export function setScaleTone(tone){
+  return {type: 'SET_SCALE_TONE', tone: tone}
+}

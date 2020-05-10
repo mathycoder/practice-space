@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 const currentNoteReducer = combineReducers({
   current: currentReducer,
   next: nextReducer,
+  scaleTone: scaleToneReducer
 })
 
 
@@ -24,8 +25,21 @@ function nextReducer(state = null, action) {
     case 'SET_NEXT_NOTE':
       return action.note
 
-    case 'RESET_INDEX': 
+    case 'RESET_INDEX':
       return null
+
+    default:
+      return state;
+  }
+}
+
+function scaleToneReducer(state = 1, action) {
+  switch(action.type) {
+    case 'SET_SCALE_TONE':
+      return action.tone
+
+    case 'RESET_INDEX':
+      return 1
 
     default:
       return state;
