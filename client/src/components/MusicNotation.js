@@ -51,7 +51,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
       if (el === 6 && scaleType === 'harm. minor'){
         const letter = currentNote.split("/")[0]
-        accidental = letter.length === 1 ? '#' : 'n'
+        accidental = letter.length === 1 ? '#'
+          : letter[1] === '#' ? '##' : 'n'
       }
 
       const myNote = !accidental
