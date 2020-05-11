@@ -6,7 +6,7 @@ import './dropdown.css'
 const KeyDropdown = ({ currentKey, scaleType, callback}) => {
   const options = scaleType === 'major'
     ? ['Ab', 'A', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G']
-    : ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'D', 'Eb', 'E', 'F', 'G']
+    : ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#']
 
   return (
     <div style={styles.dropdownWrapper}>
