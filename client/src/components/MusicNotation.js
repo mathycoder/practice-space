@@ -50,9 +50,16 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       let accidental = null
 
       if (el === 6 && scaleType === 'harm. minor'){
-        const letter = currentNote.split("/")[0]
-        accidental = letter.length === 1 ? '#'
-          : letter[1] === '#' ? '##' : 'n'
+        let letter = currentNote.split("/")[0]
+        let octave = currentNote.slice(-1)
+        if (currentCategory === 'flats' && letter.length === 1){
+          accidental = 'n'
+        } else if (currentCategory === 'sharps' && letter[1] === '#'){
+          accidental = '#'
+        } else {
+          accidental = '##'
+          currentNote = `${letter[0]}/${octave}`
+        }
       }
 
       const myNote = !accidental

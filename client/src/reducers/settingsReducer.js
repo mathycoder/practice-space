@@ -77,9 +77,9 @@ function categoryReducer(state = 'sharps', action) {
     case 'SET_KEY':
 //      if (!keyNotesObj[action.key][action.scaleType]) return state
 
-      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+      //const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
 
-      const notes = keyNotesObj[action.key][scaleTypeKey]
+      const notes = keyNotesObj[action.key][action.scaleType]
       const sharps = notes.filter(note => note[1] === '#')
       const flats = notes.filter(note => note[1] === 'b')
       return sharps.length > 0 ? 'sharps' : (flats.length > 0 ? 'flats' : 'sharps')
@@ -95,8 +95,8 @@ function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4',
     case 'SET_KEY':
     //  if (!keyNotesObj[action.key][action.scaleType]) return state
 
-      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
-      return keyNotesObj[action.key][scaleTypeKey]
+      //const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+      return keyNotesObj[action.key][action.scaleType]
 
     default:
       return state;
@@ -107,8 +107,8 @@ function accidentalsReducer(state=0, action){
   switch(action.type) {
     case 'SET_KEY':
   //    if (!keyNotesObj[action.key][action.scaleType]) return state
-      const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
-      return countAccidentals(action.key, scaleTypeKey)
+      // const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
+      return countAccidentals(action.key, action.scaleType)
 
     default:
       return state;

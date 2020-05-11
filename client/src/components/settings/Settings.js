@@ -59,11 +59,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         note = note.replace('/', '')
         let letter = note.split(/[\d]+/)[0]
         const octave = parseInt(note.slice(-1))
-        if (scaleType === 'harm. minor' && noteInd === 6) {
-          letter = letter.length === 1
-                    ? letter[0] + '#'
-                    : letter[1] === '#' ? letter[0] + 'x' : letter[0]
-        }
         return `${letter}${octave-1}`
       })
 
@@ -113,7 +108,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         currentKey={currentKey}
         scaleType={scaleType}
         callback={(obj) => {
-          //setScaleType(obj.value)
           setKey(currentKey, obj.value)
           stopLoop()
         }}
