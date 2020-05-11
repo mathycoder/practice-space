@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex, resetIndex, setLooping} from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex, resetIndex,
+         setLooping, setRepeatTopNote } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -13,7 +14,8 @@ import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef, setScaleTone }) => {
+                    guitarSamplerRef, pianoSamplerRef, setScaleTone, setRepeatTopNote,
+                    repeatTopNote }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -112,6 +114,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
+      <div>
+        <input
+          type="checkbox"
+          onChange={() => setRepeatTopNote(!repeatTopNote)}
+          checked={repeatTopNote}/>
+        <div>Repeat Top Note?</div>
+      </div>
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton
@@ -149,7 +158,8 @@ const mapStateToProps = state => {
     currentInstrument: state.settings.instrument,
     looping: state.settings.looping,
     loading: state.settings.loading,
-    scaleType: state.settings.scaleType
+    scaleType: state.settings.scaleType,
+    repeatTopNote: state.settings.repeatTopNote
   }
 }
 
@@ -164,7 +174,8 @@ const mapDispatchToProps = dispatch => {
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading())
+    doneLoading: () => dispatch(doneLoading()),
+    setRepeatTopNote: repeat => dispatch(setRepeatTopNote(repeat))
   }
 }
 

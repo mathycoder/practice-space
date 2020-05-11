@@ -30,10 +30,6 @@ export function doneLoading(){
   return {type: 'DONE_LOADING'}
 }
 
-// export function setScaleType(scaleType){
-//   return {type: 'SET_SCALE_TYPE', scaleType: scaleType}
-// }
-//
-// export function resetScaleType(){
-//   return {type: 'RESET_SCALE_TYPE'}
-// }
+export function setRepeatTopNote(repeat){
+  return {type: 'SET_REPEAT_TOP_NOTE', repeat: repeat}
+}

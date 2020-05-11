@@ -11,11 +11,22 @@ const settingsReducer = combineReducers({
   scaleType: scaleTypeReducer,
   accidentals: accidentalsReducer,
   looping: loopingReducer,
-  loading: loadingReducer
+  loading: loadingReducer,
+  repeatTopNote: repeatTopNoteReducer
 })
 
 export default settingsReducer
 
+
+function repeatTopNoteReducer(state = false, action){
+  switch(action.type) {
+    case 'SET_REPEAT_TOP_NOTE':
+      return action.repeat
+
+    default:
+      return state;
+  }
+}
 
 function loadingReducer(state = false, action){
   switch(action.type) {
