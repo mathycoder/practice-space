@@ -138,6 +138,9 @@ function bpmReducer(state = 90, action) {
 
 function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
   switch(action.type) {
+    case 'SET_REPEAT_TOP_NOTE':
+      return action.repeat ? [0,1,2,3,4,5,6,7,7,6,5,4,3,2,1, 0] : [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
+
     default:
       return state;
   }

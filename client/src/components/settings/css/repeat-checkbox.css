@@ -1,0 +1,7 @@
+.repeat-checkbox-wrapper input[type="checkbox"]:focus, .repeat-checkbox-wrapper input[type="checkbox"]:hover  {
+  outline: 0;
+}
+
+*:focus, *:hover {
+    outline: 0;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
 import { setKey, setBPM, nextIndex, resetIndex,
-         setLooping, setRepeatTopNote } from '../../actions/settingsActions.js'
+         setLooping } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -9,13 +9,13 @@ import { setCurrentNote, setNextNote, setScaleTone } from '../../actions/current
 import KeyDropdown from './KeyDropdown'
 import ScaleTypeDropdown from './ScaleTypeDropdown'
 import TempoSlider from './TempoSlider'
+import RepeatCheckbox from './RepeatCheckbox'
 import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef, setScaleTone, setRepeatTopNote,
-                    repeatTopNote }) => {
+                    guitarSamplerRef, pianoSamplerRef, setScaleTone, repeatTopNote }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -40,7 +40,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
 
 
   const toggleLooping = (e) => {
-    if (e.code === 'Space') loopingRef.current ? stopLoop() : startLoop()
+    if (e.code === 'Space'){
+      loopingRef.current ? stopLoop() : startLoop()
+      e.stopPropagation()
+    }
   }
 
   useEffect(() => {
@@ -77,7 +80,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       setScheduleId(schedulingId)
     }
      // eslint-disable-next-line
-  }, [currentKey, scaleType])
+  }, [currentKey, scaleType, repeatTopNote])
 
   useEffect(() => {
     transportRef.current.bpm.value = currentBPM
@@ -114,13 +117,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
-      <div>
-        <input
-          type="checkbox"
-          onChange={() => setRepeatTopNote(!repeatTopNote)}
-          checked={repeatTopNote}/>
-        <div>Repeat Top Note?</div>
-      </div>
+      <RepeatCheckbox />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton
@@ -174,8 +171,7 @@ const mapDispatchToProps = dispatch => {
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading()),
-    setRepeatTopNote: repeat => dispatch(setRepeatTopNote(repeat))
+    doneLoading: () => dispatch(doneLoading())
   }
 }
 

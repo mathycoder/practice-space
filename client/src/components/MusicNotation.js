@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
 const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
-                         keyNotes, scaleIndex, accidentals, scaleType }) => {
+                         keyNotes, scaleIndex, accidentals, scaleType,
+                         repeatTopNote }) => {
   const [VF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const rendererRef2 = useRef(null)
@@ -41,7 +42,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   useEffect(() => {
     if (currentKey) renderKey(currentKey)
      // eslint-disable-next-line
-  }, [currentKey, currentNote, scaleType])
+  }, [currentKey, currentNote, scaleType, repeatTopNote])
 
 
   const generateNotes = () => {
@@ -84,6 +85,14 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     rendererRef.current.resize(canvasWidth*factor, 120*factor)
     rendererRef2.current.resize(canvasWidth*factor, 120*factor)
 
+    // grab the notes for each stave from keys()
+    const notesArray = generateNotes()
+
+    const notes = notesArray.slice(0,4)
+    const notes2 = notesArray.slice(4,8)
+    const notes3 = notesArray.slice(8, 12)
+    const notes4 = notesArray.slice(12)
+
     // create each stave, which functions as a measure
     const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth);
     stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
@@ -96,17 +105,13 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     stave3.addClef("treble").addKeySignature(keySignature);
     stave3.setContext(contextRef2.current).draw();
 
-    const stave4 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, (measureWidth/2)*1.3).addTimeSignature("2/4");
+    const stave4 = notes4.length < 4
+      ? new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, timeSignatureWidth + measureWidth*(notes4.length/4)).addTimeSignature(`${notes4.length}/4`)
+      : new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, measureWidth)
+
     stave4.setEndBarType(VF.Barline.type.REPEAT_END)
     stave4.setContext(contextRef2.current).draw();
 
-    // grab the notes for each stave from keys()
-    const notesArray = generateNotes()
-
-    const notes = notesArray.slice(0,4)
-    const notes2 = notesArray.slice(4,8)
-    const notes3 = notesArray.slice(8, 12)
-    const notes4 = notesArray.slice(12, 14)
 
     // draw notes on each stave/measure
     let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
@@ -125,9 +130,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef2.current, stave3)
 
-    voice = new VF.Voice({num_beats: 2,  beat_value: 4});
+    voice = new VF.Voice({num_beats: notes4.length,  beat_value: 4});
     voice.addTickables(notes4);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*0.9/2);
+    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes4.length/4));
     voice.draw(contextRef2.current, stave4)
   }
 
@@ -168,7 +173,8 @@ const mapStateToProps = state => {
     keyNotes: state.settings.keyNotes,
     scaleIndex: state.settings.scaleIndex,
     accidentals: state.settings.accidentals,
-    scaleType: state.settings.scaleType
+    scaleType: state.settings.scaleType,
+    repeatTopNote: state.settings.repeatTopNote
   }
 }
 
