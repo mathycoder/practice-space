@@ -6,7 +6,7 @@ import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import {Animated} from "react-animated-css";
 
 const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
-                     currentCategory, nextNote, tempo, looping }) => {
+                     currentCategory, nextNote, tempo, looping, accidentals }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
   //const samplerRef = useRef(null)
   const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -14,20 +14,40 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
-    //samplerRef.current = sampler('guitar').toMaster()
     guitarSamplerRef.current.toMaster()
   }, [])
+
+  const notesArray = () => {
+    if (currentCategory === 'sharps'){
+      if (accidentals <=5){
+        return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      } else if (accidentals === 6){
+        return ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      } else {
+        return ['B#', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      }
+    } else {
+      if (accidentals <=5){
+        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+      } else if (accidentals === 6){
+        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
+      } else {
+        return ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
+      }
+    }
+  }
 
   const calculateCurrentNote = (string, fret, uppercase = false) => {
     const rawStringIndex= STRING_INDICES[string]
     const fretIndex = (rawStringIndex + fret) % 12
-    const octave = Math.floor((rawStringIndex + fret) / 12) + 1
-    return uppercase ? `${NOTES[fretIndex]}${octave}` : `${NOTES[fretIndex].toLowerCase()}${octave}`
+    let octave = Math.floor((rawStringIndex + fret) / 12) + 1
+    if (notesArray()[fretIndex] === 'Cb') octave+=1
+    if (notesArray()[fretIndex] === 'B#') octave-=1
+    return uppercase ? `${notesArray()[fretIndex]}${octave}` : `${notesArray()[fretIndex].toLowerCase()}${octave}`
   }
 
   const clickNote = () => {
     const currNote = calculateCurrentNote(overFret.string, overFret.fret, true)
-    // samplerRef.current.triggerAttackRelease(currNote, '4n');
     guitarSamplerRef.current.triggerAttackRelease(currNote, '4n');
     setCurrentNote(currNote)
   }
@@ -86,6 +106,7 @@ const mapStateToProps = state => {
     nextNote: state.currentNote.next,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
+    accidentals: state.settings.accidentals,
     tempo: state.settings.bpm,
     looping: state.settings.looping
   }
