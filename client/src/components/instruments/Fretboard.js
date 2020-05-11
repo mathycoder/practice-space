@@ -17,7 +17,6 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
 
   useEffect(() => {
     notesRef.current = notesArray()
-    console.log(notesRef.current)
   }, [keyNotes])
 
   const notesArray = () => {

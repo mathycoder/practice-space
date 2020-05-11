@@ -7,30 +7,33 @@ import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import './css/keyboard.css'
 
 const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
-                   setCurrentNote, looping, loading, pianoSamplerRef }) => {
+                   setCurrentNote, looping, loading, pianoSamplerRef, keyNotes }) => {
+  const notesRef = useRef(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
   const { width } = useWindowDimensions();
   const componentWidth = width > 900 ? 900*0.8 : width*0.8
-  // const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-  //                                            : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+
+  useEffect(() => {
+    notesRef.current = notesArray()
+  }, [keyNotes])
 
   const notesArray = () => {
-    if (currentCategory === 'sharps'){
-      if (accidentals <=5){
-        return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-      } else if (accidentals === 6){
-        return ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-      } else {
-        return ['B#', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    const notes = currentCategory === 'sharps'
+    ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+    keyNotes.forEach(tone => {
+      const letter = tone.split("/")[0].toUpperCase()
+      if (!notes.includes(letter)){
+        const baseIndex = notes.indexOf(letter[0])
+        if (letter[1] === '#'){
+            notes[(baseIndex+1)%12] = letter
+        } else if (letter[1] === 'X'){
+           notes[(baseIndex+2)%12] = letter
+        } else if (letter[1] === 'B'){
+           notes[(baseIndex-1 + 12)%12] = `${letter[0]}b`
+        }
       }
-    } else {
-      if (accidentals <=5){
-        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
-      } else if (accidentals === 6){
-        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
-      } else {
-        return ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
-      }
-    }
+    })
+    return notes
   }
 
 
@@ -39,7 +42,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
   }, [])
 
   const calculateCurrentNote = (midiNumber, capitalize=false) => {
-    const letter = capitalize ? notesArray()[midiNumber % 12] : notesArray()[midiNumber % 12].toLowerCase()
+    const letter = capitalize ? notesRef.current[midiNumber % 12] : notesRef.current[midiNumber % 12].toLowerCase()
     const octave = Math.floor(midiNumber / 12) - 1
     return `${letter}${octave}`
   }
@@ -59,6 +62,12 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
     if (letter === 'fb') return `e${octave}`
     if (letter === 'e#') return `f${octave}`
     if (letter === 'b#') return `c${octave+1}`
+    if (letter === 'ax') return `b${octave}`
+    if (letter === 'bx') return `c#${octave+1}`
+    if (letter === 'cx') return `d${octave}`
+    if (letter === 'dx') return `e${octave}`
+    if (letter === 'fx') return `g${octave}`
+    if (letter === 'gx') return `a${octave}`
     return currNote
   }
 
@@ -97,7 +106,8 @@ const mapStateToProps = state => {
     currentCategory: state.settings.category,
     accidentals: state.settings.accidentals,
     looping: state.settings.looping,
-    loading: state.settings.loading
+    loading: state.settings.loading,
+    keyNotes: state.settings.keyNotes
   }
 }
 
