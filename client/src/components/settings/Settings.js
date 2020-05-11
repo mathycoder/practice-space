@@ -53,10 +53,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         resetIndex()
       }
 
-      // const letterConverter = letter => {
-      //   letter === 'A'
-      // }
-
       const notes = scale.map(noteInd => {
         //need to look like a3
         let note = keyNotes[noteInd]

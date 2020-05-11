@@ -8,9 +8,6 @@ import {Animated} from "react-animated-css";
 const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
                      currentCategory, nextNote, tempo, looping, accidentals }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
-  //const samplerRef = useRef(null)
-  const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-                                             : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
 
   useEffect(() => {
@@ -18,6 +15,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
   }, [])
 
   const notesArray = () => {
+    
     if (currentCategory === 'sharps'){
       if (accidentals <=5){
         return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
