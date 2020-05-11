@@ -6,42 +6,48 @@ import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import {Animated} from "react-animated-css";
 
 const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
-                     currentCategory, nextNote, tempo, looping, accidentals }) => {
+                     currentCategory, nextNote, tempo, looping, accidentals, keyNotes }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
+  const notesRef = useRef(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
 
   useEffect(() => {
     guitarSamplerRef.current.toMaster()
   }, [])
 
+  useEffect(() => {
+    notesRef.current = notesArray()
+    console.log(notesRef.current)
+  }, [keyNotes])
+
   const notesArray = () => {
-    
-    if (currentCategory === 'sharps'){
-      if (accidentals <=5){
-        return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-      } else if (accidentals === 6){
-        return ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-      } else {
-        return ['B#', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    const notes = currentCategory === 'sharps'
+    ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+    keyNotes.forEach(tone => {
+      const letter = tone.split("/")[0].toUpperCase()
+      if (!notes.includes(letter)){
+        const baseIndex = notes.indexOf(letter[0])
+        if (letter[1] === '#'){
+            notes[(baseIndex+1)%12] = letter
+        } else if (letter[1] === 'X'){
+           notes[(baseIndex+2)%12] = letter
+        } else if (letter[1] === 'B'){
+           notes[(baseIndex-1 + 12)%12] = `${letter[0]}b`
+        }
       }
-    } else {
-      if (accidentals <=5){
-        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
-      } else if (accidentals === 6){
-        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
-      } else {
-        return ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
-      }
-    }
+    })
+    return notes
   }
+
 
   const calculateCurrentNote = (string, fret, uppercase = false) => {
     const rawStringIndex= STRING_INDICES[string]
     const fretIndex = (rawStringIndex + fret) % 12
     let octave = Math.floor((rawStringIndex + fret) / 12) + 1
-    if (notesArray()[fretIndex] === 'Cb') octave+=1
-    if (notesArray()[fretIndex] === 'B#') octave-=1
-    return uppercase ? `${notesArray()[fretIndex]}${octave}` : `${notesArray()[fretIndex].toLowerCase()}${octave}`
+    if (notesRef.current[fretIndex] === 'Cb') octave+=1
+    if (notesRef.current[fretIndex] === 'B#') octave-=1
+    return uppercase ? `${notesRef.current[fretIndex]}${octave}` : `${notesRef.current[fretIndex].toLowerCase()}${octave}`
   }
 
   const clickNote = () => {
@@ -106,7 +112,8 @@ const mapStateToProps = state => {
     currentCategory: state.settings.category,
     accidentals: state.settings.accidentals,
     tempo: state.settings.bpm,
-    looping: state.settings.looping
+    looping: state.settings.looping,
+    keyNotes: state.settings.keyNotes
   }
 }
 
