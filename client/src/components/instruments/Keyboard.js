@@ -6,19 +6,40 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import './css/keyboard.css'
 
-const Keyboard = ({currentNote, currentKey, currentCategory,
+const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
                    setCurrentNote, looping, loading, pianoSamplerRef }) => {
   const { width } = useWindowDimensions();
   const componentWidth = width > 900 ? 900*0.8 : width*0.8
-  const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-                                             : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+  // const NOTES = currentCategory === 'sharps' ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+  //                                            : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+
+  const notesArray = () => {
+    if (currentCategory === 'sharps'){
+      if (accidentals <=5){
+        return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      } else if (accidentals === 6){
+        return ['C', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      } else {
+        return ['B#', 'C#', 'D', 'D#', 'E', 'E#', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+      }
+    } else {
+      if (accidentals <=5){
+        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+      } else if (accidentals === 6){
+        return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
+      } else {
+        return ['C', 'Db', 'D', 'Eb', 'Fb', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'Cb']
+      }
+    }
+  }
+
 
   useEffect(() => {
     pianoSamplerRef.current.toMaster()
   }, [])
 
   const calculateCurrentNote = (midiNumber, capitalize=false) => {
-    const letter = capitalize ? NOTES[midiNumber % 12] : NOTES[midiNumber % 12].toLowerCase()
+    const letter = capitalize ? notesArray()[midiNumber % 12] : notesArray()[midiNumber % 12].toLowerCase()
     const octave = Math.floor(midiNumber / 12) - 1
     return `${letter}${octave}`
   }
@@ -74,6 +95,7 @@ const mapStateToProps = state => {
     currentNote: state.currentNote.current,
     currentKey: state.settings.key,
     currentCategory: state.settings.category,
+    accidentals: state.settings.accidentals,
     looping: state.settings.looping,
     loading: state.settings.loading
   }
