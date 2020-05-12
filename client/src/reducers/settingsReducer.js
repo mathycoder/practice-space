@@ -289,11 +289,12 @@ const keyNotesObj = {
 }
 
 const countAccidentals = (key, scaleType) => {
-  const notes = keyNotesObj[key][scaleType]
+  const scaleTypeKey = scaleType.includes("minor") ? 'nat. minor' : 'major'
+  const notes = keyNotesObj[key][scaleTypeKey]
   let accidentals = 0
   notes.forEach(note => {
     if (note[1] === '#' || note[1] === 'b') accidentals++
   })
-  if (scaleType === 'harm. minor') accidentals -= 1
+  // if (scaleType === 'harm. minor') accidentals -= 1
   return accidentals
 }
