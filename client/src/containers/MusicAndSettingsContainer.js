@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import MusicNotation from '../components/MusicNotation'
+import MusicNotation from '../components/notation/MusicNotation'
 import Settings from '../components/settings/Settings'
 import { connect } from 'react-redux'
 

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Vex from 'vexflow'
 import { connect } from 'react-redux'
-import useWindowDimensions from '../hooks/useWindowDimensions.js'
+import useWindowDimensions from '../../hooks/useWindowDimensions.js'
 
 const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
                          keyNotes, scaleIndex, accidentals, scaleType,
@@ -41,7 +41,14 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }, [])
 
   useEffect(() => {
-    if (currentKey) renderKey(currentKey)
+    if (currentKey) {
+      // erase svg canvases
+      if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
+      if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
+      rendererRef.current.resize(canvasWidth*factor, 120*factor)
+      rendererRef2.current.resize(canvasWidth*factor, 120*factor)
+      renderKey()
+    }
      // eslint-disable-next-line
   }, [currentKey, currentNote, scaleType, scaleShape, repeatTopNote])
 
@@ -69,134 +76,55 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         : new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'}).
             addAccidental(0, new VF.Accidental(accidental))
 
-
       if (index === (scaleIndex%scale.length)) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
 
       return myNote
     })
   }
 
+  const calculateStaveWidth = (i, notes) => {
+    return i === 0
+      ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth + timeSignatureWidth
+      : i % 2 === 0
+        ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth
+        : measureWidth*(notes.length/4)
+  }
+
+  const calculateStaveOffsetX = i => {
+    return i === 1
+      ? measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth
+      : i % 2 === 1
+        ? measureWidth + accidentalWidth + trebleWidth
+        : 0
+  }
+
   const renderKey = () => {
-    // erase svg canvases
-    if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
-    if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
-
     const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
-
-    rendererRef.current.resize(canvasWidth*factor, 120*factor)
-    rendererRef2.current.resize(canvasWidth*factor, 120*factor)
-
-    // grab the notes for each stave from keys()
     const notesArray = generateNotes()
 
-
     for (let i=0; 4*i < notesArray.length; i++){
+      // generate variables
+      const context = (i / 2 < 1) ? contextRef : contextRef2
       const notes = notesArray.slice(0 + 4*i, 4+4*i)
       const lastMeasure = (i+1)*4 >= notesArray.length ? true : false
-
-      let staveWidth = i === 0
-        ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth + timeSignatureWidth
-        : i % 2 === 0
-          ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth
-          : measureWidth*(notes.length/4)
-
+      let staveWidth = calculateStaveWidth(i, notes)
       if (lastMeasure) staveWidth *= 1.1
+      const staveOffsetX = calculateStaveOffsetX(i)
 
-      const staveOffsetX = i === 1
-        ? measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth
-        : i % 2 === 1
-          ? measureWidth + accidentalWidth + trebleWidth
-          : 0
-
+      // build and draw the stave/measure
       const stave = new VF.Stave(staveOffsetX, 0, staveWidth)
-
-      if (i === 0){
-        stave.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
-      } else if (i % 2 === 0){
-        stave.addClef("treble").addKeySignature(keySignature);
-      }
-
+      if (i % 2 === 0) stave.addClef("treble").addKeySignature(keySignature)
+      if (i === 0) stave.addTimeSignature("4/4")
       if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
 
-      if (i / 2 < 1) {
-        stave.setContext(contextRef.current).draw();
-      } else {
-        stave.setContext(contextRef2.current).draw();
-      }
-
+      // build and draw the notes
       const voice = new VF.Voice({num_beats: notes.length,  beat_value: 4});
       voice.addTickables(notes);
       const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes.length/4))
-
-      if (i / 2 < 1) {
-        voice.draw(contextRef.current, stave)
-      } else {
-        voice.draw(contextRef2.current, stave)
-      }
+      stave.setContext(context.current).draw()
+      voice.draw(context.current, stave)
     }
-
-
-    // const notes = notesArray.slice(0,4)
-    // const notes2 = notesArray.slice(4,8)
-    // const notes3 = notesArray.slice(8, 12)
-    // const notes4 = notesArray.slice(12)
-    //
-    //
-    //
-    // const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth);
-    // stave1.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
-    // stave1.setContext(contextRef.current).draw();
-    //
-    // let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-    // voice.addTickables(notes);
-    // let formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
-    // voice.draw(contextRef.current, stave1)
-    //
-    //
-    // const stave2 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth, 0, measureWidth);
-    // stave2.setContext(contextRef.current).draw();
-    //
-    // voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-    // voice.addTickables(notes2);
-    // formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
-    // voice.draw(contextRef.current, stave2)
-    //
-    //
-    // const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth);
-    // stave3.addClef("treble").addKeySignature(keySignature);
-    // stave3.setContext(contextRef2.current).draw();
-    //
-    // voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-    // voice.addTickables(notes3);
-    // formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
-    // voice.draw(contextRef2.current, stave3)
-    //
-    //
-    // const stave4 = notes4.length < 4
-    //   ? new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, timeSignatureWidth + measureWidth*(notes4.length/4)).addTimeSignature(`${notes4.length}/4`)
-    //   : new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, measureWidth)
-    //
-    // stave4.setEndBarType(VF.Barline.type.REPEAT_END)
-    // stave4.setContext(contextRef2.current).draw();
-    //
-    // voice = new VF.Voice({num_beats: notes4.length,  beat_value: 4});
-    // voice.addTickables(notes4);
-    // formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes4.length/4));
-    // voice.draw(contextRef2.current, stave4)
   }
-
-// alternate strategy
-  // const notes = notesArray.slice(0,4)
-  // const stave = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth);
-  // stave.addClef("treble").addTimeSignature("4/4").addKeySignature(keySignature);
-  // stave.setContext(contextRef.current).draw();
-  //
-  // let voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-  // voice.addTickables(notes);
-  // let formatter = new VF.Formatter().joinVoices([voice]).formatToStave([voice], stave)
-  // voice.draw(contextRef.current, stave)
-
-
 
   return (
     <div style={styles.staffWrapper}>
