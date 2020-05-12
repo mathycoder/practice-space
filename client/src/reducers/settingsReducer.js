@@ -9,6 +9,7 @@ const settingsReducer = combineReducers({
   scale: scaleReducer,
   scaleIndex: scaleIndexReducer,
   scaleType: scaleTypeReducer,
+  scaleShape: scaleShapeReducer,
   accidentals: accidentalsReducer,
   looping: loopingReducer,
   loading: loadingReducer,
@@ -77,6 +78,17 @@ function scaleTypeReducer(state = 'major', action){
     case 'SET_KEY':
       //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.scaleType
+
+    default:
+      return state;
+  }
+}
+
+function scaleShapeReducer(state = 'Ascending and Descending', action){
+  switch(action.type) {
+    case 'SET_SHAPE':
+      //if (!keyNotesObj[action.key][action.scaleType]) return state
+      return action.scaleShape
 
     default:
       return state;

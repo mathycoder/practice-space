@@ -2,6 +2,10 @@ export function setKey(key, scaleType){
   return {type: 'SET_KEY', key: key, scaleType: scaleType}
 }
 
+export function setScaleShape(scaleShape){
+  return {type: 'SET_SHAPE', scaleShape: scaleShape}
+}
+
 export function setBPM(bpm){
   return {type: 'SET_BPM', bpm: bpm}
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex, resetIndex,
-         setLooping } from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex, resetIndex, setScaleShape,
+         setLooping, isLoading, doneLoading } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -8,14 +8,15 @@ import BigButton from '../elements/BigButton'
 import { setCurrentNote, setNextNote, setScaleTone } from '../../actions/currentNoteActions.js'
 import KeyDropdown from './KeyDropdown'
 import ScaleTypeDropdown from './ScaleTypeDropdown'
+import ScaleShapeDropdown from './ScaleShapeDropdown'
 import TempoSlider from './TempoSlider'
 import RepeatCheckbox from './RepeatCheckbox'
-import { isLoading, doneLoading } from '../../actions/settingsActions.js'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
-                    guitarSamplerRef, pianoSamplerRef, setScaleTone, repeatTopNote }) => {
+                    guitarSamplerRef, pianoSamplerRef, setScaleTone, repeatTopNote,
+                    scaleShape, setScaleShape }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -117,6 +118,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
+      <ScaleShapeDropdown
+        scaleShape={scaleShape}
+        callback={(obj) => {
+          setScaleShape(obj.value)
+          stopLoop()
+        }}
+      />
       <RepeatCheckbox />
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
@@ -156,7 +164,8 @@ const mapStateToProps = state => {
     looping: state.settings.looping,
     loading: state.settings.loading,
     scaleType: state.settings.scaleType,
-    repeatTopNote: state.settings.repeatTopNote
+    repeatTopNote: state.settings.repeatTopNote,
+    scaleShape: state.settings.scaleShape
   }
 }
 
@@ -167,6 +176,7 @@ const mapDispatchToProps = dispatch => {
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     setNextNote: note => dispatch(setNextNote(note)),
     setScaleTone: tone => dispatch(setScaleTone(tone)),
+    setScaleShape: shape => dispatch(setScaleShape(shape)),
     nextIndex: () => dispatch(nextIndex()),
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
