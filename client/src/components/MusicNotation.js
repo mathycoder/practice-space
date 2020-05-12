@@ -5,7 +5,7 @@ import useWindowDimensions from '../hooks/useWindowDimensions.js'
 
 const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
                          keyNotes, scaleIndex, accidentals, scaleType,
-                         repeatTopNote }) => {
+                         repeatTopNote, scaleShape }) => {
   const [VF] = useState(Vex.Flow)
   const rendererRef = useRef(null)
   const rendererRef2 = useRef(null)
@@ -42,7 +42,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   useEffect(() => {
     if (currentKey) renderKey(currentKey)
      // eslint-disable-next-line
-  }, [currentKey, currentNote, scaleType, repeatTopNote])
+  }, [currentKey, currentNote, scaleType, scaleShape, repeatTopNote])
 
 
   const generateNotes = () => {
@@ -90,8 +90,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
     const notes = notesArray.slice(0,4)
     const notes2 = notesArray.slice(4,8)
-    const notes3 = notesArray.slice(8, 12)
-    const notes4 = notesArray.slice(12)
+    // const notes3 = notesArray.slice(8, 12)
+    // const notes4 = notesArray.slice(12)
 
     // create each stave, which functions as a measure
     const stave1 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth);
@@ -101,16 +101,16 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     const stave2 = new VF.Stave(measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth, 0, measureWidth);
     stave2.setContext(contextRef.current).draw();
 
-    const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth);
-    stave3.addClef("treble").addKeySignature(keySignature);
-    stave3.setContext(contextRef2.current).draw();
-
-    const stave4 = notes4.length < 4
-      ? new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, timeSignatureWidth + measureWidth*(notes4.length/4)).addTimeSignature(`${notes4.length}/4`)
-      : new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, measureWidth)
-
-    stave4.setEndBarType(VF.Barline.type.REPEAT_END)
-    stave4.setContext(contextRef2.current).draw();
+    // const stave3 = new VF.Stave(0, 0, measureWidth + accidentalWidth + trebleWidth);
+    // stave3.addClef("treble").addKeySignature(keySignature);
+    // stave3.setContext(contextRef2.current).draw();
+    //
+    // const stave4 = notes4.length < 4
+    //   ? new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, timeSignatureWidth + measureWidth*(notes4.length/4)).addTimeSignature(`${notes4.length}/4`)
+    //   : new VF.Stave(measureWidth + accidentalWidth + trebleWidth, 0, measureWidth)
+    //
+    // stave4.setEndBarType(VF.Barline.type.REPEAT_END)
+    // stave4.setContext(contextRef2.current).draw();
 
 
     // draw notes on each stave/measure
@@ -125,15 +125,15 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
     voice.draw(contextRef.current, stave2)
 
-    voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-    voice.addTickables(notes3);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
-    voice.draw(contextRef2.current, stave3)
-
-    voice = new VF.Voice({num_beats: notes4.length,  beat_value: 4});
-    voice.addTickables(notes4);
-    formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes4.length/4));
-    voice.draw(contextRef2.current, stave4)
+    // voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+    // voice.addTickables(notes3);
+    // formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth);
+    // voice.draw(contextRef2.current, stave3)
+    //
+    // voice = new VF.Voice({num_beats: notes4.length,  beat_value: 4});
+    // voice.addTickables(notes4);
+    // formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes4.length/4));
+    // voice.draw(contextRef2.current, stave4)
   }
 
   return (
@@ -174,6 +174,7 @@ const mapStateToProps = state => {
     scaleIndex: state.settings.scaleIndex,
     accidentals: state.settings.accidentals,
     scaleType: state.settings.scaleType,
+    scaleShape: state.settings.scaleShape,
     repeatTopNote: state.settings.repeatTopNote
   }
 }

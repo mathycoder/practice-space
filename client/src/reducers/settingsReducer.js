@@ -153,6 +153,15 @@ function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
     case 'SET_REPEAT_TOP_NOTE':
       return action.repeat ? [0,1,2,3,4,5,6,7,7,6,5,4,3,2,1, 0] : [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
 
+    case 'SET_SHAPE':
+      if (action.scaleShape === 'Ascending and Descending'){
+        return [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
+      } else if (action.scaleShape === 'Ascending'){
+        return [0,1,2,3,4,5,6,7]
+      } else if (action.scaleShape === 'Descending'){
+        return [7,6,5,4,3,2,1,0]
+      }
+
     default:
       return state;
   }
