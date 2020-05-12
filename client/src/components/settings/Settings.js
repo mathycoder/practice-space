@@ -125,7 +125,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
-      <RepeatCheckbox />
+    {/* <RepeatCheckbox /> */}
       <TempoSlider value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton
