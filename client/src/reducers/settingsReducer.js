@@ -294,5 +294,6 @@ const countAccidentals = (key, scaleType) => {
   notes.forEach(note => {
     if (note[1] === '#' || note[1] === 'b') accidentals++
   })
+  if (scaleType === 'harm. minor') accidentals -= 1
   return accidentals
 }
