@@ -52,7 +52,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       renderKey()
     }
      // eslint-disable-next-line
-  }, [currentKey, scaleIndex, scaleType, scaleShape, repeatTopNote])
+  }, [currentKey, scaleIndex, scaleType, scaleShape, scale, repeatTopNote])
 
 
   const generateNotes = () => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState} from 'react'
-import { setKey, setBPM, nextIndex, resetIndex, setScaleShape,
-         setLooping, isLoading, doneLoading, setScaleRepetition } from '../../actions/settingsActions.js'
+import { setKey, setBPM, nextIndex, resetIndex,
+         setLooping, isLoading, doneLoading,
+         setScaleShapeAndRepetition } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -16,7 +17,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
                     guitarSamplerRef, pianoSamplerRef, setScaleTone, repeatTopNote,
-                    scaleShape, setScaleShape, scaleRepetition, setScaleRepetition }) => {
+                    scaleShape, scaleRepetition, setScaleShapeAndRepetition }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -121,14 +122,15 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       <ScaleShapeDropdown
         scaleShape={scaleShape}
         callback={(obj) => {
-          setScaleShape(obj.value)
+          // setScaleShape(obj.value)
+          setScaleShapeAndRepetition(obj.value, scaleRepetition)
           stopLoop()
         }}
       />
       <ScaleRepetitionDropdown
         scaleRepetition={scaleRepetition}
         callback={(obj) => {
-          setScaleRepetition(obj.value)
+          setScaleShapeAndRepetition(scaleShape, obj.value)
           stopLoop()
         }}
       />
@@ -183,13 +185,12 @@ const mapDispatchToProps = dispatch => {
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     setNextNote: note => dispatch(setNextNote(note)),
     setScaleTone: tone => dispatch(setScaleTone(tone)),
-    setScaleShape: shape => dispatch(setScaleShape(shape)),
     nextIndex: () => dispatch(nextIndex()),
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
     doneLoading: () => dispatch(doneLoading()),
-    setScaleRepetition: repetition => dispatch(setScaleRepetition(repetition))
+    setScaleShapeAndRepetition: (scaleShape, scaleRepetition) => dispatch(setScaleShapeAndRepetition(scaleShape, scaleRepetition))
   }
 }
 

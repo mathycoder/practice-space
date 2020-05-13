@@ -19,16 +19,6 @@ const settingsReducer = combineReducers({
 export default settingsReducer
 
 
-function scaleRepetitionReducer(state = "None", action){
-  switch(action.type) {
-    case 'SET_SCALE_REPETITION':
-      return action.repetition
-
-    default:
-      return state;
-  }
-}
-
 function loadingReducer(state = false, action){
   switch(action.type) {
     case 'IS_LOADING':
@@ -86,9 +76,19 @@ function scaleTypeReducer(state = 'major', action){
 
 function scaleShapeReducer(state = 'Ascending and Descending', action){
   switch(action.type) {
-    case 'SET_SHAPE':
+    case 'SET_SCALE_SHAPE_AND_REPETITION':
       //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.scaleShape
+
+    default:
+      return state;
+  }
+}
+
+function scaleRepetitionReducer(state = "None", action){
+  switch(action.type) {
+    case 'SET_SCALE_SHAPE_AND_REPETITION':
+      return action.scaleRepetition
 
     default:
       return state;
@@ -155,12 +155,12 @@ function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
 
 // [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3,3,2,2,1,1]
 
-    case 'SET_SHAPE':
+    case 'SET_SCALE_SHAPE_AND_REPETITION':
       if (action.scaleShape === 'Ascending and Descending'){
         return [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
       } else if (action.scaleShape === 'Ascending'){
         return [0,1,2,3,4,5,6,7]
-      } else if (action.scaleShape === 'Descending'){
+      } else {
         return [7,6,5,4,3,2,1,0]
       }
 

@@ -2,8 +2,12 @@ export function setKey(key, scaleType){
   return {type: 'SET_KEY', key: key, scaleType: scaleType}
 }
 
-export function setScaleShape(scaleShape){
-  return {type: 'SET_SHAPE', scaleShape: scaleShape}
+// export function setScaleRepetition(repetition){
+//   return {type: 'SET_SCALE_REPETITION', repetition: repetition}
+// }
+
+export function setScaleShapeAndRepetition(scaleShape, scaleRepetition){
+  return {type: 'SET_SCALE_SHAPE_AND_REPETITION', scaleShape: scaleShape, scaleRepetition: scaleRepetition}
 }
 
 export function setBPM(bpm){
@@ -32,8 +36,4 @@ export function isLoading(){
 
 export function doneLoading(){
   return {type: 'DONE_LOADING'}
-}
-
-export function setScaleRepetition(repetition){
-  return {type: 'SET_SCALE_REPETITION', repetition: repetition}
 }
