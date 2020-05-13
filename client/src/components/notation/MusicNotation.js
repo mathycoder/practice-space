@@ -7,10 +7,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
                          keyNotes, scaleIndex, accidentals, scaleType,
                          repeatTopNote, scaleShape }) => {
   const [VF] = useState(Vex.Flow)
-  const rendererRef = useRef(null)
-  const rendererRef2 = useRef(null)
-  const contextRef = useRef(null)
-  const contextRef2 = useRef(null)
+  const rendererRefs = useRef([])
+  const contextRefs = useRef([])
   const { width } = useWindowDimensions();
 
   // constants
@@ -26,31 +24,35 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   // const canvasWidth = 500
 
   useEffect(() => {
-    const div = document.getElementById("music-canvas")
-    rendererRef.current = new VF.Renderer(div, VF.Renderer.Backends.SVG)
-    contextRef.current = rendererRef.current.getContext()
-    contextRef.current.scale(factor, factor)
-    rendererRef.current.resize(canvasWidth*factor, 120*factor)
+    for (let i = 0; i < rendererRefs.current.length; i++){
+      const div = document.getElementById(`music-canvas${i+1}`)
+      div.innerHTML = ''
+      div.innerText = ''
+    }
+    rendererRefs.current = []
+    contextRefs.current = []
 
-    const div2 = document.getElementById("music-canvas2")
-    rendererRef2.current = new VF.Renderer(div2, VF.Renderer.Backends.SVG)
-    contextRef2.current = rendererRef2.current.getContext()
-    contextRef2.current.scale(factor, factor)
-    rendererRef2.current.resize(canvasWidth*factor, 120*factor)
-     // eslint-disable-next-line
-  }, [])
+    for (let i = 0; (8*i) < scale.length; i++){
+      const div = document.getElementById(`music-canvas${i+1}`)
+      rendererRefs.current.push(new VF.Renderer(div, VF.Renderer.Backends.SVG))
+      contextRefs.current.push(rendererRefs.current[i].getContext())
+      // the line below throws an error: <svg> attribute viewBox: Expected number, "0 0 NaN NaN"
+      contextRefs.current[i].scale(factor, factor)
+      rendererRefs.current[i].resize(canvasWidth*factor, 120*factor)
+    }
+  }, [scale])
 
   useEffect(() => {
     if (currentKey) {
       // erase svg canvases
-      if (contextRef.current.svg.firstChild) contextRef.current.svg.innerHTML = ''
-      if (contextRef2.current.svg.firstChild) contextRef2.current.svg.innerHTML = ''
-      rendererRef.current.resize(canvasWidth*factor, 120*factor)
-      rendererRef2.current.resize(canvasWidth*factor, 120*factor)
+      rendererRefs.current.forEach((rendererRef, i) => {
+        if (contextRefs.current[i].svg.firstChild) contextRefs.current[i].svg.innerHTML = ''
+        if (rendererRef) rendererRef.resize(canvasWidth*factor, 120*factor)
+      })
       renderKey()
     }
      // eslint-disable-next-line
-  }, [currentKey, currentNote, scaleType, scaleShape, repeatTopNote])
+  }, [currentKey, scaleIndex, scaleType, scaleShape, repeatTopNote])
 
 
   const generateNotes = () => {
@@ -76,7 +78,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         : new VF.StaveNote({clef: "treble", keys: [currentNote], duration: '4'}).
             addAccidental(0, new VF.Accidental(accidental))
 
-      if (index === (scaleIndex%scale.length)) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
+      if (index === ((scaleIndex-1)%scale.length)) myNote.setStyle({fillStyle: "rgb(48, 140, 223)", strokeStyle: "rgb(48, 140, 223)"});
 
       return myNote
     })
@@ -104,7 +106,19 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
     for (let i=0; 4*i < notesArray.length; i++){
       // generate variables
-      const context = (i / 2 < 1) ? contextRef : contextRef2
+      let context
+      let renderer
+
+      if (Math.floor(i / 2) === 0){
+        context = contextRefs.current[0]
+      } else if (Math.floor(i / 2) === 1){
+        context = contextRefs.current[1]
+      } else if (Math.floor(i / 2) === 2){
+        context = contextRefs.current[2]
+      } else if (Math.floor(i / 2) === 3){
+          context = contextRefs.current[3]
+      }
+
       const notes = notesArray.slice(0 + 4*i, 4+4*i)
       const lastMeasure = (i+1)*4 >= notesArray.length ? true : false
       let staveWidth = calculateStaveWidth(i, notes)
@@ -121,15 +135,17 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       const voice = new VF.Voice({num_beats: notes.length,  beat_value: 4});
       voice.addTickables(notes);
       const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes.length/4))
-      stave.setContext(context.current).draw()
-      voice.draw(context.current, stave)
+      stave.setContext(context).draw()
+      voice.draw(context, stave)
     }
   }
 
   return (
     <div style={styles.staffWrapper}>
-      <div id="music-canvas" style={styles.canvasStyle}></div>
-      <div id="music-canvas2" style={styles.canvasStyle2}></div>
+      <div id="music-canvas1" style={styles.canvasStyle}></div>
+      <div id="music-canvas2" style={styles.canvasStyle}></div>
+        <div id="music-canvas3" style={styles.canvasStyle}></div>
+        <div id="music-canvas4" style={styles.canvasStyle}></div>
     </div>
   )
 }
