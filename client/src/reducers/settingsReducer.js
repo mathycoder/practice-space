@@ -10,19 +10,19 @@ const settingsReducer = combineReducers({
   scaleIndex: scaleIndexReducer,
   scaleType: scaleTypeReducer,
   scaleShape: scaleShapeReducer,
+  scaleRepetition: scaleRepetitionReducer,
   accidentals: accidentalsReducer,
   looping: loopingReducer,
-  loading: loadingReducer,
-  repeatTopNote: repeatTopNoteReducer
+  loading: loadingReducer
 })
 
 export default settingsReducer
 
 
-function repeatTopNoteReducer(state = false, action){
+function scaleRepetitionReducer(state = "None", action){
   switch(action.type) {
-    case 'SET_REPEAT_TOP_NOTE':
-      return action.repeat
+    case 'SET_SCALE_REPETITION':
+      return action.repetition
 
     default:
       return state;

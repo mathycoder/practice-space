@@ -34,6 +34,6 @@ export function doneLoading(){
   return {type: 'DONE_LOADING'}
 }
 
-export function setRepeatTopNote(repeat){
-  return {type: 'SET_REPEAT_TOP_NOTE', repeat: repeat}
+export function setScaleRepetition(repetition){
+  return {type: 'SET_SCALE_REPETITION', repetition: repetition}
 }
