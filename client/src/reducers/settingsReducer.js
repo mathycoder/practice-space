@@ -156,13 +156,7 @@ function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
 // [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3,3,2,2,1,1]
 
     case 'SET_SCALE_SHAPE_AND_REPETITION':
-      if (action.scaleShape === 'Ascending and Descending'){
-        return [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
-      } else if (action.scaleShape === 'Ascending'){
-        return [0,1,2,3,4,5,6,7]
-      } else {
-        return [7,6,5,4,3,2,1,0]
-      }
+      return generateScale[action.scaleShape][action.scaleRepetition]
 
     default:
       return state;
@@ -179,6 +173,30 @@ function scaleIndexReducer(state=0, action){
 
     default:
       return state;
+  }
+}
+
+const generateScale = {
+  "Ascending and Descending": {
+    "None": [0,1,2,3,4,5,6,7,6,5,4,3,2,1],
+    "Top and Bottom": [0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0],
+    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3,3,2,2,1,1],
+    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,6,6,6,5,5,5,4,4,4,3,3,3,2,2,2,1,1,1],
+    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,6,6,6,6,5,5,5,5,4,4,4,4,3,3,3,3,2,2,2,2,1,1,1,1],
+  },
+  "Ascending": {
+    "None": [0,1,2,3,4,5,6,7],
+    "Top and Bottom": [0,0,1,2,3,4,5,6,7,7],
+    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7],
+    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7],
+    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7],
+  },
+  "Descending": {
+    "None": [0,1,2,3,4,5,6,7].reverse(),
+    "Top and Bottom": [0,0,1,2,3,4,5,6,7,7].reverse(),
+    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7].reverse(),
+    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7].reverse(),
+    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7].reverse(),
   }
 }
 

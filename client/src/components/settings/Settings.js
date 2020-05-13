@@ -82,7 +82,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       setScheduleId(schedulingId)
     }
      // eslint-disable-next-line
-  }, [currentKey, scaleType, scaleShape, repeatTopNote])
+  }, [currentKey, scaleType, scale])
 
   useEffect(() => {
     transportRef.current.bpm.value = currentBPM

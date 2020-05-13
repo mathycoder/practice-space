@@ -106,19 +106,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
     for (let i=0; 4*i < notesArray.length; i++){
       // generate variables
-      let context
-      let renderer
-
-      if (Math.floor(i / 2) === 0){
-        context = contextRefs.current[0]
-      } else if (Math.floor(i / 2) === 1){
-        context = contextRefs.current[1]
-      } else if (Math.floor(i / 2) === 2){
-        context = contextRefs.current[2]
-      } else if (Math.floor(i / 2) === 3){
-          context = contextRefs.current[3]
-      }
-
+      const context = contextRefs.current[Math.floor(i / 2)]
       const notes = notesArray.slice(0 + 4*i, 4+4*i)
       const lastMeasure = (i+1)*4 >= notesArray.length ? true : false
       let staveWidth = calculateStaveWidth(i, notes)
@@ -144,8 +132,12 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     <div style={styles.staffWrapper}>
       <div id="music-canvas1" style={styles.canvasStyle}></div>
       <div id="music-canvas2" style={styles.canvasStyle}></div>
-        <div id="music-canvas3" style={styles.canvasStyle}></div>
-        <div id="music-canvas4" style={styles.canvasStyle}></div>
+      <div id="music-canvas3" style={styles.canvasStyle}></div>
+      <div id="music-canvas4" style={styles.canvasStyle}></div>
+      <div id="music-canvas5" style={styles.canvasStyle}></div>
+      <div id="music-canvas6" style={styles.canvasStyle}></div>
+      <div id="music-canvas7" style={styles.canvasStyle}></div>
+      <div id="music-canvas8" style={styles.canvasStyle}></div>
     </div>
   )
 }
