@@ -108,16 +108,21 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       // generate variables
       const context = contextRefs.current[i]
       const notes = notesArray.slice(0 + 8*i, 8+8*i)
+      const notesWidth = (canvasWidth - accidentalWidth - trebleWidth)*(notes.length/8)
+      const staveWidth = notes.length === 8
+        ? canvasWidth - 5
+        : notesWidth + accidentalWidth + trebleWidth
+
       if (notes.length > 0){
         const lastMeasure = Math.floor((notesArray.length-1) / 8) === i ? true : false
-        const stave = new VF.Stave(0, 0, canvasWidth - 5)
+        const stave = new VF.Stave(0, 0, staveWidth)
         stave.addClef("treble").addKeySignature(keySignature)
         if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
 
         // build and draw the notes
         const voice = new VF.Voice({num_beats: notes.length,  beat_value: 4});
         voice.addTickables(notes);
-        const formatter = new VF.Formatter().joinVoices([voice]).format([voice], (canvasWidth - accidentalWidth - trebleWidth)*(notes.length/8));
+        const formatter = new VF.Formatter().joinVoices([voice]).format([voice], notesWidth);
         stave.setContext(context).draw()
         voice.draw(context, stave)
       }
