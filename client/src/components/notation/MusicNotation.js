@@ -85,7 +85,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }
 
   const renderKey = () => {
-    const notesPerMeasure = scaleRepetition === 'All 2x' ? 8*2 : 8
+    const notesPerMeasure = scaleRepetition === 'All 2x'
+      ? 8*2
+      : scaleRepetition === 'All 4x' ? 8*4 : 8
     const notesPerPage = notesPerMeasure*2
     const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
     const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % (scale.length)
@@ -93,8 +95,6 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     const totalPages = Math.ceil(scale.length / notesPerPage)
     const lastPage = pageNumber+1 === totalPages
     const notesArray = generateNotes(notesPerMeasure/2).slice(pageNumber*notesPerPage, (pageNumber+1)*notesPerPage)
-    console.log(scaleRepetition)
-
 
     for (let i=0; i<=1; i++){
       // generate variables
@@ -117,18 +117,14 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         const beams = VF.Beam.generateBeams(notes,
           {
             stem_direction: 1,
-            groups: [new VF.Fraction(4, 8)]
+            groups: [new VF.Fraction(2, 8)]
           })
         {
         const formatter = new VF.Formatter().joinVoices([voice]).format([voice], notesWidth);
         stave.setContext(context).draw()
         voice.draw(context, stave)
 
-  // groups: [new Vex.Flow.Fraction(2, 8)],
-  // stem_direction: -1,
-  // beam_rests: true,
-  // beam_middle_only: true,
-  // show_stemlets: false
+  // https://github.com/0xfe/vexflow/wiki/Automatic-Beaming
 }
 
         beams.forEach(function(beam) {

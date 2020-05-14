@@ -69,6 +69,8 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         return `${letter}${octave-1}`
       })
 
+      const noteSpeed = scaleRepetition === 'All 2x' ? '8n' : (scaleRepetition === 'All 4x' ? '16n' : '4n')
+
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
         let nextNote = notes[(counterRef.current + 1) % notes.length]
@@ -76,9 +78,9 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         setCurrentNote(note)
         setNextNote(nextNote)
         setScaleTone(tone)
-        samplerRef.current.triggerAttackRelease(note, '4n', time)
+        samplerRef.current.triggerAttackRelease(note, noteSpeed, time)
         nextIndex()
-      }, '4n')
+      }, noteSpeed)
       setScheduleId(schedulingId)
     }
      // eslint-disable-next-line
