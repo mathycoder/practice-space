@@ -15,38 +15,38 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   const factor = width < 800 ? 0.65 : 1
   const measureWidth = 160
   const accidentalWidth = accidentals ?
-                            (currentCategory === 'sharps' ? 10 + 11*accidentals : 10 + 8*accidentals)
+                            (currentCategory === 'sharps' ? (10 + 11*accidentals)*1.1 : (10 + 8*accidentals)*1.12)
                             : 0
   const trebleKeyWidth = 60
   const trebleWidth = 30
   const timeSignatureWidth = 30
-  const canvasWidth = (accidentalWidth + trebleKeyWidth + measureWidth*2)*1.1
-  // const canvasWidth = 500
+  // const canvasWidth = (accidentalWidth + trebleKeyWidth + measureWidth*2)*1.1
+  const canvasWidth = 445
 
   useEffect(() => {
-    for (let i = 0; i < rendererRefs.current.length; i++){
-      const div = document.getElementById(`music-canvas${i+1}`)
-      div.innerHTML = ''
-      div.innerText = ''
-    }
-    rendererRefs.current = []
-    contextRefs.current = []
+    // for (let i = 0; i < rendererRefs.current.length; i++){
+    //   const div = document.getElementById(`music-canvas${i+1}`)
+    //   div.innerHTML = ''
+    //   div.innerText = ''
+    // }
+    // rendererRefs.current = []
+    // contextRefs.current = []
 
-    for (let i = 0; (8*i) < scale.length; i++){
+    for (let i = 0; i <= 1; i++){
       const div = document.getElementById(`music-canvas${i+1}`)
       rendererRefs.current.push(new VF.Renderer(div, VF.Renderer.Backends.SVG))
       contextRefs.current.push(rendererRefs.current[i].getContext())
-      // the line below throws an error: <svg> attribute viewBox: Expected number, "0 0 NaN NaN"
       contextRefs.current[i].scale(factor, factor)
       rendererRefs.current[i].resize(canvasWidth*factor, 120*factor)
     }
-  }, [scale])
+  }, [])
 
   useEffect(() => {
     if (currentKey) {
       // erase svg canvases
       rendererRefs.current.forEach((rendererRef, i) => {
         if (contextRefs.current[i].svg.firstChild) contextRefs.current[i].svg.innerHTML = ''
+        // canvasWidth currently changes based on the size of the key signature
         if (rendererRef) rendererRef.resize(canvasWidth*factor, 120*factor)
       })
       renderKey()
@@ -104,27 +104,23 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
     const notesArray = generateNotes()
 
-    for (let i=0; 4*i < notesArray.length; i++){
+    for (let i=0; i<=1; i++){
       // generate variables
-      const context = contextRefs.current[Math.floor(i / 2)]
-      const notes = notesArray.slice(0 + 4*i, 4+4*i)
-      const lastMeasure = (i+1)*4 >= notesArray.length ? true : false
-      let staveWidth = calculateStaveWidth(i, notes)
-      if (lastMeasure) staveWidth *= 1.1
-      const staveOffsetX = calculateStaveOffsetX(i)
+      const context = contextRefs.current[i]
+      const notes = notesArray.slice(0 + 8*i, 8+8*i)
+      if (notes.length > 0){
+        const lastMeasure = Math.floor((notesArray.length-1) / 8) === i ? true : false
+        const stave = new VF.Stave(0, 0, canvasWidth - 5)
+        stave.addClef("treble").addKeySignature(keySignature)
+        if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
 
-      // build and draw the stave/measure
-      const stave = new VF.Stave(staveOffsetX, 0, staveWidth)
-      if (i % 2 === 0) stave.addClef("treble").addKeySignature(keySignature)
-      if (i === 0) stave.addTimeSignature("4/4")
-      if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
-
-      // build and draw the notes
-      const voice = new VF.Voice({num_beats: notes.length,  beat_value: 4});
-      voice.addTickables(notes);
-      const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth*(notes.length/4))
-      stave.setContext(context).draw()
-      voice.draw(context, stave)
+        // build and draw the notes
+        const voice = new VF.Voice({num_beats: notes.length,  beat_value: 4});
+        voice.addTickables(notes);
+        const formatter = new VF.Formatter().joinVoices([voice]).format([voice], (canvasWidth - accidentalWidth - trebleWidth)*(notes.length/8));
+        stave.setContext(context).draw()
+        voice.draw(context, stave)
+      }
     }
   }
 
@@ -132,12 +128,6 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     <div style={styles.staffWrapper}>
       <div id="music-canvas1" style={styles.canvasStyle}></div>
       <div id="music-canvas2" style={styles.canvasStyle}></div>
-      <div id="music-canvas3" style={styles.canvasStyle}></div>
-      <div id="music-canvas4" style={styles.canvasStyle}></div>
-      <div id="music-canvas5" style={styles.canvasStyle}></div>
-      <div id="music-canvas6" style={styles.canvasStyle}></div>
-      <div id="music-canvas7" style={styles.canvasStyle}></div>
-      <div id="music-canvas8" style={styles.canvasStyle}></div>
     </div>
   )
 }
