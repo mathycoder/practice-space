@@ -20,18 +20,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   const trebleKeyWidth = 60
   const trebleWidth = 30
   const timeSignatureWidth = 30
-  // const canvasWidth = (accidentalWidth + trebleKeyWidth + measureWidth*2)*1.1
   const canvasWidth = 445
 
   useEffect(() => {
-    // for (let i = 0; i < rendererRefs.current.length; i++){
-    //   const div = document.getElementById(`music-canvas${i+1}`)
-    //   div.innerHTML = ''
-    //   div.innerText = ''
-    // }
-    // rendererRefs.current = []
-    // contextRefs.current = []
-
     for (let i = 0; i <= 1; i++){
       const div = document.getElementById(`music-canvas${i+1}`)
       rendererRefs.current.push(new VF.Renderer(div, VF.Renderer.Backends.SVG))

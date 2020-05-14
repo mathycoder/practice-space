@@ -9,7 +9,7 @@ const TempoSlider = ({ callback, value }) => {
       <div style={styles.sliderLabel}>Tempo</div>
       <Slider
         min={30}
-        max={240}
+        max={180}
         value={localTempo}
         onChange={newValue => setLocalTempo(newValue)}
         onAfterChange={newValue => callback(newValue)}
