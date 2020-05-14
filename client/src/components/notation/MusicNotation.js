@@ -136,12 +136,13 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 const styles = {
   staffWrapper: {
     // backgroundColor: 'red',
-    alignSelf: 'stretch',
+    
     flex: 3,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    margin: '0 8px'
   },
   canvasStyle: {
     // alignSelf: 'stretch',
