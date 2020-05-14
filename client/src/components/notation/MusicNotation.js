@@ -84,25 +84,13 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     })
   }
 
-  const calculateStaveWidth = (i, notes) => {
-    return i === 0
-      ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth + timeSignatureWidth
-      : i % 2 === 0
-        ? measureWidth*(notes.length/4) + accidentalWidth + trebleWidth
-        : measureWidth*(notes.length/4)
-  }
-
-  const calculateStaveOffsetX = i => {
-    return i === 1
-      ? measureWidth + accidentalWidth + trebleWidth + timeSignatureWidth
-      : i % 2 === 1
-        ? measureWidth + accidentalWidth + trebleWidth
-        : 0
-  }
-
   const renderKey = () => {
     const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
-    const notesArray = generateNotes()
+    const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % (scale.length)
+    const pageNumber = Math.floor(currentNoteIndex / 16)
+    const totalPages = Math.ceil(scale.length / 16)
+    const lastPage = pageNumber+1 === totalPages
+    const notesArray = generateNotes().slice(pageNumber*16, pageNumber*16 + 16)
 
     for (let i=0; i<=1; i++){
       // generate variables
@@ -114,7 +102,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         : notesWidth + accidentalWidth + trebleWidth
 
       if (notes.length > 0){
-        const lastMeasure = Math.floor((notesArray.length-1) / 8) === i ? true : false
+        const lastMeasure = Math.floor((notesArray.length-1) / 8) === i && lastPage ? true : false
         const stave = new VF.Stave(0, 0, staveWidth)
         stave.addClef("treble").addKeySignature(keySignature)
         if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
