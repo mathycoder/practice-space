@@ -4,7 +4,7 @@ import 'react-dropdown/style.css'
 import './dropdown.css'
 
 const ScaleRepetitionDropdown = ({ scaleRepetition, callback }) => {
-  const options = ['None', 'Top and Bottom', 'All 2x', 'All 4x']
+  const options = ['None', 'Top and Bottom', 'All 2x']
 
   return (
     <div className="scale-dropdown" style={styles.dropdownWrapper}>

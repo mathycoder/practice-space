@@ -20,7 +20,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   const trebleKeyWidth = 60
   const trebleWidth = 30
   const timeSignatureWidth = 30
-  const canvasWidth = 445
+  const canvasWidth = 450
 
   useEffect(() => {
     for (let i = 0; i <= 1; i++){
@@ -91,10 +91,10 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       // generate variables
       const context = contextRefs.current[i]
       const notes = notesArray.slice(0 + notesPerMeasure*i, notesPerMeasure*(1+i))
-      const notesWidth = (canvasWidth - accidentalWidth - trebleWidth)*(notes.length/notesPerMeasure)
+      const notesWidth = (canvasWidth - accidentalWidth - trebleWidth - (notesPerMeasure-8))*(notes.length/notesPerMeasure)
       const staveWidth = notes.length === notesPerMeasure
         ? canvasWidth - 5
-        : notesWidth + accidentalWidth + trebleWidth
+        : notesWidth + accidentalWidth + trebleWidth + (notesPerMeasure-8)
 
       if (notes.length > 0){
         const lastMeasure = Math.floor((notesArray.length-1) / notesPerMeasure) === i && lastPage ? true : false
