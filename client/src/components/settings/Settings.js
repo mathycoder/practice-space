@@ -69,7 +69,13 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         return `${letter}${octave-1}`
       })
 
-      const noteSpeed = scaleRepetition === 'All 2x' ? '8n' : (scaleRepetition === 'All 4x' ? '16n' : '4n')
+      const noteSpeed = scaleRepetition === 'All 2x'
+        ? '8n'
+        : scaleRepetition === 'All 4x'
+          ? '16n'
+          : scaleRepetition === 'All 3x'
+            ? '8t'
+            : '4n'
 
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]

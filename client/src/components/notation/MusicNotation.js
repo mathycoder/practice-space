@@ -47,6 +47,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
 
   const generateNotes = (noteType) => {
+    if (noteType === 12){
+      noteType = 8
+    }
     return scale.map((el, index) => {
       let currentNote = keyNotes[el]
       let accidental = null
@@ -78,7 +81,11 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   const renderKey = () => {
     const notesPerMeasure = scaleRepetition === 'All 2x'
       ? 8*2
-      : scaleRepetition === 'All 4x' ? 8*4 : 8
+      : scaleRepetition === 'All 4x'
+        ? 8*4
+        : scaleRepetition === 'All 3x'
+          ? 8*3
+          : 8
     const notesPerPage = notesPerMeasure*2
     const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
     const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % (scale.length)
@@ -95,6 +102,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       const staveWidth = notes.length === notesPerMeasure
         ? canvasWidth - 5
         : notesWidth + accidentalWidth + trebleWidth + (notesPerMeasure-8)
+      const triplets = []
 
       if (notes.length > 0){
         const lastMeasure = Math.floor((notesArray.length-1) / notesPerMeasure) === i && lastPage ? true : false
@@ -103,6 +111,15 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
 
         // build and draw the notes
+        if (scaleRepetition === 'All 3x'){
+          for (let i=0; i < notes.length/3; i++){
+            const eighthNoteTriplet = new VF.Tuplet(notes.slice(3*i,3*(i+1)), {
+              num_notes: 3, notes_occupied: 2, location: 1
+            });
+            triplets.push(eighthNoteTriplet)
+          }
+        }
+
         const voice = new VF.Voice({num_beats: notes.length,  beat_value: notesPerMeasure/2});
         voice.addTickables(notes);
         const beams = VF.Beam.generateBeams(notes,
@@ -114,6 +131,10 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         const formatter = new VF.Formatter().joinVoices([voice]).format([voice], notesWidth);
         stave.setContext(context).draw()
         voice.draw(context, stave)
+
+        triplets.forEach((tuplet, index) => {
+          tuplet.setContext(context).draw();
+        });
 
   // https://github.com/0xfe/vexflow/wiki/Automatic-Beaming
 }
