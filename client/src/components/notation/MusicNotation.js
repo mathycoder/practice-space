@@ -51,7 +51,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       let currentNote = keyNotes[el]
       let accidental = null
 
-      if (el === 6 && scaleType === 'harm. minor'){
+      if (el === 6 && scaleType === 'harm. minor' && scale[index-1] !== 6){
         let letter = currentNote.split("/")[0]
         let octave = currentNote.slice(-1)
         if (currentCategory === 'flats' && letter.length === 1){
@@ -136,7 +136,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 const styles = {
   staffWrapper: {
     // backgroundColor: 'red',
-    
+
     flex: 3,
     display: 'flex',
     flexWrap: 'wrap',

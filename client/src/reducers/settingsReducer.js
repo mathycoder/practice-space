@@ -55,7 +55,6 @@ function instrumentReducer(state = 'Note Names', action) {
 function keyReducer(state = 'C', action) {
   switch(action.type) {
     case 'SET_KEY':
-      //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.key
 
     default:
@@ -66,7 +65,6 @@ function keyReducer(state = 'C', action) {
 function scaleTypeReducer(state = 'major', action){
   switch(action.type) {
     case 'SET_KEY':
-      //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.scaleType
 
     default:
@@ -77,7 +75,6 @@ function scaleTypeReducer(state = 'major', action){
 function scaleShapeReducer(state = 'Ascending and Descending', action){
   switch(action.type) {
     case 'SET_SCALE_SHAPE_AND_REPETITION':
-      //if (!keyNotesObj[action.key][action.scaleType]) return state
       return action.scaleShape
 
     default:
@@ -98,10 +95,6 @@ function scaleRepetitionReducer(state = "None", action){
 function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
-//      if (!keyNotesObj[action.key][action.scaleType]) return state
-
-      //const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
-
       const notes = keyNotesObj[action.key][action.scaleType]
       const sharps = notes.filter(note => note[1] === '#')
       const flats = notes.filter(note => note[1] === 'b')
@@ -116,9 +109,6 @@ function categoryReducer(state = 'sharps', action) {
 function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
   switch(action.type) {
     case 'SET_KEY':
-    //  if (!keyNotesObj[action.key][action.scaleType]) return state
-
-      //const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
       return keyNotesObj[action.key][action.scaleType]
 
     default:
@@ -129,8 +119,6 @@ function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4',
 function accidentalsReducer(state=0, action){
   switch(action.type) {
     case 'SET_KEY':
-  //    if (!keyNotesObj[action.key][action.scaleType]) return state
-      // const scaleTypeKey = (action.scaleType).includes("minor") ? 'nat. minor' : 'major'
       return countAccidentals(action.key, action.scaleType)
 
     default:
@@ -150,11 +138,6 @@ function bpmReducer(state = 90, action) {
 
 function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
   switch(action.type) {
-    case 'SET_REPEAT_TOP_NOTE':
-      return action.repeat ? [0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0] : [0,1,2,3,4,5,6,7,6,5,4,3,2,1]
-
-// [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3,3,2,2,1,1]
-
     case 'SET_SCALE_SHAPE_AND_REPETITION':
       return generateScale[action.scaleShape][action.scaleRepetition]
 
