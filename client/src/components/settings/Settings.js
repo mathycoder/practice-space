@@ -111,14 +111,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
 
   return (
     <div style={styles.settingsWrapper}>
-      <KeyDropdown
-        currentKey={currentKey}
-        scaleType={scaleType}
-        callback={(obj) => {
-          setKey(obj.value, scaleType)
-          stopLoop()
-        }}
-      />
+      <KeyDropdown stopLoop={stopLoop} />
       <ScaleTypeDropdown
         currentKey={currentKey}
         scaleType={scaleType}

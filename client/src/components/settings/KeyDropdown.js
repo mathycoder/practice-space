@@ -2,11 +2,32 @@ import React from 'react'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import './dropdown.css'
+import { connect } from 'react-redux'
+import { setKey } from '../../actions/settingsActions.js'
 
-const KeyDropdown = ({ currentKey, scaleType, callback}) => {
-  const options = scaleType === 'major'
-    ? ['Ab', 'A', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G']
-    : ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#']
+const KeyDropdown = ({ currentKey, setKey, scaleType, stopLoop }) => {
+  const options = ['Ab', 'A', 'A#', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#']
+
+  const keyNotesObj = {
+    'Ab': ['major', 'nat. minor', 'harm. minor'],
+    'A': ['major', 'nat. minor', 'harm. minor'],
+    'A#': ['nat. minor', 'harm. minor'],
+    'Bb': ['major', 'nat. minor', 'harm. minor'],
+    'B': ['major', 'nat. minor', 'harm. minor'],
+    'Cb': ['major'],
+    'C': ['major', 'nat. minor', 'harm. minor'],
+    'C#': ['major', 'nat. minor', 'harm. minor'],
+    'Db': ['major'],
+    'D': ['major', 'nat. minor', 'harm. minor'],
+    'D#': ['nat. minor', 'harm. minor'],
+    'Eb': ['major', 'nat. minor', 'harm. minor'],
+    'E': ['major', 'nat. minor', 'harm. minor'],
+    'F': ['major', 'nat. minor', 'harm. minor'],
+    'F#': ['major', 'nat. minor', 'harm. minor'],
+    'Gb': ['major'],
+    'G': ['major', 'nat. minor', 'harm. minor'],
+    'G#': ['nat. minor', 'harm. minor'],
+  }
 
   return (
     <div style={styles.dropdownWrapper}>
@@ -14,13 +35,20 @@ const KeyDropdown = ({ currentKey, scaleType, callback}) => {
       <Dropdown
         style={{maxHeight: '100px'}}
         options={options}
-        onChange={callback}
+        onChange={(obj) => {
+          if (keyNotesObj[obj.value].indexOf(scaleType) === -1){
+            scaleType = keyNotesObj[obj.value][0]
+          }
+          setKey(obj.value, scaleType)
+          stopLoop()
+        }}
         value={currentKey}
         placeholder="Select an option"
       />
     </div>
   )
 }
+
 
 const styles = {
   dropdownWrapper: {
@@ -37,4 +65,17 @@ const styles = {
   }
 }
 
-export default KeyDropdown
+const mapStateToProps = state => {
+  return {
+    currentKey: state.settings.key,
+    scaleType: state.settings.scaleType
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setKey: (key, scaleType) => dispatch(setKey(key, scaleType))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(KeyDropdown)

@@ -4,10 +4,6 @@ import 'react-dropdown/style.css'
 import './dropdown.css'
 
 const ScaleTypeDropdown = ({ currentKey, scaleType, callback}) => {
-  //const keysWithNatMin = ['Ab', 'A', 'A#', 'Bb', 'B', 'C', 'C#', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'G', 'G#']
-  //const majorKeys = ['Ab', 'A', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'Gb', 'G']
-  //const options = keysWithNatMin.includes(currentKey) ? ['major', 'nat. minor', 'harm. minor'] : ['major']
-
   const keyNotesObj = {
     'Ab': ['major', 'nat. minor', 'harm. minor'],
     'A': ['major', 'nat. minor', 'harm. minor'],
