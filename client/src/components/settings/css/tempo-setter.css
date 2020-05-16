@@ -1,0 +1,45 @@
+.tempo-setter-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tempo-setter-wrapper .input-style {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  width: 60px;
+  background-color: inherit;
+  border: none;
+}
+
+.tempo-setter-wrapper .input-style:focus {
+  outline: none;
+}
+
+.tempo-setter-wrapper .button-style {
+  border-radius: 3px;
+  background-color: rgb(191,190,190);
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tempo-setter-wrapper .button-style:focus {
+  outline: none;
+}
+
+.tempo-setter-wrapper .button-style:active {
+  outline: none;
+  background-color: rgb(161,160,160);
+}
+
+.tempo-setter-wrapper .button-text {
+  display: block;
+  margin: 0 auto;
+  font-size: 30px;
+}

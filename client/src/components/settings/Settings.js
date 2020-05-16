@@ -152,7 +152,7 @@ const styles = {
     flex: 2,
     display: 'flex',
     flexWrap: 'wrap',
-    backgroundColor: 'gray',
+    backgroundColor: 'rgb(64,64,64)',
     alignSelf: 'stretch',
     justifyContent: 'space-around',
     alignItems: 'center',
