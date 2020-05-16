@@ -12,6 +12,7 @@ import ScaleTypeDropdown from './ScaleTypeDropdown'
 import ScaleShapeDropdown from './ScaleShapeDropdown'
 import ScaleRepetitionDropdown from './ScaleRepetitionDropdown'
 import TempoSlider from './TempoSlider'
+import TempoSetter from './TempoSetter'
 
 const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setNextNote,
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
@@ -135,7 +136,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
           stopLoop()
         }}
       />
-      <TempoSlider value={currentBPM} callback={setBPM}/>
+      <TempoSetter value={currentBPM} callback={setBPM}/>
       <div style={styles.buttonWrapper}>
         <BigButton
           title={looping? 'Stop' : 'Start'}
