@@ -5,7 +5,7 @@ import './dropdown.css'
 import { connect } from 'react-redux'
 import { setKey } from '../../actions/settingsActions.js'
 
-const KeyDropdown = ({ currentKey, setKey, scaleType, stopLoop }) => {
+const KeyDropdown = ({ currentKey, setKey, scaleType, stopLoop, scaleShape, scaleRepetition }) => {
   const options = ['Ab', 'A', 'A#', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#']
 
   const keyNotesObj = {
@@ -39,7 +39,7 @@ const KeyDropdown = ({ currentKey, setKey, scaleType, stopLoop }) => {
           if (keyNotesObj[obj.value].indexOf(scaleType) === -1){
             scaleType = keyNotesObj[obj.value][0]
           }
-          setKey(obj.value, scaleType)
+          setKey(obj.value, scaleType, scaleShape, scaleRepetition)
           stopLoop()
         }}
         value={currentKey}
@@ -68,13 +68,15 @@ const styles = {
 const mapStateToProps = state => {
   return {
     currentKey: state.settings.key,
-    scaleType: state.settings.scaleType
+    scaleType: state.settings.scaleType,
+    scaleShape: state.settings.scaleShape,
+    scaleRepetition: state.settings.scaleRepetition
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    setKey: (key, scaleType) => dispatch(setKey(key, scaleType))
+    setKey: (key, scaleType, scaleShape, scaleRepetition) => dispatch(setKey(key, scaleType, scaleShape, scaleRepetition))
   }
 }
 

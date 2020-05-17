@@ -1,5 +1,5 @@
-export function setKey(key, scaleType){
-  return {type: 'SET_KEY', key: key, scaleType: scaleType}
+export function setKey(key, scaleType, scaleShape, scaleRepetition){
+  return {type: 'SET_KEY', key: key, scaleType: scaleType, scaleShape: scaleShape, scaleRepetition: scaleRepetition}
 }
 
 // export function setScaleRepetition(repetition){

@@ -95,10 +95,9 @@ function scaleRepetitionReducer(state = "None", action){
 function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
-      const notes = keyNotesObj[action.key][action.scaleType]
-      const sharps = notes.filter(note => note[1] === '#')
-      const flats = notes.filter(note => note[1] === 'b')
-      return sharps.length > 0 ? 'sharps' : (flats.length > 0 ? 'flats' : 'sharps')
+      const keyType = action.scaleType.includes('minor') ? 'minor' : 'major'
+      const keyInfo = countAccidentals[action.key][keyType]
+      return keyInfo.includes("sharp") ? 'sharps' : 'flats'
 
     default:
       return state;
@@ -110,8 +109,8 @@ function keyNotesReducer(state=['c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4',
                                 'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4', 'c/5' ], action){
   switch(action.type) {
     case 'SET_KEY':
-      debugger
-      return keyNotesObj[action.key]
+      const keyType = action.scaleType.includes('minor') ? 'minor' : 'major'
+      return keyNotesObj[action.key][keyType]
     //  return keyNotesObj[action.key][action.scaleType]
 
     default:
@@ -122,7 +121,9 @@ function keyNotesReducer(state=['c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4',
 function accidentalsReducer(state=0, action){
   switch(action.type) {
     case 'SET_KEY':
-      return countAccidentals(action.key, action.scaleType)
+      const keyType = action.scaleType.includes('minor') ? 'minor' : 'major'
+      const keyInfo = countAccidentals[action.key][keyType]
+      return keyInfo[0]
 
     default:
       return state;
@@ -139,13 +140,10 @@ function bpmReducer(state = 90, action) {
   }
 }
 
-function scaleReducer(state=[0, 2, 4, 5, 7, 9, 11, 12], action){
+function scaleReducer(state=[0,2,4,5,7,9,11,12,11,9,7,5,4,2], action){
   switch(action.type) {
     case 'SET_KEY':
-      return scaleGenerator[action.scaleType]
-
-    case 'SET_SCALE_SHAPE_AND_REPETITION':
-      return generateScale[action.scaleShape][action.scaleRepetition]
+      return scaleGenerator[action.scaleType][action.scaleShape][action.scaleRepetition]
 
     default:
       return state;
@@ -166,54 +164,75 @@ function scaleIndexReducer(state=0, action){
 }
 
 const scaleGenerator = {
-  'major': [0, 2, 4, 5, 7, 9, 11, 12],
-  'nat. minor': [0, 2, 3, 5, 7, 9, 10, 12],
-  'harm. minor': [0, 2, 3, 5, 7, 9, 11, 12]
-}
-
-const generateScale = {
-  "Ascending and Descending": {
-    "None": [0,1,2,3,4,5,6,7,6,5,4,3,2,1],
-    "Top and Bottom": [0,1,2,3,4,5,6,7,7,6,5,4,3,2,1,0],
-    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3,3,2,2,1,1],
-    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,6,6,6,5,5,5,4,4,4,3,3,3,2,2,2,1,1,1],
-    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,6,6,6,6,5,5,5,5,4,4,4,4,3,3,3,3,2,2,2,2,1,1,1,1],
+  'major': {
+    "Ascending and Descending": {
+      "None": [0,2,4,5,7,9,11,12,11,9,7,5,4,2],
+      "Top and Bottom": [0,2,4,5,7,9,11,12,12,11,9,7,5,4,2,0],
+      "All 2x": [0,0,2,2,4,4,5,5,7,7,9,9,11,11,12,12,11,11,9,9,7,7,5,5,4,4,2,2],
+      "All 3x": [0,0,0,2,2,2,4,4,4,5,5,5,7,7,7,9,9,9,11,11,11,12,12,12,11,11,11,9,9,9,7,7,7,5,5,5,4,4,4,2,2,2],
+      "All 4x": [0,0,0,0,2,2,2,2,4,4,4,4,5,5,5,5,7,7,7,7,9,9,9,9,11,11,11,11,12,12,12,12,11,11,11,11,9,9,9,9,7,7,7,7,5,5,5,5,4,4,4,4,2,2,2,2],
+    },
+    "Ascending": {
+      "None": [0,2,4,5,7,9,11,12],
+      "Top and Bottom": [0,2,4,5,7,9,11,12],
+      "All 2x": [0,0,2,2,4,4,5,5,7,7,9,9,11,11,12,12],
+      "All 3x": [0,0,0,2,2,2,4,4,4,5,5,5,7,7,7,9,9,9,11,11,11,12,12,12],
+      "All 4x": [0,0,0,0,2,2,2,2,4,4,4,4,5,5,5,5,7,7,7,7,9,9,9,9,11,11,11,11,12,12,12,12],
+    },
+    "Descending": {
+      "None": [0,2,4,5,7,9,11,12].reverse(),
+      "Top and Bottom": [0,2,4,5,7,9,11,12].reverse(),
+      "All 2x": [0,0,2,2,4,4,5,5,7,7,9,9,11,11,12,12].reverse(),
+      "All 3x": [0,0,0,2,2,2,4,4,4,5,5,5,7,7,7,9,9,9,11,11,11,12,12,12].reverse(),
+      "All 4x": [0,0,0,0,2,2,2,2,4,4,4,4,5,5,5,5,7,7,7,7,9,9,9,9,11,11,11,11,12,12,12,12].reverse(),
+    }
   },
-  "Ascending": {
-    "None": [0,1,2,3,4,5,6,7],
-    "Top and Bottom": [0,0,1,2,3,4,5,6,7,7],
-    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7],
-    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7],
-    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7],
+  'nat. minor': {
+    "Ascending and Descending": {
+      "None": [0,2,3,5,7,8,10,12,10,8,7,5,3,2],
+      "Top and Bottom": [0,2,3,5,7,8,10,12,12,10,8,7,5,3,2,0],
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,10,10,12,12,10,10,8,8,7,7,5,5,3,3,2,2],
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,10,10,10,12,12,12,10,10,10,8,8,8,7,7,7,5,5,5,3,3,3,2,2,2],
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,12,12,12,12,10,10,10,10,8,8,8,8,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2],
+    },
+    "Ascending": {
+      "None": [0,2,3,5,7,8,10,12],
+      "Top and Bottom": [0,2,3,5,7,8,10,12],
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,10,10,12,12],
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,10,10,10,12,12,12],
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,12,12,12,12],
+    },
+    "Descending": {
+      "None": [0,2,3,5,7,8,10,12].reverse(),
+      "Top and Bottom": [0,2,3,5,7,8,10,12].reverse(),
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,10,10,12,12].reverse(),
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,10,10,10,12,12,12].reverse(),
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,10,10,10,10,12,12,12,12].reverse(),
+    }
   },
-  "Descending": {
-    "None": [0,1,2,3,4,5,6,7].reverse(),
-    "Top and Bottom": [0,0,1,2,3,4,5,6,7,7].reverse(),
-    "All 2x": [0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7].reverse(),
-    "All 3x": [0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7].reverse(),
-    "All 4x": [0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7].reverse(),
+  'harm. minor': {
+    "Ascending and Descending": {
+      "None": [0,2,3,5,7,8,11,12,11,8,7,5,3,2],
+      "Top and Bottom": [0,2,3,5,7,8,11,12,12,11,8,7,5,3,2,0],
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,11,11,12,12,11,11,8,8,7,7,5,5,3,3,2,2],
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,11,11,11,12,12,12,11,11,11,8,8,8,7,7,7,5,5,5,3,3,3,2,2,2],
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,11,11,11,11,12,12,12,12,11,11,11,11,8,8,8,8,7,7,7,7,5,5,5,5,3,3,3,3,2,2,2,2],
+    },
+    "Ascending": {
+      "None": [0,2,3,5,7,8,11,12],
+      "Top and Bottom": [0,2,3,5,7,8,11,12],
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,11,11,12,12],
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,11,11,11,12,12,12],
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,11,11,11,11,12,12,12,12],
+    },
+    "Descending": {
+      "None": [0,2,3,5,7,8,11,12].reverse(),
+      "Top and Bottom": [0,2,3,5,7,8,11,12].reverse(),
+      "All 2x": [0,0,2,2,3,3,5,5,7,7,8,8,11,11,12,12].reverse(),
+      "All 3x": [0,0,0,2,2,2,3,3,3,5,5,5,7,7,7,8,8,8,11,11,11,12,12,12].reverse(),
+      "All 3x": [0,0,0,0,2,2,2,2,3,3,3,3,5,5,5,5,7,7,7,7,8,8,8,8,11,11,11,11,12,12,12,12].reverse(),
+    }
   }
-}
-
-const keyCategory = {
-  'C': {
-    'major': 'sharps',
-    'minor': 'flats'
-  },
-  'G': 'sharps',
-  'D': 'sharps',
-  'A': 'sharps',
-  'E': 'sharps',
-  'B': 'sharps',
-  'F#': 'sharps',
-  'C#': 'sharps',
-  'F': 'flats',
-  'Bb': 'flats',
-  'Eb': 'flats',
-  'Ab': 'flats',
-  'Db': 'flats',
-  'Gb': 'flats',
-  'Cb': 'flats'
 }
 
 const allSharpNotes = [
@@ -233,123 +252,151 @@ const allFlatNotes = [
 ]
 
 const keyNotesObj = {
-  'Ab': allFlatNotes.slice(20, 33),
-  'A': allSharpNotes.slice(21, 34),
-  'A#': allSharpNotes.slice(22, 35),
-  'Bb': allFlatNotes.slice(22, 35),
-  'B': allSharpNotes.slice(23, 36),
-  'Cb': allFlatNotes.slice(23, 36),
-  'C': allSharpNotes.slice(24, 37),
-  'C#': allSharpNotes.slice(25, 38),
-  'Db': allFlatNotes.slice(25, 38),
-  'D': allSharpNotes.slice(26, 39),
-  'D#': allSharpNotes.slice(27, 40),
-  'Eb': allFlatNotes.slice(27, 40),
-  'E': allSharpNotes.slice(28, 41),
-  'F': allFlatNotes.slice(29, 42),
-  'F#': allSharpNotes.slice(30, 43),
-  'Gb': allFlatNotes.slice(30, 43),
-  'G': allSharpNotes.slice(41, 44),
-  'G#': allSharpNotes.slice(42, 45)
+  'Ab': {
+    'major': allFlatNotes.slice(20, 33),
+    'minor': allFlatNotes.slice(20, 33),
+  },
+  'A': {
+    'major': allSharpNotes.slice(21, 34),
+    'minor': allSharpNotes.slice(21, 34)
+  },
+  'A#': {
+    'major': allSharpNotes.slice(22, 35),
+    'minor': allSharpNotes.slice(22, 35)
+  },
+  'Bb': {
+    'major': allFlatNotes.slice(22, 35),
+    'minor': allFlatNotes.slice(22, 35)
+  },
+  'B': {
+    'major': allSharpNotes.slice(23, 36),
+    'minor': allSharpNotes.slice(23, 36)
+  },
+  'Cb': {
+    'major':  allFlatNotes.slice(23, 36),
+    'minor':  allFlatNotes.slice(23, 36)
+  },
+  'C': {
+    'major':  allSharpNotes.slice(24, 37),
+    'minor':  allFlatNotes.slice(24, 37)
+  },
+  'C#': {
+    'major':  allSharpNotes.slice(25, 38),
+    'minor':  allSharpNotes.slice(25, 38)
+  },
+  'Db': {
+    'major':  allFlatNotes.slice(25, 38),
+    'minor':  allFlatNotes.slice(25, 38)
+  },
+  'D': {
+    'major':  allSharpNotes.slice(26, 39),
+    'minor':  allFlatNotes.slice(26, 39)
+  },
+  'D#': {
+    'major':  allSharpNotes.slice(27, 40),
+    'minor':  allSharpNotes.slice(27, 40)
+  },
+  'Eb': {
+    'major':  allFlatNotes.slice(27, 40),
+    'minor':  allFlatNotes.slice(27, 40),
+  },
+  'E': {
+    'major':  allSharpNotes.slice(28, 41),
+    'minor':  allSharpNotes.slice(28, 41)
+  },
+  'F': {
+    'major':  allFlatNotes.slice(29, 42),
+    'minor':  allFlatNotes.slice(29, 42)
+  },
+  'F#': {
+    'major':  allSharpNotes.slice(30, 43),
+    'minor':  allSharpNotes.slice(30, 43)
+  },
+  'Gb': {
+    'major':  allFlatNotes.slice(30, 43),
+    'minor':  allFlatNotes.slice(30, 43)
+  },
+  'G': {
+    'major':  allSharpNotes.slice(41, 44),
+    'minor':  allFlatNotes.slice(41, 44),
+  },
+  'G#': {
+    'major':  allSharpNotes.slice(42, 45),
+    'minor':  allSharpNotes.slice(42, 45)
+  },
 }
 
-// const keyNotesObj = {
-//   'Ab': {
-//     'major': ['ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'g/4', 'ab/4'],
-//     'nat. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4'],
-//     'harm. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'g/4', 'ab/4']
-//   },
-//   'A': {
-//     'major': ['a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g#/4', 'a/4'],
-//     'nat. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4'],
-//     'harm. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g#/4', 'a/4']
-//   },
-//   'A#': {
-//     'major': null,
-//     'nat. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4'],
-//     'harm. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'gx/4', 'a#/4']
-//   },
-//   'Bb': {
-//     'major': ['bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'a/4', 'bb/4'],
-//     'nat. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4'],
-//     'harm. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'a/4', 'bb/4']
-//   },
-//   'B': {
-//     'major': ['b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a#/4', 'b/4'],
-//     'nat. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4'],
-//     'harm. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a#/4', 'b/4']
-//   },
-//   'Cb': {
-//     'major': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ],
-//     'nat. minor': null
-//   },
-//   'C': {
-//     'major': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5'],
-//     'nat. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5'],
-//     'harm. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'b/4', 'c/5']
-//   },
-//   'C#': {
-//     'major': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ],
-//     'nat. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b/4', 'c#/5' ],
-//     'harm. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b#/4', 'c#/5' ]
-//   },
-//   'Db': {
-//     'major': ['db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'c/5', 'db/5' ],
-//     'nat. minor': null
-//   },
-//   'D': {
-//     'major': ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5'],
-//     'nat. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c/5', 'd/5'],
-//     'harm. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c#/5', 'd/5']
-//   },
-//   'D#': {
-//     'major': null,
-//     'nat. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'c#/5', 'd#/5'],
-//     'harm. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'cx/5', 'd#/5']
-//   },
-//   'Eb': {
-//     'major': ['eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5', 'd/5', 'eb/5'],
-//     'nat. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'db/5', 'eb/5'],
-//     'harm. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'd/5', 'eb/5']
-//   },
-//   'E': {
-//     'major': ['e/3', 'f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd#/4', 'e/4'],
-//     'nat. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4'],
-//     'harm. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd#/4', 'e/4']
-//   },
-//   'F': {
-//     'major': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4'],
-//     'nat. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4'],
-//     'harm. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'e/4', 'f/4']
-//   },
-//   'F#': {
-//     'major': ['f#/3', 'g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4'],
-//     'nat. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4'],
-//     'harm. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e#/4', 'f#/4']
-//   },
-//   'Gb': {
-//     'major': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ],
-//     'nat. minor': null
-//   },
-//   'G': {
-//     'major': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4'],
-//     'nat. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4'],
-//     'harm. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f#/4', 'g/4']
-//   },
-//   'G#': {
-//     'major': null,
-//     'nat. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4'],
-//     'harm. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'fx/4', 'g#/4']
-//   },
-// }
-
-const countAccidentals = (key, scaleType) => {
-  const scaleTypeKey = scaleType.includes("minor") ? 'nat. minor' : 'major'
-  const notes = keyNotesObj[key][scaleTypeKey]
-  let accidentals = 0
-  notes.forEach(note => {
-    if (note[1] === '#' || note[1] === 'b') accidentals++
-  })
-  // if (scaleType === 'harm. minor') accidentals -= 1
-  return accidentals
+const countAccidentals = {
+  'Ab': {
+    'major': '4 flats',
+    'minor': '7 flats',
+  },
+  'A': {
+    'major': '3 sharps',
+    'minor': '0 sharps'
+  },
+  'A#': {
+    'major': null,
+    'minor': '7 sharps'
+  },
+  'Bb': {
+    'major': '2 flats',
+    'minor': '5 flats'
+  },
+  'B': {
+    'major': '5 sharps',
+    'minor': '2 sharps'
+  },
+  'Cb': {
+    'major':  '7 flats',
+    'minor': null
+  },
+  'C': {
+    'major':  '0 sharps',
+    'minor':  '3 flats'
+  },
+  'C#': {
+    'major':  '7 sharps',
+    'minor':  '4 sharps'
+  },
+  'Db': {
+    'major':  '5 flats',
+    'minor':  null
+  },
+  'D': {
+    'major':  '2 sharps',
+    'minor':  '1 flat'
+  },
+  'D#': {
+    'major':  null,
+    'minor':  '6 sharps'
+  },
+  'Eb': {
+    'major':  '3 flats',
+    'minor':  '6 flats',
+  },
+  'E': {
+    'major':  '4 sharps',
+    'minor':  '1 sharp'
+  },
+  'F': {
+    'major':  '1 flat',
+    'minor':  '4 flats'
+  },
+  'F#': {
+    'major':  '6 sharps',
+    'minor':  '3 sharps'
+  },
+  'Gb': {
+    'major':  '6 flats',
+    'minor':  null
+  },
+  'G': {
+    'major':  '1 sharps',
+    'minor':  '2 flats'
+  },
+  'G#': {
+    'major':  null,
+    'minor':  '5 sharps'
+  }
 }

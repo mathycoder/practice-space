@@ -117,7 +117,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         currentKey={currentKey}
         scaleType={scaleType}
         callback={(obj) => {
-          setKey(currentKey, obj.value)
+          setKey(currentKey, obj.value, scaleShape, scaleRepetition)
           stopLoop()
         }}
       />
@@ -182,7 +182,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setKey: (key, scaleType) => dispatch(setKey(key, scaleType)),
+    setKey: (key, scaleType, scaleShape, scaleRepetition) => dispatch(setKey(key, scaleType, scaleShape, scaleRepetition)),
     setBPM: bpm => dispatch(setBPM(bpm)),
     setCurrentNote: note => dispatch(setCurrentNote(note)),
     setNextNote: note => dispatch(setNextNote(note)),
