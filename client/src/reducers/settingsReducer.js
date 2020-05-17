@@ -106,10 +106,13 @@ function categoryReducer(state = 'sharps', action) {
 }
 
 
-function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5' ], action){
+function keyNotesReducer(state=['c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4',
+                                'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4', 'c/5' ], action){
   switch(action.type) {
     case 'SET_KEY':
-      return keyNotesObj[action.key][action.scaleType]
+      debugger
+      return keyNotesObj[action.key]
+    //  return keyNotesObj[action.key][action.scaleType]
 
     default:
       return state;
@@ -136,8 +139,11 @@ function bpmReducer(state = 90, action) {
   }
 }
 
-function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
+function scaleReducer(state=[0, 2, 4, 5, 7, 9, 11, 12], action){
   switch(action.type) {
+    case 'SET_KEY':
+      return scaleGenerator[action.scaleType]
+
     case 'SET_SCALE_SHAPE_AND_REPETITION':
       return generateScale[action.scaleShape][action.scaleRepetition]
 
@@ -157,6 +163,12 @@ function scaleIndexReducer(state=0, action){
     default:
       return state;
   }
+}
+
+const scaleGenerator = {
+  'major': [0, 2, 4, 5, 7, 9, 11, 12],
+  'nat. minor': [0, 2, 3, 5, 7, 9, 10, 12],
+  'harm. minor': [0, 2, 3, 5, 7, 9, 11, 12]
 }
 
 const generateScale = {
@@ -184,7 +196,10 @@ const generateScale = {
 }
 
 const keyCategory = {
-  'C': 'sharps',
+  'C': {
+    'major': 'sharps',
+    'minor': 'flats'
+  },
   'G': 'sharps',
   'D': 'sharps',
   'A': 'sharps',
@@ -201,95 +216,132 @@ const keyCategory = {
   'Cb': 'flats'
 }
 
+const allSharpNotes = [
+  'c/2', 'c#/2', 'd/2', 'd#/2', 'e/2', 'f/2', 'f#/2', 'g/2', 'g#/2', 'a/2', 'a#/2', 'b/2',
+  'c/3', 'c#/3', 'd/3', 'd#/3', 'e/3', 'f/3', 'f#/3', 'g/3', 'g#/3', 'a/3', 'a#/3', 'b/3',
+  'c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4', 'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4',
+  'c/5', 'c#/5', 'd/5', 'd#/5', 'e/5', 'f/5', 'f#/5', 'g/5', 'g#/5', 'a/5', 'a#/5', 'b/5',
+  'c/6', 'c#/6', 'd/6', 'd#/6', 'e/6', 'f/6', 'f#/6', 'g/6', 'g#/6', 'a/6', 'a#/6', 'b/6'
+]
+
+const allFlatNotes = [
+  'c/2', 'db/2', 'd/2', 'eb/2', 'e/2', 'f/2', 'gb/2', 'g/2', 'ab/2', 'a/2', 'bb/2', 'b/2',
+  'c/3', 'db/3', 'd/3', 'eb/3', 'e/3', 'f/3', 'gb/3', 'g/3', 'ab/3', 'a/3', 'bb/3', 'b/3',
+  'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4', 'b/4',
+  'c/5', 'db/5', 'd/5', 'eb/5', 'e/5', 'f/5', 'gb/5', 'g/5', 'ab/5', 'a/5', 'bb/5', 'b/5',
+  'c/6', 'db/6', 'd/6', 'eb/6', 'e/6', 'f/6', 'gb/6', 'g/6', 'ab/6', 'a/6', 'bb/6', 'b/6'
+]
+
 const keyNotesObj = {
-  'Ab': {
-    'major': ['ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'g/4', 'ab/4'],
-    'nat. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4'],
-    'harm. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'g/4', 'ab/4']
-  },
-  'A': {
-    'major': ['a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g#/4', 'a/4'],
-    'nat. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4'],
-    'harm. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g#/4', 'a/4']
-  },
-  'A#': {
-    'major': null,
-    'nat. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4'],
-    'harm. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'gx/4', 'a#/4']
-  },
-  'Bb': {
-    'major': ['bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'a/4', 'bb/4'],
-    'nat. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4'],
-    'harm. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'a/4', 'bb/4']
-  },
-  'B': {
-    'major': ['b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a#/4', 'b/4'],
-    'nat. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4'],
-    'harm. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a#/4', 'b/4']
-  },
-  'Cb': {
-    'major': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ],
-    'nat. minor': null
-  },
-  'C': {
-    'major': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5'],
-    'nat. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5'],
-    'harm. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'b/4', 'c/5']
-  },
-  'C#': {
-    'major': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ],
-    'nat. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b/4', 'c#/5' ],
-    'harm. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b#/4', 'c#/5' ]
-  },
-  'Db': {
-    'major': ['db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'c/5', 'db/5' ],
-    'nat. minor': null
-  },
-  'D': {
-    'major': ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5'],
-    'nat. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c/5', 'd/5'],
-    'harm. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c#/5', 'd/5']
-  },
-  'D#': {
-    'major': null,
-    'nat. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'c#/5', 'd#/5'],
-    'harm. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'cx/5', 'd#/5']
-  },
-  'Eb': {
-    'major': ['eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5', 'd/5', 'eb/5'],
-    'nat. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'db/5', 'eb/5'],
-    'harm. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'd/5', 'eb/5']
-  },
-  'E': {
-    'major': ['e/3', 'f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd#/4', 'e/4'],
-    'nat. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4'],
-    'harm. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd#/4', 'e/4']
-  },
-  'F': {
-    'major': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4'],
-    'nat. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4'],
-    'harm. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'e/4', 'f/4']
-  },
-  'F#': {
-    'major': ['f#/3', 'g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4'],
-    'nat. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4'],
-    'harm. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e#/4', 'f#/4']
-  },
-  'Gb': {
-    'major': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ],
-    'nat. minor': null
-  },
-  'G': {
-    'major': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4'],
-    'nat. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4'],
-    'harm. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f#/4', 'g/4']
-  },
-  'G#': {
-    'major': null,
-    'nat. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4'],
-    'harm. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'fx/4', 'g#/4']
-  },
+  'Ab': allFlatNotes.slice(20, 33),
+  'A': allSharpNotes.slice(21, 34),
+  'A#': allSharpNotes.slice(22, 35),
+  'Bb': allFlatNotes.slice(22, 35),
+  'B': allSharpNotes.slice(23, 36),
+  'Cb': allFlatNotes.slice(23, 36),
+  'C': allSharpNotes.slice(24, 37),
+  'C#': allSharpNotes.slice(25, 38),
+  'Db': allFlatNotes.slice(25, 38),
+  'D': allSharpNotes.slice(26, 39),
+  'D#': allSharpNotes.slice(27, 40),
+  'Eb': allFlatNotes.slice(27, 40),
+  'E': allSharpNotes.slice(28, 41),
+  'F': allFlatNotes.slice(29, 42),
+  'F#': allSharpNotes.slice(30, 43),
+  'Gb': allFlatNotes.slice(30, 43),
+  'G': allSharpNotes.slice(41, 44),
+  'G#': allSharpNotes.slice(42, 45)
 }
+
+// const keyNotesObj = {
+//   'Ab': {
+//     'major': ['ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'g/4', 'ab/4'],
+//     'nat. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4'],
+//     'harm. minor': ['ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'fb/4', 'g/4', 'ab/4']
+//   },
+//   'A': {
+//     'major': ['a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g#/4', 'a/4'],
+//     'nat. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4'],
+//     'harm. minor': ['a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f/4', 'g#/4', 'a/4']
+//   },
+//   'A#': {
+//     'major': null,
+//     'nat. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4'],
+//     'harm. minor': ['a#/3', 'b#/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4', 'gx/4', 'a#/4']
+//   },
+//   'Bb': {
+//     'major': ['bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'a/4', 'bb/4'],
+//     'nat. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4'],
+//     'harm. minor': ['bb/3', 'c/4', 'db/4', 'eb/4', 'f/4', 'gb/4', 'a/4', 'bb/4']
+//   },
+//   'B': {
+//     'major': ['b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a#/4', 'b/4'],
+//     'nat. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4'],
+//     'harm. minor': ['b/3', 'c#/4', 'd/4', 'e/4', 'f#/4', 'g/4', 'a#/4', 'b/4']
+//   },
+//   'Cb': {
+//     'major': ['cb/4', 'db/4', 'eb/4', 'fb/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5' ],
+//     'nat. minor': null
+//   },
+//   'C': {
+//     'major': ['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5'],
+//     'nat. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5'],
+//     'harm. minor': ['c/4', 'd/4', 'eb/4', 'f/4', 'g/4', 'ab/4', 'b/4', 'c/5']
+//   },
+//   'C#': {
+//     'major': ['c#/4', 'd#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b#/4', 'c#/5' ],
+//     'nat. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b/4', 'c#/5' ],
+//     'harm. minor': ['c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4', 'a/4', 'b#/4', 'c#/5' ]
+//   },
+//   'Db': {
+//     'major': ['db/4', 'eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'c/5', 'db/5' ],
+//     'nat. minor': null
+//   },
+//   'D': {
+//     'major': ['d/4', 'e/4', 'f#/4', 'g/4', 'a/4', 'b/4', 'c#/5', 'd/5'],
+//     'nat. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c/5', 'd/5'],
+//     'harm. minor': ['d/4', 'e/4', 'f/4', 'g/4', 'a/4', 'bb/4', 'c#/5', 'd/5']
+//   },
+//   'D#': {
+//     'major': null,
+//     'nat. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'c#/5', 'd#/5'],
+//     'harm. minor': ['d#/4', 'e#/4', 'f#/4', 'g#/4', 'a#/4', 'b/4', 'cx/5', 'd#/5']
+//   },
+//   'Eb': {
+//     'major': ['eb/4', 'f/4', 'g/4', 'ab/4', 'bb/4', 'c/5', 'd/5', 'eb/5'],
+//     'nat. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'db/5', 'eb/5'],
+//     'harm. minor': ['eb/4', 'f/4', 'gb/4', 'ab/4', 'bb/4', 'cb/5', 'd/5', 'eb/5']
+//   },
+//   'E': {
+//     'major': ['e/3', 'f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd#/4', 'e/4'],
+//     'nat. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4'],
+//     'harm. minor': ['e/3', 'f#/3', 'g/3', 'a/3', 'b/3', 'c/4', 'd#/4', 'e/4']
+//   },
+//   'F': {
+//     'major': ['f/3', 'g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'e/4', 'f/4'],
+//     'nat. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'eb/4', 'f/4'],
+//     'harm. minor': ['f/3', 'g/3', 'ab/3', 'bb/3', 'c/4', 'db/4', 'e/4', 'f/4']
+//   },
+//   'F#': {
+//     'major': ['f#/3', 'g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e#/4', 'f#/4'],
+//     'nat. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e/4', 'f#/4'],
+//     'harm. minor': ['f#/3', 'g#/3', 'a/3', 'b/3', 'c#/4', 'd/4', 'e#/4', 'f#/4']
+//   },
+//   'Gb': {
+//     'major': ['gb/3', 'ab/3', 'bb/3', 'cb/4', 'db/4', 'eb/4', 'f/4', 'gb/4' ],
+//     'nat. minor': null
+//   },
+//   'G': {
+//     'major': ['g/3', 'a/3', 'b/3', 'c/4', 'd/4', 'e/4', 'f#/4', 'g/4'],
+//     'nat. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f/4', 'g/4'],
+//     'harm. minor': ['g/3', 'a/3', 'bb/3', 'c/4', 'd/4', 'eb/4', 'f#/4', 'g/4']
+//   },
+//   'G#': {
+//     'major': null,
+//     'nat. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'f#/4', 'g#/4'],
+//     'harm. minor': ['g#/3', 'a#/3', 'b/3', 'c#/4', 'd#/4', 'e/4', 'fx/4', 'g#/4']
+//   },
+// }
 
 const countAccidentals = (key, scaleType) => {
   const scaleTypeKey = scaleType.includes("minor") ? 'nat. minor' : 'major'
