@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import DemoContainer from './containers/DemoContainer'
 import MusicAndSettingsContainer from './containers/MusicAndSettingsContainer'
+import NavBar from './components/navbar/NavBar'
 import { sampler } from './components/instruments/sampler.js'
 import { isLoading, doneLoading } from './actions/settingsActions.js'
 import { connect } from 'react-redux'
@@ -17,6 +18,7 @@ const App = ({isLoading, doneLoading}) => {
   return (
     <div>
       <header className="App-header">
+        <NavBar />
       </header>
       <div className="body noselect" style={styles.containerDiv}>
         <DemoContainer guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
