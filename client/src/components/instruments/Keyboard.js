@@ -10,7 +10,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
                    setCurrentNote, looping, loading, pianoSamplerRef, keyNotes }) => {
   const notesRef = useRef(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
   const { width } = useWindowDimensions();
-  const componentWidth = width > 900 ? 900*0.8 : width*0.8
+  // const componentWidth = width > 900 ? 900*0.8 : width*0.8
 
   useEffect(() => {
     notesRef.current = notesArray()
@@ -80,7 +80,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
           // Stop playing a given note - see notes below
         }}
         disabled={loading}
-        width={componentWidth-20}
+        width={600}
         activeNotes={currentNote && looping ? [MidiNumbers.fromNote(midiFriendlyNote(currentNote))] : null}
         renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
           if (isActive){

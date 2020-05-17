@@ -162,8 +162,8 @@ const styles = {
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: '0 8px',
-    width: '700px'
+    borderRadius: '3px',
+    height: '100%'
   },
   canvasStyle: {
     // alignSelf: 'stretch',

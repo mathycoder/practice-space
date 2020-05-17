@@ -27,13 +27,10 @@ const styles = {
   //  display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    margin: '20px',
-    marginBottom: '0px',
     backgroundColor: 'white',
     borderRadius: '3px',
     padding: '15px',
-    minWidth: '700px',
-    maxWidth: '700px'
+    height: '100%'
   },
   dropdownWrapper: {
     width: '100px',
