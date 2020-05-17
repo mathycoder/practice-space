@@ -5,3 +5,7 @@
 .demo-dropdown .Dropdown-control {
   padding-right: 0px;
 }
+
+.demo-dropdown {
+  margin-top: -15px;
+}

@@ -80,7 +80,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
           // Stop playing a given note - see notes below
         }}
         disabled={loading}
-        width={componentWidth}
+        width={componentWidth-20}
         activeNotes={currentNote && looping ? [MidiNumbers.fromNote(midiFriendlyNote(currentNote))] : null}
         renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
           if (isActive){

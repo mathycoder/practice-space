@@ -156,14 +156,14 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
 
 const styles = {
   staffWrapper: {
-    // backgroundColor: 'red',
-
+    backgroundColor: 'white',
     flex: 3,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: '0 8px'
+    margin: '0 8px',
+    width: '700px'
   },
   canvasStyle: {
     // alignSelf: 'stretch',

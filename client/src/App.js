@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import DemoContainer from './containers/DemoContainer'
-import MusicAndSettingsContainer from './containers/MusicAndSettingsContainer'
+import MusicNotation from './components/notation/MusicNotation'
+import Settings from './components/settings/Settings'
+import Voice from './components/instruments/Voice'
 import NavBar from './components/navbar/NavBar'
 import { sampler } from './components/instruments/sampler.js'
 import { isLoading, doneLoading } from './actions/settingsActions.js'
@@ -20,9 +22,19 @@ const App = ({isLoading, doneLoading}) => {
       <header className="App-header">
         <NavBar />
       </header>
-      <div className="body noselect" style={styles.containerDiv}>
-        <DemoContainer guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
-        <MusicAndSettingsContainer guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
+      <div className="practice-space-wrapper noselect">
+        <div>
+          <DemoContainer guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
+        </div>
+        <div>
+          <Voice pianoSamplerRef={pianoSamplerRef} />
+        </div>
+        <div>
+          <MusicNotation />
+        </div>
+        <div>
+          <Settings guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
+        </div>  
       </div>
     </div>
   );
@@ -34,7 +46,12 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    backgroundColor: 'rgb(64,64,64)'
+  },
+  demoAndVoiceWrapper: {
+    display: 'flex',
+
   }
 }
 

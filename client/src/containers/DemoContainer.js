@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Fretboard from '../components/instruments/Fretboard'
 import Keyboard from '../components/instruments/Keyboard'
-import Voice from '../components/instruments/Voice'
 import DemoDropdown from './DemoDropdown'
 import { connect } from 'react-redux'
 import { setInstrument } from '../actions/settingsActions.js'
@@ -15,9 +14,7 @@ const DemoContainer = ({instrument, setInstrument, guitarSamplerRef, pianoSample
       <div style={styles.instrumentWrapper}>
         {instrument === 'Guitar'
             ? <Fretboard guitarSamplerRef={guitarSamplerRef} />
-            : instrument === 'Piano'
-              ? <Keyboard pianoSamplerRef={pianoSamplerRef} />
-              : <Voice pianoSamplerRef={pianoSamplerRef} />
+            : <Keyboard pianoSamplerRef={pianoSamplerRef} />
         }
       </div>
     </div>
@@ -27,12 +24,16 @@ const DemoContainer = ({instrument, setInstrument, guitarSamplerRef, pianoSample
 const styles = {
   demoWrapper: {
     flexDirection: 'column',
-    display: 'flex',
-    flexWrap: 'wrap',
+  //  display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
     margin: '20px',
     marginBottom: '0px',
+    backgroundColor: 'white',
+    borderRadius: '3px',
+    padding: '15px',
+    minWidth: '700px',
+    maxWidth: '700px'
   },
   dropdownWrapper: {
     width: '100px',

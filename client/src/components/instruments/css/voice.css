@@ -3,6 +3,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  width: 200px;
+  min-width: 200px;
+  margin: 20px;
+  border-radius: 3px;
 }
 
 .voice-wrapper .note-name {

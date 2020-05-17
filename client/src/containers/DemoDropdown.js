@@ -6,10 +6,9 @@ import { connect } from 'react-redux'
 import './dropdown.css'
 
 const DemoDropdown = ({ value, callback, looping }) => {
-  const options = ['Note Names', 'Piano', 'Guitar']
+  const options = ['Piano', 'Guitar']
   return (
-    <div className="demo-dropdown" style={styles.dropdownWrapper}>
-      <div style={styles.dropdownLabel}>Instrument</div>
+    <div className="demo-dropdown">
       <Dropdown
         style={{maxHeight: '100px'}}
         options={options}
@@ -21,21 +20,6 @@ const DemoDropdown = ({ value, callback, looping }) => {
       />
     </div>
   )
-}
-
-const styles = {
-  dropdownWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  dropdownLabel: {
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    alignSelf: 'flex-start',
-    marginLeft: '10px'
-  }
 }
 
 const mapStateToProps = state => {
