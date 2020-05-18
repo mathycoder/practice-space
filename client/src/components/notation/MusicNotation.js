@@ -87,7 +87,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       : scaleRepetition === 'All 4x'
         ? 16
         : scaleRepetition === 'All 3x'
-          ? 24
+          ? 12
           : 8
     const notesPerPage = notesPerMeasure*2
     const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % scale.length
