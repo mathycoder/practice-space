@@ -80,10 +80,10 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
         let nextNote = notes[(counterRef.current + 1) % notes.length]
-        let tone = ((scale[counterRef.current % notes.length])%7 + 1)
+        //let tone = ((scale[counterRef.current % notes.length])%7 + 1)
         setCurrentNote(note)
         setNextNote(nextNote)
-        setScaleTone(tone)
+      //  setScaleTone(tone)
         samplerRef.current.triggerAttackRelease(note, noteSpeed, time)
         nextIndex()
       }, noteSpeed)
