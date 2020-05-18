@@ -123,8 +123,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       <ScaleShapeDropdown
         scaleShape={scaleShape}
         callback={(obj) => {
-          // setScaleShape(obj.value)
-          //setScaleShapeAndRepetition(obj.value, scaleRepetition)
           setKey(currentKey, scaleType, obj.value, scaleRepetition)
           stopLoop()
         }}
@@ -133,7 +131,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         scaleRepetition={scaleRepetition}
         callback={(obj) => {
           setKey(currentKey, scaleType, scaleShape, obj.value)
-          //setScaleShapeAndRepetition(scaleShape, obj.value)
           stopLoop()
         }}
       />
