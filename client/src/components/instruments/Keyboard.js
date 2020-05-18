@@ -41,10 +41,10 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
     pianoSamplerRef.current.toMaster()
   }, [])
 
-  const calculateCurrentNote = (midiNumber, capitalize=false) => {
+  const calculateCurrentNote = (midiNumber, capitalize=false, hideOctave=false) => {
     const letter = capitalize ? notesRef.current[midiNumber % 12] : notesRef.current[midiNumber % 12].toLowerCase()
     const octave = Math.floor(midiNumber / 12) - 1
-    return `${letter}${octave}`
+    return `${letter}${!hideOctave ? octave : ''}`
   }
 
   const playSoloNote = midiNumber => {
@@ -87,7 +87,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
             return (
               <div className="note">
                 <div className="note-text">
-                  {calculateCurrentNote(midiNumber, true)}
+                  {calculateCurrentNote(midiNumber, true, true)}
                 </div>
               </div>
             )
