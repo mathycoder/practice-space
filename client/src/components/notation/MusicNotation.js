@@ -46,10 +46,12 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }, [currentKey, scaleIndex, scaleType, scaleShape, scale, repeatTopNote])
 
 
-  const generateNotes = (noteType) => {
-    if (noteType === 12){
-      noteType = 8
-    }
+  const generateNotes = () => {
+    const noteType = scaleRepetition === 'All 2x' || scaleRepetition === 'All 3x'
+      ? 8
+      : scaleRepetition === 'All 4x'
+        ? 16 : 4
+
     return scale.map((el, index) => {
       let currentNote = keyNotes[el]
       let accidental = null
@@ -79,20 +81,20 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }
 
   const renderKey = () => {
+    const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
     const notesPerMeasure = scaleRepetition === 'All 2x'
-      ? 8*2
+      ? 16
       : scaleRepetition === 'All 4x'
-        ? 8*4
+        ? 16
         : scaleRepetition === 'All 3x'
-          ? 8*3
+          ? 24
           : 8
     const notesPerPage = notesPerMeasure*2
-    const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
-    const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % (scale.length)
+    const currentNoteIndex = scaleIndex === 0 ? 0 : (scaleIndex-1) % scale.length
     const pageNumber = Math.floor(currentNoteIndex / notesPerPage)
     const totalPages = Math.ceil(scale.length / notesPerPage)
     const lastPage = pageNumber+1 === totalPages
-    const notesArray = generateNotes(notesPerMeasure/2).slice(pageNumber*notesPerPage, (pageNumber+1)*notesPerPage)
+    const notesArray = generateNotes().slice(pageNumber*notesPerPage, (pageNumber+1)*notesPerPage)
 
     for (let i=0; i<=1; i++){
       // generate variables
@@ -110,7 +112,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         stave.addClef("treble").addKeySignature(keySignature)
         if (lastMeasure) stave.setEndBarType(VF.Barline.type.REPEAT_END)
 
-        // build and draw the notes
+        // build and draw triplets
         if (scaleRepetition === 'All 3x'){
           for (let i=0; i < notes.length/3; i++){
             const eighthNoteTriplet = new VF.Tuplet(notes.slice(3*i,3*(i+1)), {
@@ -120,7 +122,17 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
           }
         }
 
-        const voice = new VF.Voice({num_beats: notes.length,  beat_value: notesPerMeasure/2});
+        // beatValue formats VF.voice
+        const beatValue = scaleRepetition === 'All 2x'
+          ? 8
+          : scaleRepetition === 'All 4x'
+            ? 16
+            : scaleRepetition === 'All 3x'
+              ? 12
+              : 4
+
+        // build and draw triplets
+        const voice = new VF.Voice({num_beats: notes.length,  beat_value: beatValue});
         voice.addTickables(notes);
         const beams = VF.Beam.generateBeams(notes,
           {
