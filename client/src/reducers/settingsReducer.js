@@ -74,7 +74,7 @@ function scaleTypeReducer(state = 'major', action){
 
 function scaleShapeReducer(state = 'Ascending and Descending', action){
   switch(action.type) {
-    case 'SET_SCALE_SHAPE_AND_REPETITION':
+    case 'SET_KEY':
       return action.scaleShape
 
     default:
@@ -84,7 +84,7 @@ function scaleShapeReducer(state = 'Ascending and Descending', action){
 
 function scaleRepetitionReducer(state = "None", action){
   switch(action.type) {
-    case 'SET_SCALE_SHAPE_AND_REPETITION':
+    case 'SET_KEY':
       return action.scaleRepetition
 
     default:

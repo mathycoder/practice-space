@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react'
 import { setKey, setBPM, nextIndex, resetIndex,
-         setLooping, isLoading, doneLoading,
-         setScaleShapeAndRepetition } from '../../actions/settingsActions.js'
+         setLooping, isLoading, doneLoading } from '../../actions/settingsActions.js'
 import { connect } from 'react-redux'
 import * as Tone from 'tone'
 import { sampler } from '../instruments/sampler.js'
@@ -18,7 +17,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
                     scaleIndex, nextIndex, resetIndex, setLooping, looping, scaleType,
                     currentInstrument, scale, keyNotes, loading, isLoading, doneLoading,
                     guitarSamplerRef, pianoSamplerRef, setScaleTone, repeatTopNote,
-                    scaleShape, scaleRepetition, setScaleShapeAndRepetition }) => {
+                    scaleShape, scaleRepetition }) => {
 
   const [scheduleId, setScheduleId] = useState(null)
   const counterRef = useRef(0)
@@ -193,8 +192,7 @@ const mapDispatchToProps = dispatch => {
     resetIndex: () => dispatch(resetIndex()),
     setLooping: (looping) => dispatch(setLooping(looping)),
     isLoading: () => dispatch(isLoading()),
-    doneLoading: () => dispatch(doneLoading()),
-    setScaleShapeAndRepetition: (scaleShape, scaleRepetition) => dispatch(setScaleShapeAndRepetition(scaleShape, scaleRepetition))
+    doneLoading: () => dispatch(doneLoading())
   }
 }
 
