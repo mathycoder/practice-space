@@ -152,12 +152,15 @@ const styles = {
     flexWrap: 'wrap',
     backgroundColor: 'rgb(64,64,64)',
     alignSelf: 'stretch',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     padding: '10px'
   },
   buttonWrapper: {
-    marginTop: '16px'
+    marginTop: '16px',
+    flexBasis: '100%',
+    display: 'flex',
+    justifyContent: 'center'
   }
 }
 

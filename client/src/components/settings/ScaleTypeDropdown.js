@@ -28,9 +28,9 @@ const ScaleTypeDropdown = ({ currentKey, scaleType, callback}) => {
   const options = keyNotesObj[currentKey]
 
   return (
-    <div className="scale-dropdown" style={styles.dropdownWrapper}>
-      <div style={styles.dropdownLabel}>Type</div>
+    <div className="scaletype-dropdown-wrapper" style={styles.dropdownWrapper}>
       <Dropdown
+        className="custom-dropdown"
         style={{maxHeight: '100px'}}
         options={options}
         onChange={callback}
@@ -48,12 +48,6 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     margin: '10px'
-  },
-  dropdownLabel: {
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    alignSelf: 'flex-start',
-    marginLeft: '10px'
   }
 }
 

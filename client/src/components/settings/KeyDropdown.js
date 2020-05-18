@@ -30,9 +30,9 @@ const KeyDropdown = ({ currentKey, setKey, scaleType, stopLoop, scaleShape, scal
   }
 
   return (
-    <div style={styles.dropdownWrapper}>
-      <div style={styles.dropdownLabel}>Key</div>
+    <div className="key-dropdown-wrapper" style={styles.dropdownWrapper}>
       <Dropdown
+        className="custom-dropdown"
         style={{maxHeight: '100px'}}
         options={options}
         onChange={(obj) => {
@@ -55,13 +55,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  dropdownLabel: {
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    alignSelf: 'flex-start',
-    marginLeft: '10px'
+    alignItems: 'center',
   }
 }
 
