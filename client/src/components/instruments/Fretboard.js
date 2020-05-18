@@ -40,13 +40,13 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
   }
 
 
-  const calculateCurrentNote = (string, fret, uppercase = false) => {
+  const calculateCurrentNote = (string, fret, uppercase = false, removeOctave = false) => {
     const rawStringIndex= STRING_INDICES[string]
     const fretIndex = (rawStringIndex + fret) % 12
     let octave = Math.floor((rawStringIndex + fret) / 12) + 1
     if (notesRef.current[fretIndex] === 'Cb') octave+=1
     if (notesRef.current[fretIndex] === 'B#') octave-=1
-    return uppercase ? `${notesRef.current[fretIndex]}${octave}` : `${notesRef.current[fretIndex].toLowerCase()}${octave}`
+    return uppercase ? `${notesRef.current[fretIndex]}${!removeOctave ? octave : ''}` : `${notesRef.current[fretIndex].toLowerCase()}${octave}`
   }
 
   const clickNote = () => {
@@ -81,7 +81,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
                   animationOut="fadeOut"
                   animationInDuration={200000/tempo}
                   isVisible={true}>
-                  <div>{calculateCurrentNote(stringNum, fretNum, true)}</div>
+                  <div>{calculateCurrentNote(stringNum, fretNum, true, true)}</div>
                 </Animated>
                 :
                 <div
@@ -91,7 +91,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
                          : calculateCurrentNote(stringNum, fretNum) === currentNote ? 'display-note' : 'hide-note'}`}
                   >
                   <div className="note-text">
-                    {calculateCurrentNote(stringNum, fretNum, true)}
+                    {calculateCurrentNote(stringNum, fretNum, true, true)}
                   </div>
                 </div>
               }
