@@ -95,7 +95,7 @@ function scaleRepetitionReducer(state = "None", action){
 function categoryReducer(state = 'sharps', action) {
   switch(action.type) {
     case 'SET_KEY':
-      let keyType = action.scaleType.includes('minor') ? 'minor' : 'major'
+      let keyType = action.scaleType
       if (keyType.includes('minor')) keyType = 'minor'
       const keyInfo = countAccidentals[action.key][keyType]
       return keyInfo.includes("sharp") ? 'sharps' : 'flats'
@@ -279,7 +279,7 @@ const allFlatNotes = [
 
 const keyNotesObj = {
   'Ab': {
-    'chromatic': allFlatNotes.slice(20, 33),
+    'chromatic': allSharpNotes.slice(20, 33),
     'major': ['ab/3', 'a/3', 'bb/3', 'b/3', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4'],
     'minor': ['ab/3', 'a/3', 'bb/3', 'cb/4', 'c/4', 'db/4', 'd/4', 'eb/4', 'fb/4', 'f/4', 'gb/4', 'g/4', 'ab/4']
   },
@@ -294,7 +294,7 @@ const keyNotesObj = {
     'minor': ['a#/3', 'b/3', 'b#/3', 'c#/4', 'd/4', 'd#/4', 'e/4', 'e#/4', 'f#/4', 'g/4', 'g#/4', 'gx/4', 'a#/4']
   },
   'Bb': {
-    'chromatic': allFlatNotes.slice(22, 35),
+    'chromatic': allSharpNotes.slice(22, 35),
     'major': ['bb/3', 'b/3', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4'],
     'minor': ['bb/3', 'b/3', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4'],
   },
@@ -304,7 +304,7 @@ const keyNotesObj = {
     'minor': ['b/3', 'c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4', 'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4'],
   },
   'Cb': {
-    'chromatic': allFlatNotes.slice(23, 36),
+    'chromatic': allSharpNotes.slice(23, 36),
     'major': ['cb/4', 'c/4', 'db/4', 'd/4', 'eb/4', 'fb/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4', 'cb/5' ],
     'minor': null
   },
@@ -319,7 +319,7 @@ const keyNotesObj = {
     'minor': ['c#/4', 'd/4', 'd#/4', 'e/4', 'e#/4', 'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4', 'b#/4', 'c#/5' ],
   },
   'Db': {
-    'chromatic': allFlatNotes.slice(25, 38),
+    'chromatic': allSharpNotes.slice(25, 38),
     'major': ['db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4', 'b/4', 'c/5', 'db/5' ],
     'minor': null
   },
@@ -334,7 +334,7 @@ const keyNotesObj = {
     'minor': ['d#/4', 'e/4', 'e#/4', 'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4', 'c/5', 'c#/5', 'cx/5', 'd#/5']
   },
   'Eb': {
-    'chromatic': allFlatNotes.slice(27, 40),
+    'chromatic': allSharpNotes.slice(27, 40),
     'major': ['eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4', 'b/4', 'c/5', 'db/5', 'd/5', 'eb/5'],
     'minor': ['eb/4', 'e/4', 'f/4', 'gb/4', 'g/4', 'ab/4', 'a/4', 'bb/4', 'cb/5', 'c/5', 'db/5', 'd/5', 'eb/5']
   },
@@ -344,7 +344,7 @@ const keyNotesObj = {
     'minor': ['e/3', 'f/3', 'f#/3', 'g/3', 'g#/3', 'a/3', 'a#/3', 'b/3', 'c/3', 'c#/4', 'd/4', 'd#/4', 'e/4']
   },
   'F': {
-    'chromatic': allFlatNotes.slice(29, 42),
+    'chromatic': allSharpNotes.slice(29, 42),
     'major': ['f/3', 'gb/3', 'g/3', 'ab/3', 'a/3', 'bb/3', 'b/3', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4'],
     'minor': ['f/3', 'gb/3', 'g/3', 'ab/3', 'a/3', 'bb/3', 'b/3', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4']
   },
@@ -354,7 +354,7 @@ const keyNotesObj = {
     'minor': ['f#/3', 'g/3', 'g#/3', 'a/3', 'a#/3', 'b/3', 'c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'e#/4', 'f#/4'],
   },
   'Gb': {
-    'chromatic': allFlatNotes.slice(30, 43),
+    'chromatic': allSharpNotes.slice(30, 43),
     'major': ['gb/3', 'g/3', 'ab/3', 'a/3', 'bb/3', 'cb/4', 'c/4', 'db/4', 'd/4', 'eb/4', 'e/4', 'f/4', 'gb/4' ],
     'minor': null
   },
@@ -374,73 +374,91 @@ const countAccidentals = {
   'Ab': {
     'major': '4 flats',
     'minor': '7 flats',
+    'chromatic': '0 flats'
   },
   'A': {
     'major': '3 sharps',
-    'minor': '0 sharps'
+    'minor': '0 sharps',
+    'chromatic': '0 sharps'
   },
   'A#': {
     'major': null,
-    'minor': '7 sharps'
+    'minor': '7 sharps',
+    'chromatic': '0 sharps'
   },
   'Bb': {
     'major': '2 flats',
-    'minor': '5 flats'
+    'minor': '5 flats',
+    'chromatic': '0 flats'
   },
   'B': {
     'major': '5 sharps',
-    'minor': '2 sharps'
+    'minor': '2 sharps',
+    'chromatic': '0 sharps'
   },
   'Cb': {
     'major':  '7 flats',
-    'minor': null
+    'minor': null,
+    'chromatic': '0 flats'
   },
   'C': {
     'major':  '0 sharps',
-    'minor':  '3 flats'
+    'minor':  '3 flats',
+    'chromatic': '0 sharps'
   },
   'C#': {
     'major':  '7 sharps',
-    'minor':  '4 sharps'
+    'minor':  '4 sharps',
+    'chromatic': '0 sharps'
   },
   'Db': {
     'major':  '5 flats',
-    'minor':  null
+    'minor':  null,
+    'chromatic': '0 flats'
   },
   'D': {
     'major':  '2 sharps',
-    'minor':  '1 flat'
+    'minor':  '1 flat',
+    'chromatic': '0 sharps'
   },
   'D#': {
     'major':  null,
-    'minor':  '6 sharps'
+    'minor':  '6 sharps',
+    'chromatic': '0 sharps'
   },
   'Eb': {
     'major':  '3 flats',
     'minor':  '6 flats',
+    'chromatic': '0 flats'
   },
   'E': {
     'major':  '4 sharps',
-    'minor':  '1 sharp'
+    'minor':  '1 sharp',
+    'chromatic': '0 sharps'
   },
   'F': {
     'major':  '1 flat',
-    'minor':  '4 flats'
+    'minor':  '4 flats',
+    'chromatic': '0 sharps'
   },
   'F#': {
     'major':  '6 sharps',
-    'minor':  '3 sharps'
+    'minor':  '3 sharps',
+    'chromatic': '0 sharps'
   },
   'Gb': {
     'major':  '6 flats',
-    'minor':  null
+    'minor':  null,
+    'chromatic': '0 flats'
   },
   'G': {
     'major':  '1 sharps',
-    'minor':  '2 flats'
+    'minor':  '2 flats',
+    'chromatic': '0 sharps'
   },
   'G#': {
     'major':  null,
-    'minor':  '5 sharps'
+    'minor':  '5 sharps',
+    'chromatic': '0 sharps'
   }
 }

@@ -17,7 +17,7 @@ const Voice = ({currentNote, currentKey, keyNotes, scale,
       'nat. minor': { 0: '1', 2: '2', 3: '3', 5: '4', 7: '5', 8: '6', 10: '7', 12: '1' },
       'harm. minor': { 0: '1', 2: '2', 3: '3', 5: '4', 7: '5', 8: '6', 11: '7', 12: '1' },
     }
-    const scaleHalfStep = scaleIndex === 0 ? 0 : scale[(scaleIndex-1)% scale.length] 
+    const scaleHalfStep = scaleIndex === 0 ? 0 : scale[(scaleIndex-1)% scale.length]
     return scaleTones[scaleType][scaleHalfStep]
   }
 
@@ -25,7 +25,7 @@ const Voice = ({currentNote, currentKey, keyNotes, scale,
     <div className="voice-wrapper">
       <div className="note-name">{name()}</div>
       <div className="scale-tone">
-        {calculateScaleTone()}
+        {scaleType !== 'chromatic' ? calculateScaleTone() : null}
       </div>
     </div>
   )

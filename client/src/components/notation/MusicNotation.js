@@ -56,6 +56,7 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       let currentNote = keyNotes[el]
       let accidental = null
 
+      // adds accidental to 7th scale tone of harm. minor
       if (el === 11 && scaleType === 'harm. minor'){
         let letter = currentNote.split("/")[0]
         let octave = currentNote.slice(-1)
@@ -81,7 +82,9 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }
 
   const renderKey = () => {
-    const keySignature = `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
+    const keySignature = scaleType !== 'chromatic'
+      ? `${currentKey}${scaleType.includes('minor') ? 'm' :''}`
+      : 'C'
     const notesPerMeasure = scaleRepetition === 'All 2x'
       ? 16
       : scaleRepetition === 'All 4x'
@@ -147,8 +150,6 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
         triplets.forEach((tuplet, index) => {
           tuplet.setContext(context).draw();
         });
-
-  // https://github.com/0xfe/vexflow/wiki/Automatic-Beaming
 }
 
         beams.forEach(function(beam) {
