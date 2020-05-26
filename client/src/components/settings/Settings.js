@@ -63,6 +63,7 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       const notes = scale.map(noteInd => {
         //need to look like a3
         let note = keyNotes[noteInd]
+        if (scaleType === 'chromatic') note = note[0]
         note = note.replace('/', '')
         let letter = note.split(/[\d]+/)[0]
         const octave = parseInt(note.slice(-1))
@@ -80,7 +81,6 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
       const schedulingId = transportRef.current.scheduleRepeat(time => {
         let note = notes[counterRef.current % notes.length]
         let nextNote = notes[(counterRef.current + 1) % notes.length]
-        //let tone = ((scale[counterRef.current % notes.length])%7 + 1)
         setCurrentNote(note)
         setNextNote(nextNote)
       //  setScaleTone(tone)

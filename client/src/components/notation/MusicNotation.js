@@ -46,6 +46,17 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
   }, [currentKey, scaleIndex, scaleType, scaleShape, scale, repeatTopNote])
 
 
+  const scaleAscending = index => {
+    const multiplier = scaleRepetition.includes('4')
+      ? 4
+      : scaleRepetition.includes('3')
+        ? 3
+        : scaleRepetition.includes('2')
+          ? 2
+          : 1
+    return index === 0 || scale[index] - scale[index-1*multiplier] > 0
+  }
+
   const generateNotes = () => {
     const noteType = scaleRepetition === 'All 2x' || scaleRepetition === 'All 3x'
       ? 8
@@ -55,6 +66,23 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
     return scale.map((el, index) => {
       let currentNote = keyNotes[el]
       let accidental = null
+
+      // adds accidentals to chromatic key
+
+      if (scaleType === 'chromatic') {
+        currentNote = !scaleAscending(index) && currentNote.length > 1
+          ? currentNote[1]
+          : currentNote[0]
+        let letter = currentNote.split("/")[0]
+        let octave = currentNote.slice(-1)
+        if (letter.length === 2){
+          if (letter[1] === '#'){
+            if (index === 0 || scale[index-1] !== scale[index]) accidental = '#'
+          } else {
+            if (index === 0 || scale[index-1] !== scale[index]) accidental = 'b'
+          }
+        }
+      }
 
       // adds accidental to 7th scale tone of harm. minor
       if (el === 11 && scaleType === 'harm. minor'){

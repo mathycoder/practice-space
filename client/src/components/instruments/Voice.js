@@ -6,7 +6,7 @@ const Voice = ({currentNote, currentKey, keyNotes, scale,
                 scaleIndex, currentScaleTone, scaleType}) => {
   const name = () => {
     const note = scaleIndex === 0
-      ? keyNotes[scale[0]].split("/")[0]
+      ? (scaleType === 'chromatic' ? keyNotes[scale[0]][0] : keyNotes[scale[0]]).split("/")[0]
       : currentNote.split(/\d/)[0]
     return `${note.slice(0,1).toUpperCase()}${note.slice(1)}`
   }

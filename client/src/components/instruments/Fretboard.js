@@ -5,7 +5,7 @@ import { setCurrentNote } from '../../actions/currentNoteActions.js'
 // import { sampler } from './sampler.js'
 import {Animated} from "react-animated-css";
 
-const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
+const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef, scaleType,
                      currentCategory, nextNote, tempo, looping, accidentals, keyNotes }) => {
   const [overFret, setOverFret] = useState({string: null, fret: null, prevString: null, prevFret: null})
   const STRING_INDICES = [40, 35, 31, 26, 21, 16]
@@ -24,7 +24,8 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef,
     ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
     keyNotes.forEach(tone => {
-      const letter = tone.split("/")[0].toUpperCase()
+      if (scaleType === 'chromatic') tone = tone[0]
+      const letter = tone[0].split("/")[0].toUpperCase()
       if (!notes.includes(letter)){
         const baseIndex = notes.indexOf(letter[0])
         if (letter[1] === '#'){
@@ -112,7 +113,8 @@ const mapStateToProps = state => {
     accidentals: state.settings.accidentals,
     tempo: state.settings.bpm,
     looping: state.settings.looping,
-    keyNotes: state.settings.keyNotes
+    keyNotes: state.settings.keyNotes,
+    scaleType: state.settings.scaleType
   }
 }
 
