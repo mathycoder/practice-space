@@ -81,6 +81,8 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
           } else {
             if (index === 0 || scale[index-1] !== scale[index]) accidental = 'b'
           }
+        } else {
+          accidental = 'n'
         }
       }
 

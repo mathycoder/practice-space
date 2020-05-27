@@ -34,7 +34,7 @@ const App = ({isLoading, doneLoading}) => {
         </div>
         <div>
           <Settings guitarSamplerRef={guitarSamplerRef} pianoSamplerRef={pianoSamplerRef} />
-        </div>  
+        </div>
       </div>
     </div>
   );

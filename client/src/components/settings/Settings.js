@@ -60,6 +60,8 @@ const Settings = ({ currentKey, setKey, setBPM, currentBPM, setCurrentNote, setN
         resetIndex()
       }
 
+      // [0, 2, 3 ...]
+
       const notes = scale.map(noteInd => {
         //need to look like a3
         let note = keyNotes[noteInd]
