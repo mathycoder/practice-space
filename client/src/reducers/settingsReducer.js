@@ -106,8 +106,7 @@ function categoryReducer(state = 'sharps', action) {
 }
 
 
-function keyNotesReducer(state=['c/4', 'c#/4', 'd/4', 'd#/4', 'e/4', 'f/4',
-                                'f#/4', 'g/4', 'g#/4', 'a/4', 'a#/4', 'b/4', 'c/5' ], action){
+function keyNotesReducer(state=['c/4', 'd/4', 'e/4', 'f/4', 'g/4', 'a/4', 'b/4', 'c/5'], action){
   switch(action.type) {
     case 'SET_KEY':
       return keyNotesObj[action.key][action.scaleType]
@@ -140,7 +139,7 @@ function bpmReducer(state = 90, action) {
   }
 }
 
-function scaleReducer(state=[0,2,4,5,7,9,11,12,11,9,7,5,4,2], action){
+function scaleReducer(state=[0,1,2,3,4,5,6,7,6,5,4,3,2,1], action){
   switch(action.type) {
     case 'SET_KEY':
       let scaleType = action.scaleType

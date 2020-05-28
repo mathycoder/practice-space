@@ -12,13 +12,7 @@ const Voice = ({currentNote, currentKey, keyNotes, scale,
   }
 
   const calculateScaleTone = () => {
-    const scaleTones = {
-      'major': { 0: '1', 2: '2', 4: '3', 5: '4', 7: '5', 9: '6', 11: '7', 12: '1' },
-      'nat. minor': { 0: '1', 2: '2', 3: '3', 5: '4', 7: '5', 8: '6', 10: '7', 12: '1' },
-      'harm. minor': { 0: '1', 2: '2', 3: '3', 5: '4', 7: '5', 8: '6', 11: '7', 12: '1' },
-    }
-    const scaleHalfStep = scaleIndex === 0 ? 0 : scale[(scaleIndex-1)% scale.length]
-    return scaleTones[scaleType][scaleHalfStep]
+    return scaleIndex === 0 ? scale[0]+1 : scale[(scaleIndex-1)% scale.length]%7 +1
   }
 
   return (
