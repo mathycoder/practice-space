@@ -87,15 +87,15 @@ const MusicNotation = ({ currentNote, currentKey, scale, currentCategory,
       }
 
       // adds accidental to 7th scale tone of harm. minor
-      if (el === 11 && scaleType === 'harm. minor'){
+      if (el === 6 && scaleType === 'harm. minor'){
         let letter = currentNote.split("/")[0]
         let octave = currentNote.slice(-1)
         if (currentCategory === 'flats' && letter.length === 1){
-          if (scale[index-1] !== 11) accidental = 'n'
-        } else if (currentCategory === 'sharps' && letter[1] === '#'){
-          if (scale[index-1] !== 11) accidental = '#'
+          if (scale[index-1] !== 6) accidental = 'n'
+        } else if (letter[1] === '#'){
+          if (scale[index-1] !== 6) accidental = '#'
         } else {
-          if (scale[index-1] !== 11) accidental = '##'
+          if (scale[index-1] !== 6) accidental = '##'
           currentNote = `${letter[0]}/${octave}`
         }
       }
