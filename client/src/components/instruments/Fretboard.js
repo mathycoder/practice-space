@@ -25,7 +25,7 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef, 
     : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
     keyNotes.forEach(tone => {
       if (scaleType === 'chromatic') tone = tone[0]
-      const letter = tone[0].split("/")[0].toUpperCase()
+      const letter = tone.split("/")[0].toUpperCase()
       if (!notes.includes(letter)){
         const baseIndex = notes.indexOf(letter[0])
         if (letter[1] === '#'){
@@ -87,9 +87,15 @@ const Fretboard = ({ setCurrentNote, currentNote, currentKey, guitarSamplerRef, 
                 :
                 <div
                   className={`note ${!looping ?
-                        (overFret.string === stringNum && overFret.fret === fretNum ? 'display-note'
-                        : overFret.prevString === stringNum && overFret.prevFret === fretNum ? 'hide-note-nofade' : 'hide-note')
-                         : calculateCurrentNote(stringNum, fretNum) === currentNote ? 'display-note' : 'hide-note'}`}
+                        (overFret.string === stringNum && overFret.fret === fretNum
+                          ? 'display-note'
+                          : overFret.prevString === stringNum && overFret.prevFret === fretNum
+                            ? 'hide-note-nofade'
+                            : 'hide-note'
+                        ) : calculateCurrentNote(stringNum, fretNum) === currentNote
+                            ? 'display-note'
+                            : 'hide-note'}`
+                          }
                   >
                   <div className="note-text">
                     {calculateCurrentNote(stringNum, fretNum, true, true)}

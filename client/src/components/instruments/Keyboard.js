@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { setCurrentNote } from '../../actions/currentNoteActions.js'
 import './css/keyboard.css'
 
-const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
+const Keyboard = ({currentNote, currentKey, currentCategory, accidentals, scaleType,
                    setCurrentNote, looping, loading, pianoSamplerRef, keyNotes }) => {
   const notesRef = useRef(['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'])
   const { width } = useWindowDimensions();
@@ -21,6 +21,7 @@ const Keyboard = ({currentNote, currentKey, currentCategory, accidentals,
     ? ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     : ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
     keyNotes.forEach(tone => {
+      if (scaleType === 'chromatic') tone = tone[0]
       const letter = tone.split("/")[0].toUpperCase()
       if (!notes.includes(letter)){
         const baseIndex = notes.indexOf(letter[0])
@@ -107,7 +108,8 @@ const mapStateToProps = state => {
     accidentals: state.settings.accidentals,
     looping: state.settings.looping,
     loading: state.settings.loading,
-    keyNotes: state.settings.keyNotes
+    keyNotes: state.settings.keyNotes,
+    scaleType: state.settings.scaleType
   }
 }
 
